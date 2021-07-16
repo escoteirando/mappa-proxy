@@ -1,1 +1,1 @@
-web: bin/github.com/guionardo/mappa_proxy
+web: bin/mappa_proxy
