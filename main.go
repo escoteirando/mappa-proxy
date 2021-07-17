@@ -1,8 +1,12 @@
 package main
 
 import (
+	"log"
 	"os"
+	"time"
 
+	"github.com/gin-contrib/cache"
+	"github.com/gin-contrib/cache/persistence"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/guionardo/mappa_proxy/mappa"
@@ -21,6 +25,7 @@ func healthCheck(context *gin.Context) {
 
 func setupServer() *gin.Engine {
 	r := gin.Default()
+	store := persistence.NewInMemoryStore(time.Minute * 60)
 	mappa.StartMappa()
 
 	r.Use(cors.New(cors.Config{
@@ -30,12 +35,16 @@ func setupServer() *gin.Engine {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
+	r.GET("/", index)
 	r.GET("/hc", healthCheck)
-	r.GET("/login/stats", mappa.MappaLoginStatsRoute)
-	r.POST("/mappa/login", mappa.MappaLoginRoute)
-	r.GET("/mappa/*request", mappa.MappaGetRequest)
-	// r.POST("/mappa/*request", mappa.MappaPostRequest)
+	r.GET("/login/stats", mappa.LoginStatsRoute)
+	r.POST("/mappa/login", mappa.LoginRoute)
+	r.GET("/mappa/*request", cache.CachePage(store, time.Minute*60, mappa.GetRequest))
 	return r
+}
+
+func index(context *gin.Context) {
+	context.JSON(200, gin.H{"mappa-proxy": "v1.0", "running-by": time.Now().Sub(mappa.StartedTime).String()})
 }
 
 func main() {
@@ -43,5 +52,8 @@ func main() {
 	if len(port) == 0 {
 		port = "8081"
 	}
-	setupServer().Run(":" + port)
+	err := setupServer().Run(":" + port)
+	if err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }

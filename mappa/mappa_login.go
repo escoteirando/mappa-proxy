@@ -25,7 +25,7 @@ type LoginData struct {
 	PasswordHash  uint64
 }
 
-// {"type":"LOGIN_REQUEST","username":"guionardo","password":"A1GU"}
+// LoginRequest {"type":"LOGIN_REQUEST","username":"guionardo","password":"A1GU"}
 type LoginRequest struct {
 	Type     string `json:"type"`
 	UserName string `json:"username"`
@@ -45,7 +45,7 @@ var logins = struct {
 	lastUserLogin string
 	logins        map[string]LoginData
 }{logins: make(map[string]LoginData), lastLogin: time.Time{}}
-var startedTime = time.Now()
+var StartedTime = time.Now()
 
 func SetLogin(username string, password string, loginResponse LoginResponse) {
 	logins.Lock()
@@ -192,7 +192,7 @@ func GetStats() Stats {
 	lastUserLogin := logins.lastUserLogin
 	logins.RUnlock()
 	return Stats{
-		RunningSince:  startedTime,
+		RunningSince:  StartedTime,
 		Users:         usersCount,
 		LastLogin:     lastLogin,
 		LastUserLogin: lastUserLogin,

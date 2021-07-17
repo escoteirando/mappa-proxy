@@ -2,7 +2,7 @@
 
 [![CodeQL](https://github.com/guionardo/mappa-proxy/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/guionardo/mappa-proxy/actions/workflows/codeql-analysis.yml)
 
-v1
+Access: https://mappa-proxy.herokuapp.com
 
 ## Links
 
