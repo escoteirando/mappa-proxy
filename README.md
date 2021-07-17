@@ -1,6 +1,7 @@
 # MAPPA PROXY
 
 [![CodeQL](https://github.com/guionardo/mappa-proxy/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/guionardo/mappa-proxy/actions/workflows/codeql-analysis.yml)
+[![Go](https://github.com/guionardo/mappa-proxy/actions/workflows/go.yml/badge.svg)](https://github.com/guionardo/mappa-proxy/actions/workflows/go.yml)
 
 Access: https://mappa-proxy.herokuapp.com
 
