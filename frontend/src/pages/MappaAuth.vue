@@ -87,8 +87,16 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useQuasar } from 'quasar';
-import { ParseContext, EmptyLoginContext, DoLogin } from 'src/services/mappa';
-
+import {
+  ParseContext,
+  EmptyLoginContext,
+  DoLogin,
+  ILogin,
+} from 'src/services/mappa';
+interface IAuthResponse extends ILogin {
+  cId: number;
+  mId: number;
+}
 export default defineComponent({
   name: 'MappaAuth',
   components: {},
@@ -158,15 +166,16 @@ export default defineComponent({
           });
           return;
         }
-        let responseKey = JSON.stringify(loginResponse);
-        this.authKey = `/auth ${btoa(responseKey)}`;
-        // this.q.notify({
-        //   caption: 'Resposta',
-        //   message: responseKey,
-        //   icon: 'check_circle',
-        //   color: 'success',
-        //   group: false,
-        // });
+        let responseKey: IAuthResponse = {
+          id: loginResponse.id,
+          ttl: loginResponse.ttl,
+          created: loginResponse.created,
+          userId: loginResponse.userId,
+          cId: this.context.cId,
+          mId: this.context.mId,
+        };
+        let responseKeyJson = JSON.stringify(responseKey);
+        this.authKey = `/auth ${btoa(responseKeyJson)}`;
       } catch (err) {
         console.error('Login error:', err);
         this.q.notify({

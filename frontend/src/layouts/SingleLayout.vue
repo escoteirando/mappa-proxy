@@ -6,8 +6,15 @@
 
         <q-toolbar-title> Mappa Frontend </q-toolbar-title>
 
-        <div :title="proxyHCTitle">Proxy: {{ proxyHC }}</div>
-        <q-icon :name="proxyIcon" />
+        <div>
+          <q-btn
+            :title="proxyHCTitle"
+            flat
+            dense
+            :icon="proxyIcon"
+            :label="proxyHC"
+          />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -33,7 +40,6 @@ export default defineComponent({
   },
 
   async mounted() {
-    console.log('Mounting single layout');
     try {
       let hc = await DoHC();
       console.log('HC', hc);
@@ -46,7 +52,7 @@ export default defineComponent({
       this.proxyHC = 'Em erro';
       this.proxyIcon = 'link_off';
     }
-    console.log('Mounted single layout');
+    this.proxyHC = `Proxy: ${this.proxyHC}`;
   },
 });
 </script>
