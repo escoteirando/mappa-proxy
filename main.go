@@ -10,6 +10,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/guionardo/mappa_proxy/mappa"
+	"github.com/guionardo/mappa_proxy/tg"
 )
 
 func healthCheck(context *gin.Context) {
@@ -35,11 +36,13 @@ func setupServer() *gin.Engine {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
+	r.Static("/web", "./web")
 	r.GET("/", index)
 	r.GET("/hc", healthCheck)
 	r.GET("/login/stats", mappa.LoginStatsRoute)
 	r.POST("/mappa/login", mappa.LoginRoute)
 	r.GET("/mappa/*request", cache.CachePage(store, time.Minute*60, mappa.GetRequest))
+	r.POST("/tg/pub", tg.Publish)
 	return r
 }
 
