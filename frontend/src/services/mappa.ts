@@ -60,7 +60,7 @@ export function ParseContext(context: string): ILoginContext {
     const j = atob(context);
     const jsonContext: ILoginContext = JSON.parse(j) as ILoginContext;
     if (!jsonContext.cId) {
-      throw new Error('Invalid context data');
+      throw new Error(`Invalid context data: ${JSON.stringify(jsonContext)}`);
     }
     return {
       cId: jsonContext.cId,
