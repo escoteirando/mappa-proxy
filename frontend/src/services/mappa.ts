@@ -59,7 +59,7 @@ export function ParseContext(context: string): ILoginContext {
   try {
     const j = atob(context);
     const jsonContext: ILoginContext = JSON.parse(j) as ILoginContext;
-    if (!jsonContext.cId || !jsonContext.mId) {
+    if (!jsonContext.cId) {
       throw new Error('Invalid context data');
     }
     return {
