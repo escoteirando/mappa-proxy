@@ -92,6 +92,7 @@ import {
   EmptyLoginContext,
   DoLogin,
   ILogin,
+  SendAuthToChat
 } from 'src/services/mappa';
 interface IAuthResponse extends ILogin {
   cId: number;
@@ -176,6 +177,23 @@ export default defineComponent({
         };
         let responseKeyJson = JSON.stringify(responseKey);
         this.authKey = `/auth ${btoa(responseKeyJson)}`;
+        SendAuthToChat(this.context.cId, this.context.mId, this.authKey)        
+          .then(() => {            
+            this.q.notify({
+              caption: 'Sucesso',
+              message: 'Autorização enviada para o chat no Telegram',
+              icon: 'ok',
+              color: 'success',
+            });
+          })
+          .catch((error) => {            
+            this.q.notify({
+              caption: 'Erro',
+              message: `Falha no envio da autorização para o chat no Telegram (${JSON.stringify(error)})!`,
+              icon: 'warning',
+              color: 'negative',
+            });
+          });
       } catch (err) {
         console.error('Login error:', err);
         this.q.notify({

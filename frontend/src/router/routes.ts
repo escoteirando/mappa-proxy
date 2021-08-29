@@ -14,6 +14,10 @@ const routes: RouteRecordRaw[] = [
         path: 'mappa/:context',
         component: () => import('pages/MappaAuth.vue'),
       },
+      {
+        path: 'tg',
+        component: () => import('pages/TGTesting.vue'),
+      },
     ],
   },
 
