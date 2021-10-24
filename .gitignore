@@ -4,3 +4,4 @@ main
 .vscode
 .idea
 __azurite*
+.env

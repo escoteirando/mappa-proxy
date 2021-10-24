@@ -1,8 +1,11 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-contrib/cache"
@@ -27,6 +30,7 @@ func healthCheck(context *gin.Context) {
 func setupServer() *gin.Engine {
 	r := gin.Default()
 	store := persistence.NewInMemoryStore(time.Minute * 60)
+	
 	mappa.StartMappa()
 
 	r.Use(cors.New(cors.Config{
@@ -47,15 +51,34 @@ func setupServer() *gin.Engine {
 }
 
 func index(context *gin.Context) {
-	context.JSON(200, gin.H{"mappa-proxy": "v1.0", "running-by": time.Now().Sub(mappa.StartedTime).String()})
+	context.JSON(200, gin.H{"mappa-proxy": "v1.0", "running-by": time.Since(mappa.StartedTime).String()})
 }
+func parseHostAndPort() (string, int) {
+	var nPort = flag.Int("port", 0, "HTTP port")
+	var sHost = flag.String("host", "0.0.0.0", "HTTP host")
 
-func main() {
-	port := os.Getenv("PORT")
-	if len(port) == 0 {
-		port = "8081"
+	flag.Parse()
+	port := 0
+	if *nPort > 0 {
+		port = *nPort
+	} else {
+		sPort := os.Getenv("HTTP_PORT")
+		if len(sPort) == 0 {
+			port = 8081
+		} else {
+			ePort, err := strconv.Atoi(sPort)
+			if err != nil {
+				log.Fatalf("Invalid HTTP_PORT environment:  %v", sPort)
+			}
+			port = ePort
+		}
 	}
-	err := setupServer().Run(":" + port)
+	return *sHost, port
+}
+func main() {
+	host, port := parseHostAndPort()
+
+	err := setupServer().Run(fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}

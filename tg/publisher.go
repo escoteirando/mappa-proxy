@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type BotRequestData struct {
@@ -19,13 +21,14 @@ type BotRequestData struct {
 const exception string = "Bot publisher error"
 
 func Publish(c *gin.Context) {
-	botToken := "1906817161:AAGXe-HSMfvmBOOUoqYEZiKZy53KoBARJE8" //os.Getenv("BOT_TOKEN") ||
+	botToken := os.Getenv("BOT_TOKEN")
 	if len(botToken) == 0 {
 		log.Println("Missing BOT_TOKEN environment variable")
-		c.JSON(400, gin.H{"message": exception, "error": fmt.Errorf("Missing BOT_TOKEN")})
+		c.JSON(400, gin.H{"message": exception, "error": fmt.Errorf("missing BOT_TOKEN")})
 		return
 	}
 	requestBody, err := ioutil.ReadAll(c.Request.Body)
+	defer c.Request.Body.Close()
 	if err != nil {
 		log.Printf("Failed to get request body: %s\n", err)
 		c.JSON(400, gin.H{"message": exception, "error": err.Error()})

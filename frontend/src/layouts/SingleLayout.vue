@@ -4,7 +4,9 @@
       <q-toolbar>
         <q-btn flat dense round icon="menu" aria-label="Menu" />
 
-        <q-toolbar-title> Mappa Frontend </q-toolbar-title>
+        <q-toolbar-title :title="lastUpdate">
+          Mappa Frontend {{ version }}</q-toolbar-title
+        >
 
         <div>
           <q-btn
@@ -27,6 +29,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { DoHC } from 'src/services/mappa';
+import { version, lastUpdate } from 'src/assets/version';
+
 export default defineComponent({
   name: 'SingleLayout',
 
@@ -36,6 +40,8 @@ export default defineComponent({
       proxyHC: '...',
       proxyHCTitle: '',
       proxyIcon: 'link',
+      version: `v${version.major}.${version.minor}.${version.feature}`,
+      lastUpdate: `Último build: ${lastUpdate.toLocaleString()}`,
     };
   },
 
