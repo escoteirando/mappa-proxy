@@ -13,6 +13,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/guionardo/mappa_proxy/mappa"
+	"github.com/guionardo/mappa_proxy/mappa/logging"
 	"github.com/guionardo/mappa_proxy/tg"
 )
 
@@ -30,7 +31,7 @@ func healthCheck(context *gin.Context) {
 func setupServer() *gin.Engine {
 	r := gin.Default()
 	store := persistence.NewInMemoryStore(time.Minute * 60)
-	
+
 	mappa.StartMappa()
 
 	r.Use(cors.New(cors.Config{
@@ -76,9 +77,15 @@ func parseHostAndPort() (string, int) {
 	return *sHost, port
 }
 func main() {
+	logger, err := logging.New("logs/mappa-proxy.log", 2)
+	if err != nil {
+		log.Panicf("Failed to start logging - %v", err)
+	}
+	log.SetOutput(logger)
+	log.Printf("STARTING %v", time.Now())
 	host, port := parseHostAndPort()
 
-	err := setupServer().Run(fmt.Sprintf("%s:%d", host, port))
+	err = setupServer().Run(fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
