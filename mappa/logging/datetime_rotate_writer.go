@@ -48,6 +48,10 @@ func New(filename string, backupCount int) (*DatetimeRotateWriter, error) {
 	return w, err
 }
 
+func (logger *DatetimeRotateWriter) GetFile() string {
+	return logger.filename
+}
+
 func IsWritable(path string) (bool, error) {
 
 	info, err := os.Stat(path)

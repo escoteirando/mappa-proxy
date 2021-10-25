@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -54,9 +55,15 @@ func setupServer() *gin.Engine {
 func index(context *gin.Context) {
 	context.JSON(200, gin.H{"mappa-proxy": "v1.0", "running-by": time.Since(mappa.StartedTime).String()})
 }
-func parseHostAndPort() (string, int) {
+func parseHostAndPort() (string, int, string) {
 	var nPort = flag.Int("port", 0, "HTTP port")
 	var sHost = flag.String("host", "0.0.0.0", "HTTP host")
+	ex, err := os.Executable()
+	if err != nil {
+		log.Fatalf("Failed to identify current executable: %v", err)
+	}
+
+	var sLog = flag.String("log", filepath.Join(filepath.Dir(ex), "log"), "Log folder")
 
 	flag.Parse()
 	port := 0
@@ -74,16 +81,16 @@ func parseHostAndPort() (string, int) {
 			port = ePort
 		}
 	}
-	return *sHost, port
+	return *sHost, port, *sLog
 }
 func main() {
-	logger, err := logging.New("logs/mappa-proxy.log", 2)
+	host, port, fLog := parseHostAndPort()
+	logger, err := logging.New(filepath.Join(fLog, "mappa-proxy.log"), 5)
 	if err != nil {
 		log.Panicf("Failed to start logging - %v", err)
 	}
 	log.SetOutput(logger)
-	log.Printf("STARTING %v", time.Now())
-	host, port := parseHostAndPort()
+	log.Printf("STARTING Log = %s", logger.GetFile())
 
 	err = setupServer().Run(fmt.Sprintf("%s:%d", host, port))
 	if err != nil {
