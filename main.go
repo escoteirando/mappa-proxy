@@ -1,12 +1,9 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
-	"os"
 	"path/filepath"
-	"strconv"
 	"time"
 
 	"github.com/gin-contrib/cache"
@@ -14,20 +11,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/guionardo/mappa_proxy/mappa"
+	"github.com/guionardo/mappa_proxy/mappa/configuration"
 	"github.com/guionardo/mappa_proxy/mappa/logging"
+	"github.com/guionardo/mappa_proxy/mappa/repositories"
 	"github.com/guionardo/mappa_proxy/tg"
 )
-
-func healthCheck(context *gin.Context) {
-	// Test mappa api
-	statusCode, status, err := mappa.Ping()
-	statusHealthy := "HEALTHY"
-	if err != nil || statusCode < 1 || statusCode >= 400 {
-		statusHealthy = "UNHEALTHY"
-	}
-	context.JSON(200, gin.H{"status": statusHealthy, "mappa_server": gin.H{"status_code": statusCode, "status": status}})
-
-}
 
 func setupServer() *gin.Engine {
 	r := gin.Default()
@@ -43,56 +31,30 @@ func setupServer() *gin.Engine {
 		AllowCredentials: true,
 	}))
 	r.Static("/web", "./web")
-	r.GET("/", index)
-	r.GET("/hc", healthCheck)
+	r.GET("/", mappa.Index)
+	r.GET("/hc", mappa.HealthCheck)
 	r.GET("/login/stats", mappa.LoginStatsRoute)
 	r.POST("/mappa/login", mappa.LoginRoute)
+	r.GET("/mappa/associado/*id")
 	r.GET("/mappa/*request", cache.CachePage(store, time.Minute*60, mappa.GetRequest))
 	r.POST("/tg/pub", tg.Publish)
 	return r
 }
 
-func index(context *gin.Context) {
-	context.JSON(200, gin.H{"mappa-proxy": "v1.0", "running-by": time.Since(mappa.StartedTime).String()})
-}
-func parseHostAndPort() (string, int, string) {
-	var nPort = flag.Int("port", 0, "HTTP port")
-	var sHost = flag.String("host", "0.0.0.0", "HTTP host")
-	ex, err := os.Executable()
-	if err != nil {
-		log.Fatalf("Failed to identify current executable: %v", err)
-	}
-
-	var sLog = flag.String("log", filepath.Join(filepath.Dir(ex), "log"), "Log folder")
-
-	flag.Parse()
-	port := 0
-	if *nPort > 0 {
-		port = *nPort
-	} else {
-		sPort := os.Getenv("HTTP_PORT")
-		if len(sPort) == 0 {
-			port = 8081
-		} else {
-			ePort, err := strconv.Atoi(sPort)
-			if err != nil {
-				log.Fatalf("Invalid HTTP_PORT environment:  %v", sPort)
-			}
-			port = ePort
-		}
-	}
-	return *sHost, port, *sLog
-}
 func main() {
-	host, port, fLog := parseHostAndPort()
-	logger, err := logging.New(filepath.Join(fLog, "mappa-proxy.log"), 5)
+	config, err := configuration.GetConfiguration()
+	if err != nil {
+		log.Panicf("Failed to read configuration - %v", err)
+	}
+	repositories.SetRepository(config.Repository)
+	logger, err := logging.New(filepath.Join(config.LogFolder, "mappa-proxy.log"), 5)
 	if err != nil {
 		log.Panicf("Failed to start logging - %v", err)
 	}
 	log.SetOutput(logger)
 	log.Printf("STARTING Log = %s", logger.GetFile())
 
-	err = setupServer().Run(fmt.Sprintf("%s:%d", host, port))
+	err = setupServer().Run(fmt.Sprintf("%s:%d", config.Host, config.Port))
 	if err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}

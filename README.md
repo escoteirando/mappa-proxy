@@ -8,4 +8,6 @@ Access: https://mappa-proxy.herokuapp.com
 
 ## Links
 
-https://medium.com/c%C3%B3digo-palavras/como-subir-sua-aplica%C3%A7%C3%A3o-golang-gratuitamente-para-a-internet-57321cfcbaa0
+* https://medium.com/c%C3%B3digo-palavras/como-subir-sua-aplica%C3%A7%C3%A3o-golang-gratuitamente-para-a-internet-57321cfcbaa0
+* https://dlintw.github.io/gobyexample/public/memory-and-sizeof.html
+* https://dev.to/knowbee/how-to-setup-secure-subdomains-using-nginx-and-certbot-on-a-vps-4m8h

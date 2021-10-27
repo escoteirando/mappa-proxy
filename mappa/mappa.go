@@ -1,13 +1,15 @@
 package mappa
 
 import (
-	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/guionardo/mappa_proxy/mappa/domain"
+	"github.com/guionardo/mappa_proxy/mappa/repositories"
 )
 
 const UrlMappa = "http://mappa.escoteiros.org.br"
@@ -53,41 +55,17 @@ func Ping() (int, string, error) {
 	return 0, err.Error(), err
 }
 
-func LoginStatsRoute(c *gin.Context) {
-	stats := GetStats()
-	c.JSON(200, stats)
-}
-func LoginRoute(c *gin.Context) {
-	requestBody, err := ioutil.ReadAll(c.Request.Body)
-	if err != nil {
-		log.Printf("Failed to get request body: %s\n", err)
-		c.JSON(400, gin.H{"message": "mAPPa request error", "error": err.Error()})
-		return
-	}
-	var loginRequest LoginRequest
-	err = json.Unmarshal(requestBody, &loginRequest)
-	if err != nil {
-		log.Printf("Login request body is invalid: %s\n", err)
-		c.JSON(400, gin.H{"message": "mAPPA request error", "error": err.Error()})
-		return
-	}
-	loginResponse, ok := Login(loginRequest.UserName, loginRequest.Password)
-	if !ok {
-		c.JSON(403, gin.H{"message": "mAPPa login failed"})
-		return
-	}
-	c.JSON(202, loginResponse)
-}
-
-func Login(username string, password string) (loginResponse LoginResponse, ok bool) {
-	login, ok := GetLogin(username, password)
-	if ok {
+func Login(username string, password string) (loginResponse domain.LoginResponse, ok bool) {
+	repository := repositories.GetRepository()
+	login, err := repository.GetLogin(username, password)
+	if err {
 		log.Printf("Cached login recovered for user %s", username)
 		return login, ok
 	}
+
 	loginResponse, ok = PostLogin(username, password)
 	if ok {
-		SetLogin(username, password, loginResponse)
+		repository.SetLogin(username, password, loginResponse, time.Now())
 	}
 	return loginResponse, ok
 }
