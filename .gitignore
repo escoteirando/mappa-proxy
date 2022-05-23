@@ -5,3 +5,6 @@ main
 .idea
 __azurite*
 .env
+node_modules
+data
+*.fiber.gz

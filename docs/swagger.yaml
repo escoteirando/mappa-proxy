@@ -1,0 +1,310 @@
+definitions:
+  handlers.ReplyMessage:
+    properties:
+      error:
+        type: string
+      message:
+        type: string
+    type: object
+  infra.MemoryStatus:
+    properties:
+      alloc:
+        type: integer
+      heap_alloc:
+        type: integer
+      total_alloc:
+        type: integer
+    type: object
+  requests.LoginRequest:
+    properties:
+      password:
+        type: string
+      type:
+        type: string
+      username:
+        type: string
+    type: object
+  responses.HealthCheckResponse:
+    properties:
+      mappa_server:
+        $ref: '#/definitions/responses.MappaServerResponse'
+      status:
+        type: string
+    type: object
+  responses.IndexResponse:
+    properties:
+      app:
+        type: string
+      running-by:
+        type: string
+      version:
+        type: string
+    type: object
+  responses.MappaAssociadoResponse:
+    properties:
+      codigo:
+        type: integer
+      codigoCategoria:
+        type: integer
+      codigoEquipe:
+        type: integer
+      codigoFoto:
+        type: integer
+      codigoRamo:
+        type: integer
+      codigoRamoAdulto:
+        type: integer
+      codigoSegundaCategoria:
+        type: integer
+      codigoTerceiraCategoria:
+        type: integer
+      dataAcompanhamento:
+        type: string
+      dataNascimento:
+        type: string
+      dataValidade:
+        type: string
+      linhaFormacao:
+        type: string
+      nome:
+        type: string
+      nomeAbreviado:
+        type: string
+      numeroDigito:
+        type: integer
+      sexo:
+        type: string
+      username:
+        type: integer
+    type: object
+  responses.MappaDetalhesResponse:
+    properties:
+      associado:
+        $ref: '#/definitions/responses.MappaAssociadoResponse'
+      escotista:
+        $ref: '#/definitions/responses.MappaEscotistaResponse'
+      grupos:
+        items:
+          $ref: '#/definitions/responses.MappaGrupoResponse'
+        type: array
+    type: object
+  responses.MappaEscotistaResponse:
+    properties:
+      ativo:
+        $ref: '#/definitions/types.Bool'
+      codigo:
+        type: integer
+      codigoAssociado:
+        type: integer
+      codigoFoto:
+        type: integer
+      codigoGrupo:
+        type: integer
+      codigoRegiao:
+        type: string
+      nomeCompleto:
+        type: string
+      username:
+        type: string
+    type: object
+  responses.MappaGrupoResponse:
+    properties:
+      codigo:
+        type: integer
+      codigoModalidade:
+        type: integer
+      codigoRegiao:
+        type: string
+      nome:
+        type: string
+    type: object
+  responses.MappaLoginResponse:
+    properties:
+      created:
+        type: string
+      id:
+        type: string
+      ttl:
+        type: integer
+      userId:
+        type: integer
+    type: object
+  responses.MappaProgressaoResponse:
+    properties:
+      codigo:
+        type: integer
+      codigoCaminho:
+        type: integer
+      codigoCompetencia:
+        type: integer
+      codigoDesenvolvimento:
+        type: integer
+      codigoRegiao:
+        type: string
+      codigoUeb:
+        type: string
+      descricao:
+        type: string
+      numeroGrupo:
+        type: integer
+      ordenacao:
+        type: integer
+      segmento:
+        type: string
+    type: object
+  responses.MappaServerResponse:
+    properties:
+      mappa_server_url:
+        type: string
+      memory:
+        $ref: '#/definitions/infra.MemoryStatus'
+      status:
+        type: string
+      status_code:
+        type: integer
+    type: object
+  types.Bool:
+    type: object
+info:
+  contact: {}
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      description: 'route: /'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.IndexResponse'
+      summary: Index handler
+      tags:
+      - mappa-proxy
+  /hc:
+    get:
+      description: Service healthcheck
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.HealthCheckResponse'
+      summary: Healthcheck handler
+      tags:
+      - mappa-proxy
+  /mappa:
+    get:
+      consumes:
+      - application/json
+      description: Send a request to Mappa API
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: Mappa Generic Handler
+      tags:
+      - mappa-proxy
+  /mappa/escotista/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: Detalhes do escotista
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.MappaDetalhesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: MappaEscotista handler
+      tags:
+      - mappa-proxy
+  /mappa/login:
+    post:
+      consumes:
+      - application/json
+      description: User login
+      parameters:
+      - description: Login request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/requests.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.MappaLoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: Mappa Login handler
+      tags:
+      - mappa-proxy
+  /mappa/progressoes/{ramo}:
+    get:
+      consumes:
+      - application/json
+      description: Lista de progressões do ramo
+      parameters:
+      - description: Ramo
+        enum:
+        - L
+        - E
+        - S
+        - P
+        in: path
+        name: ramo
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/responses.MappaProgressaoResponse'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: MappaProgressoes handler
+      tags:
+      - mappa-proxy
+swagger: "2.0"

@@ -5,4 +5,11 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - PORT=8081
+      - MAPPA_PROXY_PORT=8081
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    volumes:
+      - "./web_out:/web_out:rw"
