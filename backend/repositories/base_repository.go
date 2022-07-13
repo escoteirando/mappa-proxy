@@ -9,20 +9,23 @@ import (
 
 type BaseRepository struct {
 	sync.RWMutex
-	useLocking    bool
 	lastLogin     time.Time
 	lastUserLogin string
 	logins        map[string]domain.LoginData
+	DBLock        func()
+	DBUnlock      func()
 }
 
-func (repository *BaseRepository) DBLock() {
-	if repository.useLocking {
-		repository.Lock()
-	}
-}
-
-func (repository *BaseRepository) DBUnlock() {
-	if repository.useLocking {
-		repository.Unlock()
+func (r *BaseRepository) SetLocking(enabled bool) {
+	if enabled {
+		r.DBLock = func() {
+			r.Lock()
+		}
+		r.DBUnlock = func() {
+			r.Unlock()
+		}
+	} else {
+		r.DBLock = func() {}
+		r.DBUnlock = func() {}
 	}
 }

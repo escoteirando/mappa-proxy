@@ -31,3 +31,11 @@ func (b *Bool) UnmarshalJSON(data []byte) (err error) {
 	b.value = (s == "s" || s == "y" || s == "1" || s == "true" || s == "t")
 	return nil
 }
+
+func (b *Bool) IsTrue() bool {
+	return b.value
+}
+
+func FromNativeBool(value bool) Bool {
+	return Bool{value: value}
+}

@@ -13,6 +13,7 @@ import (
 	"github.com/danwakefield/fnmatch"
 	"github.com/escoteirando/mappa-proxy/backend/domain"
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
+	"github.com/escoteirando/mappa-proxy/backend/entities"
 	"github.com/escoteirando/mappa-proxy/backend/infra"
 )
 
@@ -69,7 +70,7 @@ func loadLoginData(filename string) *domain.LoginData {
 		log.Printf("Failed to parse json %s - %v", filename, err)
 		return nil
 	}
-	if !loginData.LoginResponse.IsValid() {
+	if !loginData.IsValid() {
 		log.Printf("Removed invalidated login data %s", filename)
 		os.Remove(filename)
 		return nil
@@ -118,11 +119,10 @@ func (r *JsonRepository) SetLogin(username string, password string, loginRespons
 	defer r.Unlock()
 	loginFile, _ := loginFile(r.repositoryFolder, username)
 	loginData := domain.LoginData{
-		LoginResponse: loginResponse,
-		UserName:      username,
-		PasswordHash:  infra.GetPasswordHash(password),
-		LastLogin:     last_login,
-		Deleted:       false,
+		UserName:     username,
+		PasswordHash: infra.GetPasswordHash(password),
+		LastLogin:    last_login,
+		Deleted:      false,
 	}
 
 	bytes, err := json.Marshal(loginData)
@@ -195,4 +195,25 @@ func (r *JsonRepository) UpdateMappaProgressoes(progressoes []*responses.MappaPr
 func (r *JsonRepository) GetProgressoes(ramo domain.MappaRamoEnum) ([]*responses.MappaProgressaoResponse, error) {
 	// TODO IMPLEMENT
 	return nil, nil
+}
+
+func (r *JsonRepository) SetEscotista(escotista *entities.Escotista) error {
+	return nil
+}
+func (r *JsonRepository) GetEscotista(userId int) (escotista *entities.Escotista, err error) {
+	return
+}
+
+func (r *JsonRepository) SetAssociado(associado *entities.Associado) error {
+	return nil
+}
+
+func (r *JsonRepository) GetAssociado(codigoAssociado int) (associado *entities.Associado, err error) {
+	return
+}
+func (r *JsonRepository) SetGrupo(grupo *entities.Grupo) error {
+	return nil
+}
+func (r *JsonRepository) GetGrupo(codigoGrupo int, codigoRegiao string) (grupo *entities.Grupo, err error) {
+	return
 }

@@ -21,7 +21,7 @@ const (
 	DEFAULT_MAPPA_PROXY_PORT = "5000"
 	DEFAULT_MAPPA_PROXY_HOST = "0.0.0.0"
 	APP_NAME                 = "mappa-proxy"
-	APP_VERSION              = "0.1.0"
+	APP_VERSION              = "0.2.0"
 )
 
 var (

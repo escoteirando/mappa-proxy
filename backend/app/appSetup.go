@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/escoteirando/mappa-proxy/backend/app/handlers"
+	"github.com/escoteirando/mappa-proxy/backend/app/middleware"
 	"github.com/escoteirando/mappa-proxy/backend/cache"
 	"github.com/escoteirando/mappa-proxy/backend/configuration"
 	"github.com/escoteirando/mappa-proxy/backend/repositories"
@@ -23,9 +24,9 @@ import (
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 // @host localhost:8080
 // @BasePath /
-func CreateServer(config configuration.Configuration, cache *cache.MappaCache,repository repositories.IRepository) (app *fiber.App, err error) {
+func CreateServer(config configuration.Configuration, cache *cache.MappaCache, repository repositories.IRepository) (app *fiber.App, err error) {
 	app = fiber.New()
-	handlers.SetupUserContext(app, config, cache,repository)
+	handlers.SetupUserContext(app, config, cache, repository)
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     "*",
@@ -48,10 +49,17 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache,re
 
 	app.Get("/", handlers.IndexHandler)
 	app.Get("/hc", handlers.MappaHealthCheckHandler)
-	app.Post("/mappa/login", handlers.MappaLoginHandler)
-	app.Get("/mappa/escotista/:userId", handlers.MappaEscotistaHandler)
-	app.Get("/mappa/progressoes/:ramo", handlers.MappaProgressoesHandler)
-	app.Get("/mappa/*", handlers.MappaGenericHandler)
+
+	mappa := app.Group("/mappa", middleware.NewMappaAuthMiddleware(middleware.MappaAuthMiddlewareConfig{}))
+	mappa.Post("/login", handlers.MappaLoginHandler)
+	mappa.Get("/escotista/:userId", handlers.MappaEscotistaHandler)
+	mappa.Get("/progressoes/:ramo", handlers.MappaProgressoesHandler)
+	mappa.Get("/*", handlers.MappaGenericHandler)
+
+	// app.Post("/mappa/login", handlers.MappaLoginHandler)
+	// app.Get("/mappa/escotista/:userId", handlers.MappaEscotistaHandler)
+	// app.Get("/mappa/progressoes/:ramo", handlers.MappaProgressoesHandler)
+	// app.Get("/mappa/*", handlers.MappaGenericHandler)
 	if len(config.StaticFolder) > 0 {
 		app.Static("/web", config.StaticFolder, fiber.Static{
 			Compress:      true,

@@ -11,9 +11,7 @@ import (
 
 func HttpPost(url string, data interface{}, logMessage string) (statusCode int, responseBody []byte, err error) {
 	defer func() {
-		if err == nil {
-			log.Printf(logMessage)
-		} else {
+		if err != nil {
 			log.Printf("POST %s - ERROR %v", url, err)
 		}
 	}()

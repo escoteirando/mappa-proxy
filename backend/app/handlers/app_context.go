@@ -13,9 +13,10 @@ import (
 const userContextKey = "uc_key"
 
 type MappaUserContextData struct {
-	Config       configuration.Configuration
-	Cache        *cache.MappaCache
-	MappaService *mappa.MappaService
+	Config        configuration.Configuration
+	Cache         *cache.MappaCache
+	MappaService  *mappa.MappaService
+	Authorization string
 }
 
 func getUserContext(c *fiber.Ctx) *MappaUserContextData {
@@ -23,6 +24,8 @@ func getUserContext(c *fiber.Ctx) *MappaUserContextData {
 		anyValue := userContext.Value(userContextKey)
 		switch f := anyValue.(type) {
 		case *MappaUserContextData:
+			auth := string(c.Request().Header.Peek("Authorization"))
+			f.Authorization = auth
 			return f
 		}
 	}
@@ -36,6 +39,7 @@ func SetupUserContext(app *fiber.App, config configuration.Configuration, cache 
 		MappaService: &mappa.MappaService{
 			Cache:      cache,
 			Repository: repository,
+			API:        mappa.NewMappaAPI(),
 		},
 	}
 

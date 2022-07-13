@@ -194,6 +194,13 @@ const docTemplate = `{
                 "summary": "MappaProgressoes handler",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
                         "enum": [
                             "L",
                             "E",

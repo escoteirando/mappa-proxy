@@ -30,7 +30,7 @@ func init() {
 }
 
 func (r *DBRepository) IsValidConnectionString(connectionString string) bool {
-	cs, err := infra.CreateConnectionString(connectionString)
+	cs, err := infra.CreateConnectionString(connectionString)	
 	return err == nil && (cs.Schema == "sqlite" || cs.Schema == "postgres")
 }
 
@@ -38,11 +38,9 @@ func (repository *DBRepository) CreateRepository(connectionString string) (IRepo
 	conn, _ := infra.CreateConnectionString(connectionString)
 	r := &DBRepository{
 		schema:           conn.Schema,
-		connectionString: connectionString,
-		BaseRepository: BaseRepository{
-			useLocking: conn.Schema == "sqlite",
-		},
+		connectionString: connectionString,		
 	}
+	r.SetLocking(conn.Schema == "sqlite")
 	switch conn.Schema {
 	case "sqlite":
 		r.getDBFunc = func() *gorm.DB {
@@ -73,6 +71,9 @@ func (r *DBRepository) setup() error {
 	db := r.getDBFunc()
 	return db.AutoMigrate(
 		&entities.Login{},
+		&entities.Escotista{},
+		&entities.Associado{},
+		&entities.Grupo{},
 		&entities.DetalhesEscotista{},
 		&entities.MappaEspecialidadeItem{},
 		&entities.MappaEspecialidadeRequisito{},
@@ -98,20 +99,13 @@ func (r *DBRepository) GetLogins() (logins []*domain.LoginData, err error) {
 	logins = make([]*domain.LoginData, 0)
 	toDeleteLogins := make([]int, 0)
 	for _, login := range entityLogins {
-		var loginResponse responses.MappaLoginResponse
-		if err = json.Unmarshal([]byte(login.LoginResponse), &loginResponse); err != nil {
-			toDeleteLogins = append(toDeleteLogins, login.MappaUserId)
-			continue
-		}
-		if !loginResponse.IsValid() {
-			toDeleteLogins = append(toDeleteLogins, login.MappaUserId)
-			continue
-		}
 		logins = append(logins, &domain.LoginData{
 			UserName:      login.UserName,
+			UserId:        login.MappaUserId,
 			PasswordHash:  login.PasswordHash,
-			LoginResponse: loginResponse,
 			LastLogin:     login.LastLogin,
+			Authorization: login.MappaAuth,
+			ValidUntil:    login.MappaValidUntil,
 		})
 	}
 	if len(toDeleteLogins) > 0 {
@@ -127,10 +121,6 @@ func (r *DBRepository) GetLogins() (logins []*domain.LoginData, err error) {
 }
 
 func (r *DBRepository) SetLogin(username string, password string, loginResponse responses.MappaLoginResponse, last_login time.Time) error {
-	loginResponseJson, err := json.Marshal(loginResponse)
-	if err != nil {
-		return err
-	}
 	r.DBLock()
 	defer r.DBUnlock()
 
@@ -138,7 +128,6 @@ func (r *DBRepository) SetLogin(username string, password string, loginResponse 
 	res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(&entities.Login{
 		UserName:        username,
 		PasswordHash:    infra.GetPasswordHash(password),
-		LoginResponse:   string(loginResponseJson),
 		LastLogin:       last_login,
 		MappaUserId:     loginResponse.Userid,
 		MappaAuth:       loginResponse.ID,
@@ -254,4 +243,53 @@ func (r *DBRepository) GetKeyValue(key, defaultValue string) string {
 		return defaultValue
 	}
 	return keyValue.Value
+}
+
+func (r *DBRepository) SetEscotista(escotista *entities.Escotista) error {
+	r.DBLock()
+	defer r.DBUnlock()
+	db := r.getDBFunc()
+	res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(escotista)
+	return res.Error
+}
+
+func (r *DBRepository) GetEscotista(userId int) (escotista *entities.Escotista, err error) {
+	r.DBLock()
+	defer r.DBUnlock()
+	db := r.getDBFunc()
+	res := db.First(&escotista, userId)
+	err = res.Error
+	return
+}
+func (r *DBRepository) SetAssociado(associado *entities.Associado) error {
+	r.DBLock()
+	defer r.DBUnlock()
+	db := r.getDBFunc()
+	res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(associado)
+	return res.Error
+}
+
+func (r *DBRepository) GetAssociado(codigoAssociado int) (associado *entities.Associado, err error) {
+	r.DBLock()
+	defer r.DBUnlock()
+	db := r.getDBFunc()
+	res := db.First(&associado, codigoAssociado)
+	err = res.Error
+	return
+}
+
+func (r *DBRepository) SetGrupo(grupo *entities.Grupo) error {
+	r.DBLock()
+	defer r.DBUnlock()
+	db := r.getDBFunc()
+	res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(grupo)
+	return res.Error
+}
+func (r *DBRepository) GetGrupo(codigoGrupo int, codigoRegiao string) (grupo *entities.Grupo, err error) {
+	r.DBLock()
+	defer r.DBUnlock()
+	db := r.getDBFunc()
+	res := db.First(&grupo, codigoGrupo, codigoRegiao)
+	err = res.Error
+	return
 }

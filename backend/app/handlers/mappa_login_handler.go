@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/escoteirando/mappa-proxy/backend/domain/requests"
-	"github.com/escoteirando/mappa-proxy/backend/mappa"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -34,15 +33,15 @@ func MappaLoginHandler(c *fiber.Ctx) error {
 		if !loginData.IsValidPassword(loginRequest.Password) {
 			return reply_error(c, 403, "UNAUTHORIZED", fmt.Errorf("Invalid user or password"))
 		}
-		return c.JSON(loginData.LoginResponse)
+
+		return c.JSON(loginData.GetLoginResponse())
 	}
 
-	loginResponse, err := mappa.MappaLoginRequest(loginRequest.UserName, loginRequest.Password)
+	loginResponse, err := contextData.MappaService.Login(loginRequest.UserName, loginRequest.Password)
 	if err != nil {
 		return reply_error(c, 403, "UNAUTHORIZED", err)
 	}
 
-	contextData.Cache.SetLogin(loginRequest.UserName, loginRequest.Password, loginResponse)
 	return c.JSON(loginResponse)
 }
 
@@ -73,14 +72,12 @@ func MappaEscotistaHandler(c *fiber.Ctx) error {
 		return reply_error(c, 400, "BAD REQUEST", err)
 	}
 	contextData := getUserContext(c)
-	detalhes, err := contextData.Cache.GetDetalheEscotista(userId)
-	if err != nil && detalhes == nil {
-		detalhes = mappa.MappaEscotistaRequest(userId, authorization)
-		if detalhes == nil {
-			return reply_error(c, 404, "NOT FOUND", fmt.Errorf("Escotista %d not found", userId))
-		}
-		contextData.Cache.SetDetalheEscotista(userId, *detalhes)
+
+	detalhes := contextData.MappaService.GetEscotistaDetalhes(userId, authorization)
+	if detalhes == nil {
+		return reply_error(c, 404, "NOT FOUND", fmt.Errorf("Escotista %d not found", userId))
 	}
+
 	return c.JSON(detalhes)
 
 }

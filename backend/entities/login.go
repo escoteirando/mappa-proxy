@@ -5,8 +5,8 @@ import "time"
 type Login struct {
 	NoIdModel
 	UserName        string    `gorm:"column:user_name;primaryKey"`
-	LoginResponse   string    `gorm:"column:login_response"`
-	PasswordHash    uint64    `gorm:"column:password_hash"`
+	// LoginResponse   string    `gorm:"column:login_response"`
+	PasswordHash    uint32    `gorm:"column:password_hash"`
 	LastLogin       time.Time `gorm:"column:last_login"`
 	MappaUserId     int       `gorm:"column:mappa_user_id"`
 	MappaAuth       string    `gorm:"column:mappa_auth"`

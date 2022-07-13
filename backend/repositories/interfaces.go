@@ -5,6 +5,7 @@ import (
 
 	"github.com/escoteirando/mappa-proxy/backend/domain"
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
+	"github.com/escoteirando/mappa-proxy/backend/entities"
 )
 
 type IRepository interface {
@@ -23,6 +24,15 @@ type IRepository interface {
 	// GetLastLogin() (username string, timestamp time.Time)
 	// SetLastLogin(username string, timestamp time.Time) error
 	// GetUserCount() int
+
+	SetEscotista(escotista *entities.Escotista) error
+	GetEscotista(userId int) (escotista *entities.Escotista, err error)
+
+	SetAssociado(associado *entities.Associado) error
+	GetAssociado(codigoAssociado int) (associado *entities.Associado, err error)
+
+	SetGrupo(grupo *entities.Grupo) error
+	GetGrupo(codigoGrupo int, codigoRegiao string) (grupo *entities.Grupo, err error)
 
 	SetDetalheEscotista(userId uint, detalheEscotista responses.MappaDetalhesResponse) error
 	GetDetalheEscotista(userId uint) (*responses.MappaDetalhesResponse, error)

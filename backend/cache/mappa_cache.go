@@ -6,8 +6,8 @@ import (
 
 	"github.com/escoteirando/mappa-proxy/backend/domain"
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
+	"github.com/escoteirando/mappa-proxy/backend/infra"
 	"github.com/escoteirando/mappa-proxy/backend/repositories"
-	"github.com/escoteirando/mappa-proxy/backend/tools"
 )
 
 type MappaCache struct {
@@ -21,11 +21,12 @@ func CreateMappaCache(repository repositories.IRepository) (cache *MappaCache, e
 		repository: repository,
 		logins:     make(map[string]*domain.LoginData),
 	}
+	err = cache.Load()
 	return
 }
 
 func (cache *MappaCache) updateLastLogin(loginData *domain.LoginData) {
-	if loginData.Deleted || !loginData.LoginResponse.IsValid() {
+	if loginData.Deleted {
 		return
 	}
 	if cache.lastLogin == nil || cache.lastLogin.LastLogin.Before(loginData.LastLogin) {
@@ -39,7 +40,7 @@ func (cache *MappaCache) Load() error {
 		return err
 	}
 	for _, login := range logins {
-		if login.LoginResponse.IsValid() {
+		if login.IsValid() {
 			cache.logins[login.UserName] = login
 			cache.updateLastLogin(login)
 			continue
@@ -54,7 +55,7 @@ func (cache *MappaCache) Load() error {
 
 func (cache *MappaCache) GetLogin(username string) *domain.LoginData {
 	if login, ok := cache.logins[username]; ok {
-		if login.LoginResponse.IsValid() {
+		if login.IsValid() {
 			return login
 		}
 		delete(cache.logins, login.UserName)
@@ -68,11 +69,10 @@ func (cache *MappaCache) SetLogin(username string, password string, login respon
 	if !login.IsValid() {
 		return fmt.Errorf("Invalid login %v", login)
 	}
-	newLoginData := &domain.LoginData{
-		LoginResponse: login,
+	newLoginData := &domain.LoginData{		
 		UserName:      username,
 		Deleted:       false,
-		PasswordHash:  tools.GetPasswordHash(password),
+		PasswordHash:  infra.GetPasswordHash(password),
 		LastLogin:     time.Now(),
 	}
 	cache.updateLastLogin(newLoginData)
