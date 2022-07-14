@@ -9,6 +9,7 @@ import (
 	"github.com/escoteirando/mappa-proxy/backend/configuration"
 	"github.com/escoteirando/mappa-proxy/backend/repositories"
 	"github.com/gofiber/fiber/v2"
+	fiberCache "github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -35,13 +36,17 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 		ExposeHeaders:    "Content-Length",
 		AllowCredentials: true,
 	}))
-	// app.Use(fiberCache.New(fiberCache.Config{
-	// 	Next: func(c *fiber.Ctx) bool {
-	// 		return c.Path() == "/mappa/login"
-	// 	},
-	// 	Expiration:   5 * time.Minute,
-	// 	CacheControl: true,
-	// }))
+
+	if config.HttpCacheTime > 0 {
+		app.Use(fiberCache.New(fiberCache.Config{
+			Next: func(c *fiber.Ctx) bool {
+				return c.Path() == "/mappa/login"
+			},
+			Expiration:   time.Duration(config.HttpCacheTime) * time.Minute,
+			CacheControl: true,
+		}))
+	}
+
 	app.Use(favicon.New())
 	app.Use(logger.New(logger.Config{
 		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
@@ -53,13 +58,10 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 	mappa := app.Group("/mappa", middleware.NewMappaAuthMiddleware(middleware.MappaAuthMiddlewareConfig{}))
 	mappa.Post("/login", handlers.MappaLoginHandler)
 	mappa.Get("/escotista/:userId", handlers.MappaEscotistaHandler)
+	mappa.Get("/escotista/:userId/secoes",handlers.MappaEscotistaSecoesHandler)
 	mappa.Get("/progressoes/:ramo", handlers.MappaProgressoesHandler)
 	mappa.Get("/*", handlers.MappaGenericHandler)
 
-	// app.Post("/mappa/login", handlers.MappaLoginHandler)
-	// app.Get("/mappa/escotista/:userId", handlers.MappaEscotistaHandler)
-	// app.Get("/mappa/progressoes/:ramo", handlers.MappaProgressoesHandler)
-	// app.Get("/mappa/*", handlers.MappaGenericHandler)
 	if len(config.StaticFolder) > 0 {
 		app.Static("/web", config.StaticFolder, fiber.Static{
 			Compress:      true,

@@ -11,8 +11,8 @@ type MappaSubSecaoResponse struct {
 	Associados      []*MappaAssociadoResponse `json:"associados"`
 }
 
-func GetSubSecoesFromJSON(data []byte) ([]MappaSubSecaoResponse, error) {
-	var response []MappaSubSecaoResponse
+func GetSubSecoesFromJSON(data []byte) ([]*MappaSubSecaoResponse, error) {
+	var response []*MappaSubSecaoResponse
 	err := json.Unmarshal(data, &response)
 	return response, err
 }

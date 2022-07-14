@@ -4,7 +4,7 @@ import "time"
 
 type Associado struct {
 	NoIdModel
-	Codigo                  int       `gorm:"column:codigo;primary_key"`
+	Codigo                  int       `gorm:"column:codigo;primaryKey"`
 	Nome                    string    `gorm:"column:nome"`
 	CodigoFoto              int       `gorm:"column:codigo_foto"`
 	CodigoEquipe            int       `gorm:"column:codigo_equipe"`
@@ -21,4 +21,5 @@ type Associado struct {
 	LinhaFormacao           string    `gorm:"column:linha_formacao"`
 	CodigoRamoAdulto        int       `gorm:"column:codigo_ramo_adulto"`
 	DataAcompanhamento      time.Time `gorm:"column:data_acompanhamento"`
+	CodigoSubSecao          int       `gorm:"column:codigo_sub_secao"`
 }

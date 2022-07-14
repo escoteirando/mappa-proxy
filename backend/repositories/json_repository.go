@@ -12,8 +12,8 @@ import (
 
 	"github.com/danwakefield/fnmatch"
 	"github.com/escoteirando/mappa-proxy/backend/domain"
+	"github.com/escoteirando/mappa-proxy/backend/domain/entities"
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
-	"github.com/escoteirando/mappa-proxy/backend/entities"
 	"github.com/escoteirando/mappa-proxy/backend/infra"
 )
 
@@ -23,7 +23,7 @@ type JsonRepository struct {
 }
 
 func init() {
-	RepositoryFactory.Register(&JsonRepository{})
+	//RepositoryFactory.Register(&JsonRepository{})
 }
 
 func (r *JsonRepository) GetName() string {
@@ -214,6 +214,13 @@ func (r *JsonRepository) GetAssociado(codigoAssociado int) (associado *entities.
 func (r *JsonRepository) SetGrupo(grupo *entities.Grupo) error {
 	return nil
 }
-func (r *JsonRepository) GetGrupo(codigoGrupo int, codigoRegiao string) (grupo *entities.Grupo, err error) {
+func (r *JsonRepository) GetGrupo(codigoGrupo int) (grupo *entities.Grupo, err error) {
+	return
+}
+
+func (r *JsonRepository) SetSecao(secao *entities.Secao) error {
+	return nil
+}
+func (r *JsonRepository) GetSecao(codigoSecao int, codigoRegiao string) (secao *entities.Secao, err error) {
 	return
 }

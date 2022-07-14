@@ -94,7 +94,7 @@ func (api *MappaAPI) GetGrupo(codigoGrupo int, codigoRegiao string, authorizatio
 	return
 }
 
-func (api *MappaAPI) GetEscotistaSecoes(userId int, authorization string) (response []responses.MappaSecaoResponse) {
+func (api *MappaAPI) GetEscotistaSecoes(userId int, authorization string) (response []*responses.MappaSecaoResponse) {
 	_, body, err := api.get(fmt.Sprintf("/api/escotistas/%d/secoes", userId), authorization)
 	if err != nil {
 		log.Printf("HTTP Error on GetEscotistaSecoes: %v", err)
@@ -112,7 +112,7 @@ func (api *MappaAPI) GetEscotistaSecoes(userId int, authorization string) (respo
 	return
 }
 
-func (api *MappaAPI) GetEscotistaEquipe(userId int, codSecao int, authorization string) (response []responses.MappaSubSecaoResponse) {
+func (api *MappaAPI) GetEscotistaEquipe(userId int, codSecao int, authorization string) (response []*responses.MappaSubSecaoResponse) {
 	_, body, err := api.get(fmt.Sprintf("/api/escotistas/%d/secoes/%d/equipes?filter={\"include\":\"associados\"}", userId, codSecao), authorization)
 	if err != nil {
 		log.Printf("HTTP Error on GetEscotistaEquipe: %v", err)

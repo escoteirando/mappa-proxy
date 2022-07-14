@@ -3,12 +3,14 @@ package mappa
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/escoteirando/mappa-proxy/backend/cache"
 	"github.com/escoteirando/mappa-proxy/backend/domain"
+	"github.com/escoteirando/mappa-proxy/backend/domain/dtos"
+	"github.com/escoteirando/mappa-proxy/backend/domain/entities"
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
-	"github.com/escoteirando/mappa-proxy/backend/entities"
 	"github.com/escoteirando/mappa-proxy/backend/repositories"
 	"github.com/escoteirando/mappa-proxy/backend/tools"
 	"github.com/escoteirando/mappa-proxy/backend/types"
@@ -190,4 +192,44 @@ func (svc *MappaService) updateMappaProgressoes(repository repositories.IReposit
 		return fmt.Errorf("Não foi possível obter as progressoes do MAPPA")
 	}
 	return repository.UpdateMappaProgressoes(progressoes)
+}
+
+func (svc *MappaService) GetEscotistaSecoes(userId int, authorization string) (secoes []*responses.MappaSecaoResponse, err error) {
+	eventKey := "escotista_secoes_" + strconv.Itoa(userId)
+	lastFetch := svc.Cache.GetLastEventTime(eventKey)
+	if lastFetch.Before(tools.DaysAgo(ESCOTISTA_SECOES_UPDATE_INTERVAL)) {
+		eSecoes := svc.API.GetEscotistaSecoes(userId, authorization)
+		if len(eSecoes) == 0 {
+			return nil, fmt.Errorf("Não foi possível obter as seções do escotista")
+		}
+		secoes = make([]*responses.MappaSecaoResponse, len(eSecoes))
+		for i, eSecao := range eSecoes {
+			secao := dtos.MappaSecaoToEntity(eSecao)
+
+			// for j, eSubSecao := range eSecao.Subsecoes {
+			// 	secao.SubSecoes[j] = entities.SubSecao{
+			// 		Codigo:          eSubSecao.Codigo,
+			// 		Nome:            eSubSecao.Nome,
+			// 		CodigoSecao:     eSubSecao.CodigoSecao,
+			// 		CodigoLider:     eSubSecao.CodigoLider,
+			// 		CodigoViceLider: eSubSecao.CodigoViceLider,
+			// 		Associados:      make([]entities.Associado, len(eSubSecao.Associados)),
+			// 	}
+			// }
+
+			svc.Repository.SetSecao(secao)
+
+			
+			secoes[i] = &responses.MappaSecaoResponse{
+				CodigoTipoSecao: eSecao.CodigoTipoSecao,
+				CodigoGrupo:     eSecao.CodigoGrupo,
+				CodigoRegiao:    eSecao.CodigoRegiao,
+				Subsecoes:       eSecao.Subsecoes,
+				Codigo:          eSecao.Codigo,
+				Nome:            eSecao.Nome,
+			}
+		}
+		svc.Cache.SetLastEventTime(eventKey, time.Now())
+	}
+	return
 }

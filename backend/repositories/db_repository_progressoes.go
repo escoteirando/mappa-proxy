@@ -2,8 +2,9 @@ package repositories
 
 import (
 	"github.com/escoteirando/mappa-proxy/backend/domain"
+	"github.com/escoteirando/mappa-proxy/backend/domain/dtos"
+	"github.com/escoteirando/mappa-proxy/backend/domain/entities"
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
-	"github.com/escoteirando/mappa-proxy/backend/entities"
 	"gorm.io/gorm/clause"
 )
 
@@ -14,19 +15,7 @@ func (r *DBRepository) UpdateMappaProgressoes(progressoes []*responses.MappaProg
 	// Desabilitar todas as progressões atuais
 	db.Delete(&entities.MappaProgressao{}, "deleted_at IS NULL")
 	for _, progressao := range progressoes {
-		res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(&entities.MappaProgressao{
-			Codigo:                progressao.Codigo,
-			Descricao:             progressao.Descricao,
-			CodigoUEB:             progressao.CodigoUEB,
-			Ordenacao:             progressao.Ordenacao,
-			CodigoCaminho:         progressao.CodigoCaminho,
-			CodigoCompetencia:     progressao.CodigoCompetencia,
-			CodigoDesenvolvimento: progressao.CodigoDesenvolvimento,
-			Segmento:              progressao.Segmento,
-			NumeroGrupo:           progressao.NumeroGrupo,
-			CodigoRegiao:          progressao.CodigoRegiao,
-			Ramo:                  domain.CaminhoToRamo(progressao.CodigoCaminho),
-		})
+		res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(dtos.MappaProgressaoToEntity(progressao))
 		if res.Error != nil {
 			return res.Error
 		}
@@ -45,18 +34,7 @@ func (r *DBRepository) GetProgressoes(ramo domain.MappaRamoEnum) ([]*responses.M
 	}
 	rsp := make([]*responses.MappaProgressaoResponse, len(progressoes))
 	for index, progresso := range progressoes {
-		rsp[index] = &responses.MappaProgressaoResponse{
-			Codigo:                progresso.Codigo,
-			Descricao:             progresso.Descricao,
-			CodigoUEB:             progresso.CodigoUEB,
-			Ordenacao:             progresso.Ordenacao,
-			CodigoCaminho:         progresso.CodigoCaminho,
-			CodigoCompetencia:     progresso.CodigoCompetencia,
-			CodigoDesenvolvimento: progresso.CodigoDesenvolvimento,
-			Segmento:              progresso.Segmento,
-			NumeroGrupo:           progresso.NumeroGrupo,
-			CodigoRegiao:          progresso.CodigoRegiao,
-		}
+		rsp[index] = dtos.MappaProgressaoToResponse(progresso)
 	}
 	return rsp, nil
 }

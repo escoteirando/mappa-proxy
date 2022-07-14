@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/escoteirando/mappa-proxy/backend/domain"
+	"github.com/escoteirando/mappa-proxy/backend/domain/entities"
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
-	"github.com/escoteirando/mappa-proxy/backend/entities"
 )
 
 type IRepository interface {
@@ -32,11 +32,14 @@ type IRepository interface {
 	GetAssociado(codigoAssociado int) (associado *entities.Associado, err error)
 
 	SetGrupo(grupo *entities.Grupo) error
-	GetGrupo(codigoGrupo int, codigoRegiao string) (grupo *entities.Grupo, err error)
+	GetGrupo(codigoGrupo int) (grupo *entities.Grupo, err error)
 
 	SetDetalheEscotista(userId uint, detalheEscotista responses.MappaDetalhesResponse) error
 	GetDetalheEscotista(userId uint) (*responses.MappaDetalhesResponse, error)
 
+	SetSecao(secao *entities.Secao) error
+	GetSecao(codigoSecao int, codigoRegiao string) (secao *entities.Secao, err error)
+	
 	SetKeyValue(key, value string, timeToLive time.Duration) error
 	GetKeyValue(key, defaultValue string) string
 

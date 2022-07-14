@@ -84,9 +84,7 @@ definitions:
       escotista:
         $ref: '#/definitions/responses.MappaEscotistaResponse'
       grupos:
-        items:
-          $ref: '#/definitions/responses.MappaGrupoResponse'
-        type: array
+        $ref: '#/definitions/responses.MappaGrupoResponse'
     type: object
   responses.MappaEscotistaResponse:
     properties:
@@ -152,6 +150,23 @@ definitions:
       segmento:
         type: string
     type: object
+  responses.MappaSecaoResponse:
+    properties:
+      codigo:
+        type: integer
+      codigoGrupo:
+        type: integer
+      codigoRegiao:
+        type: string
+      codigoTipoSecao:
+        type: integer
+      nome:
+        type: string
+      subsecoes:
+        items:
+          $ref: '#/definitions/responses.MappaSubSecaoResponse'
+        type: array
+    type: object
   responses.MappaServerResponse:
     properties:
       mappa_server_url:
@@ -162,6 +177,23 @@ definitions:
         type: string
       status_code:
         type: integer
+    type: object
+  responses.MappaSubSecaoResponse:
+    properties:
+      associados:
+        items:
+          $ref: '#/definitions/responses.MappaAssociadoResponse'
+        type: array
+      codigo:
+        type: integer
+      codigoLider:
+        type: integer
+      codigoSecao:
+        type: integer
+      codigoViceLider:
+        type: integer
+      nome:
+        type: string
     type: object
   types.Bool:
     type: object
@@ -243,6 +275,40 @@ paths:
           schema:
             $ref: '#/definitions/handlers.ReplyMessage'
       summary: MappaEscotista handler
+      tags:
+      - mappa-proxy
+  /mappa/escotista/{userId}/secoes:
+    get:
+      consumes:
+      - application/json
+      description: Detalhes das seções do escotista
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.MappaSecaoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: MappaEscotistaSecoes handler
       tags:
       - mappa-proxy
   /mappa/login:

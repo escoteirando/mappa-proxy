@@ -10,11 +10,12 @@ import (
 )
 
 type Configuration struct {
-	Host         string `envconfig:"MAPPA_PROXY_HOST" default:"0.0.0.0"`
-	Port         int    `envconfig:"MAPPA_PROXY_PORT" default:"5000"`
-	Repository   string `envconfig:"MAPPA_PROXY_REPOSITORY" default:"json:./mappa_login.json"`
-	LogFolder    string `envconfig:"MAPPA_LOG_FOLDER" default:"log"`
-	StaticFolder string `envconfig:"MAPPA_STATIC_FOLDER" default:"web"`
+	Host          string `envconfig:"MAPPA_PROXY_HOST" default:"0.0.0.0"`
+	Port          int    `envconfig:"MAPPA_PROXY_PORT" default:"5000"`
+	Repository    string `envconfig:"MAPPA_PROXY_REPOSITORY" default:"json:./mappa_login.json"`
+	LogFolder     string `envconfig:"MAPPA_LOG_FOLDER" default:"log"`
+	StaticFolder  string `envconfig:"MAPPA_STATIC_FOLDER" default:"web"`
+	HttpCacheTime int    `envconfig:"HTTP_CACHE_TIME" default:"5"`
 }
 
 const (

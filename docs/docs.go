@@ -133,6 +133,57 @@ const docTemplate = `{
                 }
             }
         },
+        "/mappa/escotista/{userId}/secoes": {
+            "get": {
+                "description": "Detalhes das seções do escotista",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mappa-proxy"
+                ],
+                "summary": "MappaEscotistaSecoes handler",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.MappaSecaoResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    }
+                }
+            }
+        },
         "/mappa/login": {
             "post": {
                 "description": "User login",
@@ -365,10 +416,7 @@ const docTemplate = `{
                     "$ref": "#/definitions/responses.MappaEscotistaResponse"
                 },
                 "grupos": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/responses.MappaGrupoResponse"
-                    }
+                    "$ref": "#/definitions/responses.MappaGrupoResponse"
                 }
             }
         },
@@ -470,6 +518,32 @@ const docTemplate = `{
                 }
             }
         },
+        "responses.MappaSecaoResponse": {
+            "type": "object",
+            "properties": {
+                "codigo": {
+                    "type": "integer"
+                },
+                "codigoGrupo": {
+                    "type": "integer"
+                },
+                "codigoRegiao": {
+                    "type": "string"
+                },
+                "codigoTipoSecao": {
+                    "type": "integer"
+                },
+                "nome": {
+                    "type": "string"
+                },
+                "subsecoes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/responses.MappaSubSecaoResponse"
+                    }
+                }
+            }
+        },
         "responses.MappaServerResponse": {
             "type": "object",
             "properties": {
@@ -484,6 +558,32 @@ const docTemplate = `{
                 },
                 "status_code": {
                     "type": "integer"
+                }
+            }
+        },
+        "responses.MappaSubSecaoResponse": {
+            "type": "object",
+            "properties": {
+                "associados": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/responses.MappaAssociadoResponse"
+                    }
+                },
+                "codigo": {
+                    "type": "integer"
+                },
+                "codigoLider": {
+                    "type": "integer"
+                },
+                "codigoSecao": {
+                    "type": "integer"
+                },
+                "codigoViceLider": {
+                    "type": "integer"
+                },
+                "nome": {
+                    "type": "string"
                 }
             }
         },

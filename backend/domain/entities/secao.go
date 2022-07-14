@@ -1,0 +1,11 @@
+package entities
+
+type Secao struct {
+	NoIdModel
+	Codigo          uint       `gorm:"field:codigo;primary_key"`
+	CodigoRegiao    string     `gorm:"field:codigo_regiao;primary_key"`
+	Nome            string     `gorm:"field:nome"`
+	CodigoTipoSecao uint       `gorm:"field:codigo_tipo_secao"`
+	CodigoGrupo     uint       `gorm:"field:codigo_grupo"`
+	// SubSecoes       []SubSecao `gorm:"foreignKey:codigo_secao;association_foreignKey:codigo"`
+}
