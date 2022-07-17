@@ -19,7 +19,7 @@ type MappaUserContextData struct {
 	Authorization string
 }
 
-func getUserContext(c *fiber.Ctx) *MappaUserContextData {
+func GetUserContext(c *fiber.Ctx) *MappaUserContextData {
 	if userContext := c.UserContext(); userContext != nil {
 		anyValue := userContext.Value(userContextKey)
 		switch f := anyValue.(type) {

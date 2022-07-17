@@ -3,7 +3,6 @@ module github.com/escoteirando/mappa-proxy
 go 1.18
 
 require (
-	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964
 	github.com/go-telegram-bot-api/telegram-bot-api v4.6.4+incompatible
 	github.com/gofiber/swagger v0.0.1
 	github.com/mattn/go-sqlite3 v1.14.14 // indirect

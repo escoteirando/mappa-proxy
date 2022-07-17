@@ -27,7 +27,7 @@ func MappaLoginHandler(c *fiber.Ctx) error {
 	if err != nil {
 		return reply_error(c, 400, "mAPPa request error", err)
 	}
-	contextData := getUserContext(c)
+	contextData := GetUserContext(c)
 	loginData := contextData.Cache.GetLogin(loginRequest.UserName)
 	if loginData != nil {
 		if !loginData.IsValidPassword(loginRequest.Password) {
@@ -71,7 +71,7 @@ func MappaEscotistaHandler(c *fiber.Ctx) error {
 	if err != nil {
 		return reply_error(c, 400, "BAD REQUEST", err)
 	}
-	contextData := getUserContext(c)
+	contextData := GetUserContext(c)
 
 	detalhes := contextData.MappaService.GetEscotistaDetalhes(userId, authorization)
 	if detalhes == nil {

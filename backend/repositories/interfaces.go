@@ -39,7 +39,17 @@ type IRepository interface {
 
 	SetSecao(secao *entities.Secao) error
 	GetSecao(codigoSecao int, codigoRegiao string) (secao *entities.Secao, err error)
-	
+
+	SetSubSecao(subsecao *entities.SubSecao) error
+	GetSubSecao(codigoSubSecao int) (subsecao *entities.SubSecao, err error)
+	GetSubSecoes(codigoSecao int) (subsecoes []*entities.SubSecao, err error)
+	GetSubSecaoAssociados(codigoSubSecao int) (associados []entities.Associado, err error)
+
+	SetAssociadoSecao(codigoAssociado int, codigosSubSecao ...int) error
+	GetAssociadoSecoes(codigoAssociado int) (secoes []*entities.Secao, err error)
+	SetAssociadoSubSecao(codigoAssociado int, codigoSubSecao int) error
+	GetAssociadoSubSecao(codigoAssociado int) (subsecao *entities.SubSecao, err error)
+
 	SetKeyValue(key, value string, timeToLive time.Duration) error
 	GetKeyValue(key, defaultValue string) string
 

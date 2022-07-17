@@ -77,6 +77,7 @@ func (r *DBRepository) setup() error {
 		&entities.MappaEspecialidade{},
 		&entities.MappaProgressao{},
 		&entities.KeyValue{},
+		&entities.AssociadoSecao{},
 	)
 }
 

@@ -1,0 +1,78 @@
+GET /api/associados/null/notificacoes?filter[order]=dataHora%20DESC&filter[limit]=10&filter[skip]=0&filter[include]=escotista HTTP/1.1
+accept: application/json
+cache-control: no-cache
+authorization: xiNSSgjDgSmWGLMbmVjOvQkrxXomAfQgiimNX40dCZBWnPiER2YnhjBphr2tHNC3
+Host: mappa.escoteiros.org.br
+Connection: Keep-Alive
+Accept-Encoding: gzip
+Cookie: __cfduid=d7a426e62ee0e95ca17d67fd7ae11617e1560788037
+User-Agent: okhttp/3.4.1
+
+HTTP/1.1 400 Bad Request
+Vary: Origin, Accept-Encoding
+Access-Control-Allow-Credentials: true
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: DENY
+X-Download-Options: noopen
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+Date: Tue, 03 Sep 2019 12:10:03 GMT
+Transfer-Encoding: chunked
+
+51
+{"error":{"statusCode":400,"name":"Error","message":"id is a required argument"}}
+0
+
+
+
+GET /api/imagens/null HTTP/1.1
+accept: application/json
+cache-control: no-cache
+authorization: xiNSSgjDgSmWGLMbmVjOvQkrxXomAfQgiimNX40dCZBWnPiER2YnhjBphr2tHNC3
+Host: mappa.escoteiros.org.br
+Connection: Keep-Alive
+Accept-Encoding: gzip
+Cookie: __cfduid=d7a426e62ee0e95ca17d67fd7ae11617e1560788037
+User-Agent: okhttp/3.4.1
+
+HTTP/1.1 400 Bad Request
+Vary: Origin, Accept-Encoding
+Access-Control-Allow-Credentials: true
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: DENY
+X-Download-Options: noopen
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+Date: Tue, 03 Sep 2019 12:10:04 GMT
+Transfer-Encoding: chunked
+
+51
+{"error":{"statusCode":400,"name":"Error","message":"id is a required argument"}}
+0
+
+
+
+GET /api/associados/null/notificacoes?filter[order]=dataHora%20DESC&filter[limit]=10&filter[skip]=0&filter[include]=escotista HTTP/1.1
+accept: application/json
+cache-control: no-cache
+authorization: xiNSSgjDgSmWGLMbmVjOvQkrxXomAfQgiimNX40dCZBWnPiER2YnhjBphr2tHNC3
+Host: mappa.escoteiros.org.br
+Connection: Keep-Alive
+Accept-Encoding: gzip
+Cookie: __cfduid=d7a426e62ee0e95ca17d67fd7ae11617e1560788037
+User-Agent: okhttp/3.4.1
+
+HTTP/1.1 400 Bad Request
+Vary: Origin, Accept-Encoding
+Access-Control-Allow-Credentials: true
+X-XSS-Protection: 1; mode=block
+X-Frame-Options: DENY
+X-Download-Options: noopen
+X-Content-Type-Options: nosniff
+Content-Type: application/json; charset=utf-8
+Date: Tue, 03 Sep 2019 17:39:04 GMT
+Transfer-Encoding: chunked
+
+51
+{"error":{"statusCode":400,"name":"Error","message":"id is a required argument"}}
+0

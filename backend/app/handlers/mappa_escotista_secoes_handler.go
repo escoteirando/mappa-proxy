@@ -32,7 +32,7 @@ func MappaEscotistaSecoesHandler(c *fiber.Ctx) error {
 	if err != nil {
 		return reply_error(c, 400, "BAD REQUEST", err)
 	}
-	contextData := getUserContext(c)
+	contextData := GetUserContext(c)
 	secoes, err := contextData.MappaService.GetEscotistaSecoes(userId, authorization)
 	if err != nil {
 		return reply_error(c, 400, "BAD REQUEST", err)

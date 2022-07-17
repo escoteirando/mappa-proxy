@@ -140,7 +140,7 @@ func (svc *MappaService) GetAssociado(codigoAssociado int, authorization string)
 }
 
 func (svc *MappaService) GetGrupo(codigoGrupo int, codigoRegiao string, authorization string) (response *responses.MappaGrupoResponse) {
-	grupo, err := svc.Repository.GetGrupo(codigoGrupo, codigoRegiao)
+	grupo, err := svc.Repository.GetGrupo(codigoGrupo)
 	if err != nil || grupo == nil || grupo.UpdatedAt.Before(tools.DaysAgo(GRUPOS_UPDATE_INTERVAL)) {
 		response = svc.API.GetGrupo(codigoGrupo, codigoRegiao, authorization)
 		if response != nil {
@@ -195,6 +195,10 @@ func (svc *MappaService) updateMappaProgressoes(repository repositories.IReposit
 }
 
 func (svc *MappaService) GetEscotistaSecoes(userId int, authorization string) (secoes []*responses.MappaSecaoResponse, err error) {
+	escotista := svc.GetEscotista(userId, authorization)
+	if escotista == nil {
+		return nil, fmt.Errorf("Não foi possível obter o escotista")
+	}
 	eventKey := "escotista_secoes_" + strconv.Itoa(userId)
 	lastFetch := svc.Cache.GetLastEventTime(eventKey)
 	if lastFetch.Before(tools.DaysAgo(ESCOTISTA_SECOES_UPDATE_INTERVAL)) {
@@ -205,6 +209,8 @@ func (svc *MappaService) GetEscotistaSecoes(userId int, authorization string) (s
 		secoes = make([]*responses.MappaSecaoResponse, len(eSecoes))
 		for i, eSecao := range eSecoes {
 			secao := dtos.MappaSecaoToEntity(eSecao)
+			svc.Repository.SetSecao(secao)
+			svc.Repository.SetAssociadoSecao(escotista.CodigoAssociado, int(secao.Codigo))
 
 			// for j, eSubSecao := range eSecao.Subsecoes {
 			// 	secao.SubSecoes[j] = entities.SubSecao{
@@ -217,9 +223,20 @@ func (svc *MappaService) GetEscotistaSecoes(userId int, authorization string) (s
 			// 	}
 			// }
 
-			svc.Repository.SetSecao(secao)
+			// Gravar subseções
 
-			
+			for _, eSubSec := range eSecao.Subsecoes {
+				subsec := dtos.MappaSubSecaoToEntity(eSubSec)
+				svc.Repository.SetSubSecao(&subsec)
+
+				// Gravar associados
+				for _, eAssociado := range eSubSec.Associados {
+					associado := dtos.MappaAssociadoToEntity(eAssociado)
+					associado.CodigoSecao = int(secao.Codigo)
+					svc.Repository.SetAssociado(associado)
+				}
+			}
+
 			secoes[i] = &responses.MappaSecaoResponse{
 				CodigoTipoSecao: eSecao.CodigoTipoSecao,
 				CodigoGrupo:     eSecao.CodigoGrupo,
@@ -230,6 +247,46 @@ func (svc *MappaService) GetEscotistaSecoes(userId int, authorization string) (s
 			}
 		}
 		svc.Cache.SetLastEventTime(eventKey, time.Now())
+	} else {
+		//TODO: Continuar a montagem das secoes do escotista a partir do banco de dados
+		assocSecoes, err := svc.Repository.GetAssociadoSecoes(escotista.CodigoAssociado)
+		if err != nil {
+			return nil, err
+		}
+		if len(assocSecoes) == 0 {
+			return nil, fmt.Errorf("Não foi possível obter as seções do escotista - %d", userId)
+		}
+		secoes = make([]*responses.MappaSecaoResponse, len(assocSecoes))
+		for secIndex, eSec := range assocSecoes {
+			subSecoes, err := svc.Repository.GetSubSecoes(int(eSec.Codigo))
+			if err != nil {
+				return nil, err
+			}
+
+			secoes[secIndex] = &responses.MappaSecaoResponse{
+				Codigo:          eSec.Codigo,
+				Nome:            eSec.Nome,
+				CodigoTipoSecao: eSec.CodigoTipoSecao,
+				CodigoGrupo:     eSec.CodigoGrupo,
+				CodigoRegiao:    eSec.CodigoRegiao,
+				Subsecoes:       make([]*responses.MappaSubSecaoResponse, len(subSecoes)),
+			}
+			for subSecIndex, subSecao := range subSecoes {
+				associados, err := svc.Repository.GetSubSecaoAssociados(int(subSecao.Codigo))
+				if err != nil {
+					return nil, err
+				}
+				secoes[secIndex].Subsecoes[subSecIndex] = &responses.MappaSubSecaoResponse{
+					Codigo:          subSecao.Codigo,
+					Nome:            subSecao.Nome,
+					CodigoSecao:     subSecao.CodigoSecao,
+					CodigoLider:     subSecao.CodigoLider,
+					CodigoViceLider: subSecao.CodigoViceLider,
+					Associados:      dtos.MappaAssociadosToResponse(associados),
+				}
+			}
+
+		}
 	}
 	return
 }

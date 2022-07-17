@@ -1,35 +1,32 @@
 package cache
 
 import (
-	"reflect"
+	"fmt"
+	"path"
 	"testing"
+	"time"
 
 	"github.com/escoteirando/mappa-proxy/backend/repositories"
 )
 
 func TestCreateMappaCache(t *testing.T) {
-	
-	type args struct {
-		repository repositories.IRepository
-	}
-	tests := []struct {
-		name      string
-		args      args
-		wantCache *MappaCache
-		wantErr   bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			gotCache, err := CreateMappaCache(tt.args.repository)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("CreateMappaCache() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(gotCache, tt.wantCache) {
-				t.Errorf("CreateMappaCache() = %v, want %v", gotCache, tt.wantCache)
-			}
-		})
-	}
+	tmp := path.Join(t.TempDir(), "db_mappa_test.db")
+	conn := fmt.Sprintf("sqlite://%s", tmp)
+	t.Run("Cache", func(t *testing.T) {
+		repo := repositories.RepositoryFactory.GetRepository(conn)
+		if repo == nil {
+			t.Error("Repository not created")
+		}
+		cache, err := CreateMappaCache(repo)
+		if err != nil {
+			t.Errorf("Failed to create cache: %v", err)
+		}
+		cache.SetLastEventTime("test_event", time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC))
+
+		lastEventTime := cache.GetLastEventTime("test_event")
+		if lastEventTime.IsZero() {
+			t.Errorf("Failed to get last event time")
+		}
+	})
+
 }

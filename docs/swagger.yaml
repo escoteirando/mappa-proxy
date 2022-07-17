@@ -347,11 +347,6 @@ paths:
       - application/json
       description: Lista de progressões do ramo
       parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
       - description: Ramo
         enum:
         - L

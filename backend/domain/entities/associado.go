@@ -21,5 +21,5 @@ type Associado struct {
 	LinhaFormacao           string    `gorm:"column:linha_formacao"`
 	CodigoRamoAdulto        int       `gorm:"column:codigo_ramo_adulto"`
 	DataAcompanhamento      time.Time `gorm:"column:data_acompanhamento"`
-	CodigoSubSecao          int       `gorm:"column:codigo_sub_secao"`
+	CodigoSecao             int       `gorm:"column:codigo_secao"`
 }

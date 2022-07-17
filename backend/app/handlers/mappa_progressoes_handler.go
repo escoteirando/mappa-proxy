@@ -13,21 +13,18 @@ import (
 // @Description  Lista de progressões do ramo
 // @Tags         mappa-proxy
 // @Accept       json
-// @Param Authorization header string true "Authorization"
 // @Param ramo path string true "Ramo" Enums(L,E,S,P)
 // @Produce      json
 // @Success      200  {object}  responses.MappaProgressoesResponse
 // @Failure	  	 400  {object}  handlers.ReplyMessage
 // @Router       /mappa/progressoes/{ramo} [get]
-func MappaProgressoesHandler(c *fiber.Ctx) error {
-	// /mappa/progressoes/:ramo
-	
+func MappaProgressoesHandler(c *fiber.Ctx) error {		
 	ramo := strings.ReplaceAll(c.Params("ramo", ""), "%22", "")
 	if ramo == "" {
 		return reply_error(c, 400, "mAPPa request error", fmt.Errorf("Invalid ramo"))
 	}
 
-	contextData := getUserContext(c)
+	contextData := GetUserContext(c)
 	progressoes, err := contextData.MappaService.GetProgressoes(ramo)
 	if err != nil {
 		return reply_error(c, 404, "Falha ao obter progressoes", err)
