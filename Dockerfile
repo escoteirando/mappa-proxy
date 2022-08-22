@@ -14,7 +14,7 @@ RUN yarn
 RUN quasar build
 
 
-FROM golang:1.18.2-alpine as backend-dev
+FROM golang:1.19-alpine as backend-dev
 
 WORKDIR /app
 # Copy go mod and sum files

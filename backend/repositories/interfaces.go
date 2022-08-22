@@ -55,4 +55,7 @@ type IRepository interface {
 
 	UpdateMappaProgressoes(progressoesResponse []*responses.MappaProgressaoResponse) error
 	GetProgressoes(domain.MappaRamoEnum) ([]*responses.MappaProgressaoResponse, error)
+
+	UpdateMappaMarcacoes(marcacoes []*entities.MappaMarcacao) error
+	GetMarcacoes(codigoSecao int) ([]*entities.MappaMarcacao, error)
 }

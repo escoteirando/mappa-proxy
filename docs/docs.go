@@ -276,9 +276,63 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/tg/pub": {
+            "post": {
+                "description": "Publica mensagem em chat do Telegram",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mappa-proxy"
+                ],
+                "summary": "Telegram Publisher handler",
+                "parameters": [
+                    {
+                        "description": "Bot request data",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handlers.BotRequestData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "handlers.BotRequestData": {
+            "type": "object",
+            "properties": {
+                "cId": {
+                    "type": "integer"
+                },
+                "mId": {
+                    "type": "integer"
+                },
+                "msg": {
+                    "type": "string"
+                }
+            }
+        },
         "handlers.ReplyMessage": {
             "type": "object",
             "properties": {
@@ -308,9 +362,6 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "password": {
-                    "type": "string"
-                },
-                "type": {
                     "type": "string"
                 },
                 "username": {

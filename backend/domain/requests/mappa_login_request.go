@@ -2,7 +2,7 @@ package requests
 
 // LoginRequest {"type":"LOGIN_REQUEST","username":"guionardo","password":"****"}
 type LoginRequest struct {
-	Type     string `json:"type"`
+	Type     string `json:"type" swaggerignore:"true"`
 	UserName string `json:"username"`
 	Password string `json:"password"`
 }

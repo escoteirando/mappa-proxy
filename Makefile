@@ -1,9 +1,7 @@
 .PHONY: frontend
 
 frontend:
-	cd frontend
-	quasar build
-	cd ..
+	bash .github/scripts/frontend.sh	
 
 swagger:
 	swag init

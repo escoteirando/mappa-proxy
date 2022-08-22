@@ -1,4 +1,13 @@
 definitions:
+  handlers.BotRequestData:
+    properties:
+      cId:
+        type: integer
+      mId:
+        type: integer
+      msg:
+        type: string
+    type: object
   handlers.ReplyMessage:
     properties:
       error:
@@ -18,8 +27,6 @@ definitions:
   requests.LoginRequest:
     properties:
       password:
-        type: string
-      type:
         type: string
       username:
         type: string
@@ -371,6 +378,32 @@ paths:
           schema:
             $ref: '#/definitions/handlers.ReplyMessage'
       summary: MappaProgressoes handler
+      tags:
+      - mappa-proxy
+  /tg/pub:
+    post:
+      consumes:
+      - application/json
+      description: Publica mensagem em chat do Telegram
+      parameters:
+      - description: Bot request data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.BotRequestData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: Telegram Publisher handler
       tags:
       - mappa-proxy
 swagger: "2.0"
