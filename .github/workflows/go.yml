@@ -16,10 +16,13 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
-        go-version: 1.18
+        go-version: 1.19
 
     - name: Build
       run: go build -v ./...
 
     - name: Test
+      env:
+        AUTH_PASSWORD: ${{ secrets.AUTH_PASSWORD }}
+        AUTH_USERNAME: ${{ secrets.AUTH_USERNAME }}
       run: go test -v ./...

@@ -69,11 +69,14 @@ func (cache *MappaCache) SetLogin(username string, password string, login respon
 	if !login.IsValid() {
 		return fmt.Errorf("Invalid login %v", login)
 	}
-	newLoginData := &domain.LoginData{		
+	newLoginData := &domain.LoginData{
 		UserName:      username,
 		Deleted:       false,
 		PasswordHash:  infra.GetPasswordHash(password),
 		LastLogin:     time.Now(),
+		ValidUntil:    login.ValidUntil(),
+		UserId:        login.Userid,
+		Authorization: login.ID,
 	}
 	cache.updateLastLogin(newLoginData)
 	cache.logins[username] = newLoginData
