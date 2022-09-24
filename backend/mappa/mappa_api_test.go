@@ -38,7 +38,7 @@ func TestMappaAPI_Login(t *testing.T) {
 		auth := getAuthData(t)
 		api := NewMappaAPI()
 		loginResponse, err := api.Login(auth.UserName, auth.Password)
-		if err != nil {
+		if err != nil || loginResponse == nil {
 			t.Errorf("Login failed: %v", err)
 		}
 		if len(loginResponse.ID) == 0 || !loginResponse.IsValid() {
