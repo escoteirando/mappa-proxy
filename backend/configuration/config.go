@@ -14,7 +14,6 @@ type Configuration struct {
 	Port          int    `envconfig:"MAPPA_PROXY_PORT" default:"5000"`
 	Repository    string `envconfig:"MAPPA_PROXY_REPOSITORY" default:"json:./mappa_login.json"`
 	LogFolder     string `envconfig:"MAPPA_LOG_FOLDER" default:"log"`
-	StaticFolder  string `envconfig:"MAPPA_STATIC_FOLDER" default:"web"`
 	HttpCacheTime int    `envconfig:"HTTP_CACHE_TIME" default:"5"`
 }
 
@@ -22,12 +21,12 @@ const (
 	DEFAULT_MAPPA_PROXY_PORT = "5000"
 	DEFAULT_MAPPA_PROXY_HOST = "0.0.0.0"
 	APP_NAME                 = "mappa-proxy"
-	APP_VERSION              = "0.2.0"
 )
 
 var (
 	Config      *Configuration
-	StartupTime time.Time
+	StartupTime time.Time	
+	APP_VERSION = "0.3.0"
 )
 
 func getEnv(env string, defaultValue string, validate func(value interface{}) error) {
@@ -63,11 +62,6 @@ func Init() {
 		log.Fatalf("INVALID MAPPA_PROXY_REPOSITORY %s - %v", Config.Repository, err)
 	}
 	Config.Repository = cs.String()
-
-	if stat, err := os.Stat(Config.StaticFolder); err != nil || !stat.IsDir() {
-		log.Printf("MAPPA_STATIC_FOLDER path not found %s - WILL NOT USE STATIC FILES", Config.StaticFolder)
-		Config.StaticFolder = ""
-	}
 
 	StartupTime = time.Now()
 }

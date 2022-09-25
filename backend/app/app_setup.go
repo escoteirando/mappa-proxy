@@ -1,6 +1,7 @@
 package app
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/escoteirando/mappa-proxy/backend/app/handlers"
@@ -8,10 +9,12 @@ import (
 	"github.com/escoteirando/mappa-proxy/backend/cache"
 	"github.com/escoteirando/mappa-proxy/backend/configuration"
 	"github.com/escoteirando/mappa-proxy/backend/repositories"
+	"github.com/escoteirando/mappa-proxy/backend/static"
 	"github.com/gofiber/fiber/v2"
 	fiberCache "github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/favicon"
+	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
@@ -58,20 +61,17 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 	mappa := app.Group("/mappa", middleware.NewMappaAuthMiddleware(middleware.MappaAuthMiddlewareConfig{}))
 	mappa.Post("/login", handlers.MappaLoginHandler)
 	mappa.Get("/escotista/:userId", handlers.MappaEscotistaHandler)
-	mappa.Get("/escotista/:userId/secoes",handlers.MappaEscotistaSecoesHandler)
+	mappa.Get("/escotista/:userId/secoes", handlers.MappaEscotistaSecoesHandler)
 	mappa.Get("/progressoes/:ramo", handlers.MappaProgressoesHandler)
 	mappa.Get("/*", handlers.MappaGenericHandler)
 
-	if len(config.StaticFolder) > 0 {
-		app.Static("/web", config.StaticFolder, fiber.Static{
-			Compress:      true,
-			ByteRange:     true,
-			Browse:        true,
-			Index:         "index.html",
-			CacheDuration: time.Minute,
-			MaxAge:        60,
-		})
-	}
+	app.Use("/web", filesystem.New(filesystem.Config{
+		Root:       http.FS(static.EmbedStaticWeb),
+		PathPrefix: "web",
+		Browse:     true,
+		MaxAge:     60,
+	}))
+
 	app.Post("/tg/pub", handlers.TelegramPublisherHandler)
 	SetupSwagger(app)
 	return app, nil
