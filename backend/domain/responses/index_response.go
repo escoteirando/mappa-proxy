@@ -3,5 +3,6 @@ package responses
 type IndexResponse struct {
 	App       string `json:"app"`
 	Version   string `json:"version"`
-	RunningBy string `json:"running-by"`
+	BuildTime string `json:"build_time"`	
+	RunningBy string `json:"running_by"`
 }

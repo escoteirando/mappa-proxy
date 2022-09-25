@@ -3,6 +3,7 @@ package handlers
 import (
 	"time"
 
+	"github.com/escoteirando/mappa-proxy/backend/build"
 	"github.com/escoteirando/mappa-proxy/backend/configuration"
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
 	"github.com/gofiber/fiber/v2"
@@ -20,6 +21,7 @@ func IndexHandler(c *fiber.Ctx) error {
 	return c.JSON(responses.IndexResponse{
 		App:       configuration.APP_NAME,
 		Version:   configuration.APP_VERSION,
+		BuildTime: build.Time,		
 		RunningBy: time.Since(configuration.StartupTime).String(),
 	})
 }
