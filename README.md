@@ -4,7 +4,7 @@
 [![Go](https://github.com/escoteirando/mappa-proxy/actions/workflows/go.yml/badge.svg)](https://github.com/escoteirando/mappa-proxy/actions/workflows/go.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/escoteirando/mappa-proxy)](https://goreportcard.com/report/github.com/escoteirando/mappa-proxy)
 
-Access: https://mappa-proxy.herokuapp.com
+Access: https://mappa-proxy.fly.dev/
 
 ## Links
 
@@ -12,3 +12,20 @@ Access: https://mappa-proxy.herokuapp.com
 * https://dlintw.github.io/gobyexample/public/memory-and-sizeof.html
 * https://dev.to/knowbee/how-to-setup-secure-subdomains-using-nginx-and-certbot-on-a-vps-4m8h
 
+## Frontend Build
+
+Javascript requirements:
+* [NodeJS](https://nodejs.org/en/download/)
+* [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#debian-stable)
+
+Run makefile action
+
+```bash
+make frontend-setup
+```
+
+When some modification on frontend, run the build distribution with the command: 
+
+```bash
+make frontend
+```

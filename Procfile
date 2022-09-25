@@ -1,1 +1,0 @@
-web: bin/mappa_proxy
