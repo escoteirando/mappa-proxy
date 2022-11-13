@@ -3,22 +3,31 @@ package handlers
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
 	"github.com/gofiber/fiber/v2"
 )
 
+func init() {
+	Routes["/progressoes/:ramo"] = RouteData{
+		Name:      "Progressoes",		
+		Handler:   MappaProgressoesHandler,
+		CacheTime: 7 * 24 * time.Hour,
+		Mappa:     true,
+	}
+}
+
 // MappaLogin godoc
-// @Summary      MappaProgressoes handler
-// @Description  Lista de progressões do ramo
-// @Tags         mappa-proxy
-// @Accept       json
-// @Param ramo path string true "Ramo" Enums(L,E,S,P)
-// @Produce      json
-// @Success      200  {object}  responses.MappaProgressoesResponse
-// @Failure	  	 400  {object}  handlers.ReplyMessage
-// @Router       /mappa/progressoes/{ramo} [get]
-func MappaProgressoesHandler(c *fiber.Ctx) error {		
+// @Summary Lista de progressões do ramo
+// @Tags    db
+// @Accept  json
+// @Param   ramo path string true "Ramo" Enums(L,E,S,P)
+// @Produce json
+// @Success 200 {object} responses.MappaProgressoesResponse
+// @Failure 400 {object} handlers.ReplyMessage
+// @Router  /mappa/progressoes/{ramo} [get]
+func MappaProgressoesHandler(c *fiber.Ctx) error {
 	ramo := strings.ReplaceAll(c.Params("ramo", ""), "%22", "")
 	if ramo == "" {
 		return reply_error(c, 400, "mAPPa request error", fmt.Errorf("Invalid ramo"))

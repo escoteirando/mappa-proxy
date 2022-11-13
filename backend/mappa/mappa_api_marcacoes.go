@@ -13,10 +13,9 @@ func (api *MappaAPI) GetMarcacoes(codigoSecao int, desde time.Time, authorizatio
 
 	_, body, err := api.get(fmt.Sprintf("/api/marcacoes/v2/updates?dataHoraUltimaAtualizacao=%s&codigoSecao=%d", desde.Format(time.RFC3339), codigoSecao), authorization)
 
-	if err != nil {
-		return
+	if err == nil {
+		err = json.Unmarshal(body, &marcacoes)
 	}
+	return
 
-	err = json.Unmarshal(body, &marcacoes)
-	return marcacoes, err
 }

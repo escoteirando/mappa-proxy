@@ -1,11 +1,15 @@
+basePath: /
 definitions:
   handlers.BotRequestData:
     properties:
       cId:
+        description: Chat ID
         type: integer
       mId:
+        description: Message ID to respond to
         type: integer
       msg:
+        description: Message
         type: string
     type: object
   handlers.ReplyMessage:
@@ -18,10 +22,19 @@ definitions:
   infra.MemoryStatus:
     properties:
       alloc:
+        description: Alloc is bytes of allocated heap objects.
         type: integer
       heap_alloc:
+        description: HeapAlloc is bytes of allocated heap objects.
+        type: integer
+      num_gc:
+        description: NumGC is the number of completed GC cycles.
+        type: integer
+      sys:
+        description: Sys is the total bytes of memory obtained from the OS.
         type: integer
       total_alloc:
+        description: TotalAlloc is cumulative bytes allocated for heap objects.
         type: integer
     type: object
   requests.LoginRequest:
@@ -42,7 +55,9 @@ definitions:
     properties:
       app:
         type: string
-      running-by:
+      build_time:
+        type: string
+      running_by:
         type: string
       version:
         type: string
@@ -112,6 +127,31 @@ definitions:
       username:
         type: string
     type: object
+  responses.MappaEspecialidadeItemResponse:
+    properties:
+      codigoEspecialidade:
+        description: Id                  int    `json:"id"`
+        type: integer
+      descricao:
+        type: string
+      numero:
+        type: integer
+    type: object
+  responses.MappaEspecialidadeResponse:
+    properties:
+      codigo:
+        type: integer
+      descricao:
+        type: string
+      itens:
+        items:
+          $ref: '#/definitions/responses.MappaEspecialidadeItemResponse'
+        type: array
+      prerequisito:
+        type: string
+      ramoConhecimento:
+        type: string
+    type: object
   responses.MappaGrupoResponse:
     properties:
       codigo:
@@ -133,6 +173,23 @@ definitions:
         type: integer
       userId:
         type: integer
+    type: object
+  responses.MappaMarcacaoResponse:
+    properties:
+      codigoAssociado:
+        type: integer
+      codigoAtividade:
+        type: integer
+      codigoUltimoEscotista:
+        type: integer
+      dataAtividade:
+        type: string
+      dataHoraAtualizacao:
+        type: string
+      dataStatusEscotista:
+        type: string
+      segmento:
+        type: string
     type: object
   responses.MappaProgressaoResponse:
     properties:
@@ -205,7 +262,16 @@ definitions:
   types.Bool:
     type: object
 info:
-  contact: {}
+  contact:
+    email: guionardo@gmail.com
+    name: Guionardo Furlan
+  description: This is a sample swagger for Fiber
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: mappa-api
+  version: 0.4.0
 paths:
   /:
     get:
@@ -239,7 +305,12 @@ paths:
     get:
       consumes:
       - application/json
-      description: Send a request to Mappa API
+      description: Adicione o caminho da requisição após /mappa/
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        type: string
       produces:
       - application/json
       responses:
@@ -247,14 +318,43 @@ paths:
           description: OK
           schema:
             type: object
-      summary: Mappa Generic Handler
+      summary: Requisição genérica para a API do Mappa
+      tags:
+      - mappa-proxy
+  /mappa/conquistas/{cod_secao}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Código Seção
+        in: path
+        name: cod_secao
+        required: true
+        type: integer
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.MappaMarcacaoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: Lista de conquistas da secão
       tags:
       - mappa-proxy
   /mappa/escotista/{userId}:
     get:
       consumes:
       - application/json
-      description: Detalhes do escotista
+      description: Informações do escotista, associado e grupo
       parameters:
       - description: User ID
         in: path
@@ -281,14 +381,13 @@ paths:
           description: Forbidden
           schema:
             $ref: '#/definitions/handlers.ReplyMessage'
-      summary: MappaEscotista handler
+      summary: Detalhes do escotista
       tags:
       - mappa-proxy
   /mappa/escotista/{userId}/secoes:
     get:
       consumes:
       - application/json
-      description: Detalhes das seções do escotista
       parameters:
       - description: User ID
         in: path
@@ -315,9 +414,33 @@ paths:
           description: Forbidden
           schema:
             $ref: '#/definitions/handlers.ReplyMessage'
-      summary: MappaEscotistaSecoes handler
+      summary: Seções do escotista
       tags:
       - mappa-proxy
+  /mappa/especialidades:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.MappaEspecialidadeResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: Lista de especialidades e items
+      tags:
+      - db
   /mappa/login:
     post:
       consumes:
@@ -348,11 +471,40 @@ paths:
       summary: Mappa Login handler
       tags:
       - mappa-proxy
+  /mappa/marcacoes/{cod_secao}:
+    get:
+      consumes:
+      - application/json
+      description: Lista de marcações da sessão
+      parameters:
+      - description: Código Seção
+        in: path
+        name: cod_secao
+        required: true
+        type: integer
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.MappaMarcacaoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: MappaMarcacoes handler
+      tags:
+      - mappa-proxy
   /mappa/progressoes/{ramo}:
     get:
       consumes:
       - application/json
-      description: Lista de progressões do ramo
       parameters:
       - description: Ramo
         enum:
@@ -377,9 +529,9 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/handlers.ReplyMessage'
-      summary: MappaProgressoes handler
+      summary: Lista de progressões do ramo
       tags:
-      - mappa-proxy
+      - db
   /tg/pub:
     post:
       consumes:
@@ -405,5 +557,5 @@ paths:
             $ref: '#/definitions/handlers.ReplyMessage'
       summary: Telegram Publisher handler
       tags:
-      - mappa-proxy
+      - telegram
 swagger: "2.0"

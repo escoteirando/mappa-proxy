@@ -1,0 +1,31 @@
+{
+    "escotista": {
+        "codigo": 50442,
+        "codigoAssociado": 850829,
+        "username": "Guionardo",
+        "nomeCompleto": "GuionardoFurlan",
+        "ativo": true,
+        "codigoGrupo": 32,
+        "codigoRegiao": "SC",
+        "codigoFoto": 0
+    },
+    "associado": {
+        "codigo": 850829,
+        "nome": "GUIONARDO FURLAN",
+        "codigoFoto": 0,
+        "codigoEquipe": 0,
+        "username": 1247937,
+        "numeroDigito": 3,
+        "dataNascimento": "1977-02-05T00:00:00Z",
+        "dataValidade": "2022-01-01T00:00:00Z",
+        "nomeAbreviado": "GUIONARDO",
+        "sexo": "M",
+        "codigoRamo": 2,
+        "codigoCategoria": 5,
+        "codigoSegundaCategoria": 0,
+        "codigoTerceiraCategoria": 0,
+        "linhaFormacao": "Escotista",
+        "codigoRamoAdulto": 2,
+        "dataAcompanhamento": "0001-01-01T00:00:00Z"
+    }
+}

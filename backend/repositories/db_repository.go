@@ -72,13 +72,13 @@ func (r *DBRepository) setup() error {
 		&entities.Grupo{},
 		&entities.Secao{},
 		&entities.DetalhesEscotista{},
-		&entities.MappaEspecialidadeItem{},
-		&entities.MappaEspecialidadeRequisito{},
+		&entities.MappaEspecialidadeItem{},		
 		&entities.MappaEspecialidade{},
 		&entities.MappaProgressao{},
 		&entities.MappaMarcacao{},
 		&entities.KeyValue{},
 		&entities.AssociadoSecao{},
+		&entities.MappaConquista{},
 	)
 }
 

@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/escoteirando/mappa-proxy/backend/cache"
-	"github.com/escoteirando/mappa-proxy/backend/domain"
 	"github.com/escoteirando/mappa-proxy/backend/domain/dtos"
 	"github.com/escoteirando/mappa-proxy/backend/domain/entities"
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
@@ -168,30 +167,6 @@ func (svc *MappaService) GetValidAuthorization() (authorization string, err erro
 		return loginData.Authorization, nil
 	}
 	return "", fmt.Errorf("O último login não é válido")
-}
-
-func (svc *MappaService) GetProgressoes(ramo string) (progressoes []*responses.MappaProgressaoResponse, err error) {
-
-	lastFetch := svc.Cache.GetLastEventTime("progressoes")
-	if lastFetch.Before(tools.DaysAgo(PROGRESSOES_UPDATE_INTERVAL)) {
-		err = svc.updateMappaProgressoes(svc.Repository)
-		if err != nil {
-			return
-		}
-		svc.Cache.SetLastEventTime("progressoes", time.Now())
-	}
-	ramoProgressoes := domain.ParseRamo(ramo)
-
-	progressoes, err = svc.Repository.GetProgressoes(ramoProgressoes)
-	return
-}
-
-func (svc *MappaService) updateMappaProgressoes(repository repositories.IRepository) (err error) {
-	progressoes, err := svc.API.GetProgressoes()
-	if err != nil || len(progressoes) == 0 {
-		return fmt.Errorf("Não foi possível obter as progressoes do MAPPA")
-	}
-	return repository.UpdateMappaProgressoes(progressoes)
 }
 
 func (svc *MappaService) GetEscotistaSecoes(userId int, authorization string) (secoes []*responses.MappaSecaoResponse, err error) {

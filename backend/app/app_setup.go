@@ -1,36 +1,40 @@
 package app
 
 import (
+	"fmt"
+	"log"
+	"strings"
+
 	"net/http"
 	"time"
 
 	"github.com/escoteirando/mappa-proxy/backend/app/handlers"
 	"github.com/escoteirando/mappa-proxy/backend/app/middleware"
+	"github.com/escoteirando/mappa-proxy/backend/app/scheduled"
+	"github.com/escoteirando/mappa-proxy/backend/build"
 	"github.com/escoteirando/mappa-proxy/backend/cache"
 	"github.com/escoteirando/mappa-proxy/backend/configuration"
+	"github.com/escoteirando/mappa-proxy/backend/infra/fiberfilestorage"
 	"github.com/escoteirando/mappa-proxy/backend/repositories"
 	"github.com/escoteirando/mappa-proxy/backend/static"
 	"github.com/gofiber/fiber/v2"
 	fiberCache "github.com/gofiber/fiber/v2/middleware/cache"
+	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-// @title Fiber Example API
-// @version 1.0
-// @description This is a sample swagger for Fiber
-// @termsOfService http://swagger.io/terms/
-// @contact.name API Support
-// @contact.email fiber@swagger.io
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
-// @host localhost:8080
-// @BasePath /
 func CreateServer(config configuration.Configuration, cache *cache.MappaCache, repository repositories.IRepository) (app *fiber.App, err error) {
-	app = fiber.New()
+	app = fiber.New(fiber.Config{
+		AppName:     fmt.Sprintf("%s - v%s @ %v", configuration.APP_NAME, configuration.APP_VERSION, build.Time),
+		ColorScheme: fiber.DefaultColors,
+		// EnablePrintRoutes: true,
+	})
+
 	handlers.SetupUserContext(app, config, cache, repository)
+	scheduled.Setup(handlers.GetCurrentUserContextData())
 
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     "*",
@@ -39,14 +43,30 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 		ExposeHeaders:    "Content-Length",
 		AllowCredentials: true,
 	}))
+	app.Use(compress.New(compress.Config{
+		Level: compress.LevelBestSpeed,
+	}))
 
 	if config.HttpCacheTime > 0 {
 		app.Use(fiberCache.New(fiberCache.Config{
 			Next: func(c *fiber.Ctx) bool {
-				return c.Path() == "/mappa/login"
+				cPath := c.Route().Path
+				return cPath == "/mappa/login" || strings.HasPrefix(cPath, "/swagger") || c.Response().StatusCode() > 299
 			},
-			Expiration:   time.Duration(config.HttpCacheTime) * time.Minute,
-			CacheControl: true,
+			Expiration: time.Duration(config.HttpCacheTime) * time.Minute,
+			ExpirationGenerator: func(c *fiber.Ctx, cfg *fiberCache.Config) time.Duration {
+				if r, ok := handlers.Routes[c.Route().Path]; ok {
+					return r.CacheTime
+				}
+
+				return time.Duration(config.HttpCacheTime) * time.Minute
+			},
+			CacheControl:         true,
+			StoreResponseHeaders: true,
+			Storage: fiberfilestorage.New(&fiberfilestorage.Config{
+				BasePath:   config.CachePath,
+				GCInterval: time.Duration(config.HttpCacheTime) * time.Minute,
+			}),
 		}))
 	}
 
@@ -55,15 +75,34 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 		Format: "[${ip}]:${port} ${status} - ${method} ${path}\n",
 	}))
 
-	app.Get("/", handlers.IndexHandler)
-	app.Get("/hc", handlers.MappaHealthCheckHandler)
-
 	mappa := app.Group("/mappa", middleware.NewMappaAuthMiddleware(middleware.MappaAuthMiddlewareConfig{}))
-	mappa.Post("/login", handlers.MappaLoginHandler)
-	mappa.Get("/escotista/:userId", handlers.MappaEscotistaHandler)
-	mappa.Get("/escotista/:userId/secoes", handlers.MappaEscotistaSecoesHandler)
-	mappa.Get("/progressoes/:ramo", handlers.MappaProgressoesHandler)
-	mappa.Get("/*", handlers.MappaGenericHandler)
+	for routePath, route := range handlers.Routes {
+		var router fiber.Router
+		isMappa := ""
+		if route.Mappa {
+			router = mappa
+			isMappa = "[Mappa] "
+		} else {
+			router = app
+		}
+		cacheStr := "NO"
+
+		switch route.Method {
+		case "POST":
+			router.Post(routePath, route.Handler)
+		default:
+			router.Get(routePath, route.Handler)
+		}
+		if route.CacheTime > 0 {
+			cacheStr = fmt.Sprintf("%v", route.CacheTime)
+		}
+
+		log.Printf("Route %s%s registered: %s %s (cache %s)", isMappa, route.Name, route.Method, routePath, cacheStr)
+	}
+
+	// for _, route := range app.GetRoutes() {
+	// 	log.Printf("Route [%s] %s %s", route.Method, route.Path, route.Name)
+	// }
 
 	app.Use("/web", filesystem.New(filesystem.Config{
 		Root:       http.FS(static.EmbedStaticWeb),
@@ -72,7 +111,8 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 		MaxAge:     60,
 	}))
 
-	app.Post("/tg/pub", handlers.TelegramPublisherHandler)
 	SetupSwagger(app)
+
+	scheduled.Run()
 	return app, nil
 }

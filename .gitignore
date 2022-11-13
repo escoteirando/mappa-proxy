@@ -8,3 +8,5 @@ __azurite*
 node_modules
 data
 *.fiber.gz
+cache
+*.db

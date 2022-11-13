@@ -6,7 +6,7 @@ frontend-setup:
 frontend:
 	cd frontend && quasar build	
 
-swagger:
+swagger:	
 	swag init
 
 deploy:

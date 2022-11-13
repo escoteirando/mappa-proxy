@@ -1,8 +1,20 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is a sample swagger for Fiber",
+        "title": "mappa-api",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Guionardo Furlan",
+            "email": "guionardo@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "0.4.0"
     },
+    "basePath": "/",
     "paths": {
         "/": {
             "get": {
@@ -49,7 +61,7 @@
         },
         "/mappa": {
             "get": {
-                "description": "Send a request to Mappa API",
+                "description": "Adicione o caminho da requisição após /mappa/",
                 "consumes": [
                     "application/json"
                 ],
@@ -59,7 +71,15 @@
                 "tags": [
                     "mappa-proxy"
                 ],
-                "summary": "Mappa Generic Handler",
+                "summary": "Requisição genérica para a API do Mappa",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -70,9 +90,8 @@
                 }
             }
         },
-        "/mappa/escotista/{userId}": {
+        "/mappa/conquistas/{cod_secao}": {
             "get": {
-                "description": "Detalhes do escotista",
                 "consumes": [
                     "application/json"
                 ],
@@ -82,7 +101,52 @@
                 "tags": [
                     "mappa-proxy"
                 ],
-                "summary": "MappaEscotista handler",
+                "summary": "Lista de conquistas da secão",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Código Seção",
+                        "name": "cod_secao",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.MappaMarcacaoResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    }
+                }
+            }
+        },
+        "/mappa/escotista/{userId}": {
+            "get": {
+                "description": "Informações do escotista, associado e grupo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mappa-proxy"
+                ],
+                "summary": "Detalhes do escotista",
                 "parameters": [
                     {
                         "type": "integer",
@@ -123,7 +187,6 @@
         },
         "/mappa/escotista/{userId}/secoes": {
             "get": {
-                "description": "Detalhes das seções do escotista",
                 "consumes": [
                     "application/json"
                 ],
@@ -133,7 +196,7 @@
                 "tags": [
                     "mappa-proxy"
                 ],
-                "summary": "MappaEscotistaSecoes handler",
+                "summary": "Seções do escotista",
                 "parameters": [
                     {
                         "type": "integer",
@@ -165,6 +228,43 @@
                     },
                     "403": {
                         "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    }
+                }
+            }
+        },
+        "/mappa/especialidades": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "db"
+                ],
+                "summary": "Lista de especialidades e items",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.MappaEspecialidadeResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/handlers.ReplyMessage"
                         }
@@ -218,9 +318,9 @@
                 }
             }
         },
-        "/mappa/progressoes/{ramo}": {
+        "/mappa/marcacoes/{cod_secao}": {
             "get": {
-                "description": "Lista de progressões do ramo",
+                "description": "Lista de marcações da sessão",
                 "consumes": [
                     "application/json"
                 ],
@@ -230,7 +330,51 @@
                 "tags": [
                     "mappa-proxy"
                 ],
-                "summary": "MappaProgressoes handler",
+                "summary": "MappaMarcacoes handler",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Código Seção",
+                        "name": "cod_secao",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.MappaMarcacaoResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    }
+                }
+            }
+        },
+        "/mappa/progressoes/{ramo}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "db"
+                ],
+                "summary": "Lista de progressões do ramo",
                 "parameters": [
                     {
                         "enum": [
@@ -275,7 +419,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "mappa-proxy"
+                    "telegram"
                 ],
                 "summary": "Telegram Publisher handler",
                 "parameters": [
@@ -311,12 +455,15 @@
             "type": "object",
             "properties": {
                 "cId": {
+                    "description": "Chat ID",
                     "type": "integer"
                 },
                 "mId": {
+                    "description": "Message ID to respond to",
                     "type": "integer"
                 },
                 "msg": {
+                    "description": "Message",
                     "type": "string"
                 }
             }
@@ -336,12 +483,23 @@
             "type": "object",
             "properties": {
                 "alloc": {
+                    "description": "Alloc is bytes of allocated heap objects.",
                     "type": "integer"
                 },
                 "heap_alloc": {
+                    "description": "HeapAlloc is bytes of allocated heap objects.",
+                    "type": "integer"
+                },
+                "num_gc": {
+                    "description": "NumGC is the number of completed GC cycles.",
+                    "type": "integer"
+                },
+                "sys": {
+                    "description": "Sys is the total bytes of memory obtained from the OS.",
                     "type": "integer"
                 },
                 "total_alloc": {
+                    "description": "TotalAlloc is cumulative bytes allocated for heap objects.",
                     "type": "integer"
                 }
             }
@@ -374,7 +532,10 @@
                 "app": {
                     "type": "string"
                 },
-                "running-by": {
+                "build_time": {
+                    "type": "string"
+                },
+                "running_by": {
                     "type": "string"
                 },
                 "version": {
@@ -481,6 +642,44 @@
                 }
             }
         },
+        "responses.MappaEspecialidadeItemResponse": {
+            "type": "object",
+            "properties": {
+                "codigoEspecialidade": {
+                    "description": "Id                  int    `json:\"id\"`",
+                    "type": "integer"
+                },
+                "descricao": {
+                    "type": "string"
+                },
+                "numero": {
+                    "type": "integer"
+                }
+            }
+        },
+        "responses.MappaEspecialidadeResponse": {
+            "type": "object",
+            "properties": {
+                "codigo": {
+                    "type": "integer"
+                },
+                "descricao": {
+                    "type": "string"
+                },
+                "itens": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/responses.MappaEspecialidadeItemResponse"
+                    }
+                },
+                "prerequisito": {
+                    "type": "string"
+                },
+                "ramoConhecimento": {
+                    "type": "string"
+                }
+            }
+        },
         "responses.MappaGrupoResponse": {
             "type": "object",
             "properties": {
@@ -512,6 +711,32 @@
                 },
                 "userId": {
                     "type": "integer"
+                }
+            }
+        },
+        "responses.MappaMarcacaoResponse": {
+            "type": "object",
+            "properties": {
+                "codigoAssociado": {
+                    "type": "integer"
+                },
+                "codigoAtividade": {
+                    "type": "integer"
+                },
+                "codigoUltimoEscotista": {
+                    "type": "integer"
+                },
+                "dataAtividade": {
+                    "type": "string"
+                },
+                "dataHoraAtualizacao": {
+                    "type": "string"
+                },
+                "dataStatusEscotista": {
+                    "type": "string"
+                },
+                "segmento": {
+                    "type": "string"
                 }
             }
         },

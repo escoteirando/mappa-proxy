@@ -1,0 +1,39 @@
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+
+  swagger:
+    cmds:
+      - swag fmt
+      - swag init
+
+  deploy:
+    cmds:
+      - flyctl deploy
+
+  build:
+    vars:
+      BUILD_TIME:
+        sh: date +%Y-%m-%dT%H:%M:%S%z
+    env:
+      CGO_ENABLED: 1
+      GOOS: linux
+    cmds:
+      - go build -o mappa_proxy  -ldflags="-X 'backend.build.Time={{.BUILD_TIME}}'" .
+
+  build_run:
+    deps: [build]
+    env:
+      MAPPA_PROXY_REPOSITORY: sqlite:./mappa-proxy-repository.db
+    cmds:
+      - echo $MAPPA_PROXY_REPOSITORY
+      - ./mappa_proxy

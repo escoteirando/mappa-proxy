@@ -25,7 +25,7 @@ func RunMappaProxy() {
 	server, err := app.CreateServer(*configuration.Config, cache, repository)
 	if err != nil {
 		log.Fatalf("Failed to create http server %v", err)
-	} else {
+	} else {			
 		server.Listen(fmt.Sprintf(":%d", configuration.Config.Port))
 	}
 }

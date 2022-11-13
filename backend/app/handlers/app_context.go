@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/escoteirando/mappa-proxy/backend/cache"
 	"github.com/escoteirando/mappa-proxy/backend/configuration"
@@ -19,6 +20,12 @@ type MappaUserContextData struct {
 	Authorization string
 }
 
+var currentUserContextData *MappaUserContextData
+
+func GetCurrentUserContextData() *MappaUserContextData {
+	return currentUserContextData
+}
+
 func GetUserContext(c *fiber.Ctx) *MappaUserContextData {
 	if userContext := c.UserContext(); userContext != nil {
 		anyValue := userContext.Value(userContextKey)
@@ -33,7 +40,7 @@ func GetUserContext(c *fiber.Ctx) *MappaUserContextData {
 }
 
 func SetupUserContext(app *fiber.App, config configuration.Configuration, cache *cache.MappaCache, repository repositories.IRepository) {
-	mappaUserContextData := &MappaUserContextData{
+	currentUserContextData = &MappaUserContextData{
 		Config: config,
 		Cache:  cache,
 		MappaService: &mappa.MappaService{
@@ -44,8 +51,15 @@ func SetupUserContext(app *fiber.App, config configuration.Configuration, cache 
 	}
 
 	app.Use(func(c *fiber.Ctx) error {
-		userContext := context.WithValue(c.Context(), userContextKey, mappaUserContextData)
+		userContext := context.WithValue(c.Context(), userContextKey, currentUserContextData)
 		c.SetUserContext(userContext)
 		return c.Next()
 	})
+}
+
+func (cd *MappaUserContextData) NeedsAuth(c *fiber.Ctx) error {
+	if len(cd.Authorization) > 0 {
+		return nil
+	}
+	return reply_error(c, 403, "UNAUTHORIZED", fmt.Errorf("Authorization header not found"))
 }

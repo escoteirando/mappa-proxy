@@ -1,0 +1,699 @@
+{
+    "dataHora": "2022-11-13T03:16:50-00:00",
+    "values": [
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2021-06-26T16:49:35.000Z",
+            "codigoAssociado": 1102051,
+            "codigoEscotistaUltimaAlteracao": 52151
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2021-06-26T16:49:35.000Z",
+            "codigoAssociado": 1102051,
+            "codigoEscotistaUltimaAlteracao": 52151
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-06-01T23:38:40.000Z",
+            "codigoAssociado": 1102051,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2022-02-19T16:46:54.000Z",
+            "codigoAssociado": 1113108,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2022-02-19T16:46:54.000Z",
+            "codigoAssociado": 1113108,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-16T14:17:24.000Z",
+            "codigoAssociado": 1137416,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "CONE_SUL_LOBINHO",
+            "dataConquista": null,
+            "codigoAssociado": 1137416,
+            "codigoEscotistaUltimaAlteracao": 63092
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2021-08-29T16:28:15.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "RASTREADOR",
+            "dataConquista": "2021-10-02T17:03:56.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "APRENDER_LOBINHO",
+            "dataConquista": "2021-11-27T16:57:04.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 50442
+        },
+        {
+            "type": "CACADOR",
+            "dataConquista": "2022-04-03T00:55:53.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-02T14:54:32.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "CRUZEIRO_SUL",
+            "dataConquista": "2022-09-17T14:51:39.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2021-07-03T16:51:55.000Z",
+            "codigoAssociado": 1102061,
+            "codigoEscotistaUltimaAlteracao": 50442
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2021-07-03T16:51:55.000Z",
+            "codigoAssociado": 1102061,
+            "codigoEscotistaUltimaAlteracao": 50442
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-04-03T00:30:00.000Z",
+            "codigoAssociado": 1102061,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-02T16:29:33.000Z",
+            "codigoAssociado": 1102061,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "INVESTIDURA",
+            "dataConquista": "2021-06-26T00:00:00.000Z",
+            "codigoAssociado": 1104368,
+            "codigoEscotistaUltimaAlteracao": 56067
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2021-10-16T16:54:22.000Z",
+            "codigoAssociado": 1104368,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2021-10-16T16:54:22.000Z",
+            "codigoAssociado": 1104368,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-05-07T13:48:00.000Z",
+            "codigoAssociado": 1104368,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "BOA_ACAO",
+            "dataConquista": "2022-07-02T14:45:15.000Z",
+            "codigoAssociado": 1104368,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-02T16:28:53.000Z",
+            "codigoAssociado": 1104368,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2022-03-26T17:29:08.000Z",
+            "codigoAssociado": 1113131,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2022-03-26T17:29:08.000Z",
+            "codigoAssociado": 1113131,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-02T16:31:47.000Z",
+            "codigoAssociado": 1113131,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2022-02-19T16:53:32.000Z",
+            "codigoAssociado": 1114599,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2022-02-19T16:53:32.000Z",
+            "codigoAssociado": 1114599,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-07-14T15:41:39.000Z",
+            "codigoAssociado": 1114599,
+            "codigoEscotistaUltimaAlteracao": 50442
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-16T14:17:50.000Z",
+            "codigoAssociado": 1128140,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2022-08-27T00:00:00.000Z",
+            "codigoAssociado": 1128140,
+            "codigoEscotistaUltimaAlteracao": 56067
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2022-08-06T17:02:37.000Z",
+            "codigoAssociado": 1128140,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-08-28T10:34:23.000Z",
+            "codigoAssociado": 1128140,
+            "codigoEscotistaUltimaAlteracao": 63092
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-04-12T15:53:09.000Z",
+            "codigoAssociado": 1063368,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "LUSOFONIA_LOBINHO",
+            "dataConquista": "2022-06-05T21:08:26.000Z",
+            "codigoAssociado": 1063368,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-02T14:54:47.000Z",
+            "codigoAssociado": 1063368,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2021-08-06T23:01:27.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2021-08-06T23:01:27.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2021-09-20T21:46:47.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "APRENDER_LOBINHO",
+            "dataConquista": "2022-03-25T19:54:41.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-02T16:45:49.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2021-09-11T17:01:48.000Z",
+            "codigoAssociado": 1103478,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2021-09-11T17:01:48.000Z",
+            "codigoAssociado": 1103478,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-02-20T14:23:08.000Z",
+            "codigoAssociado": 1103478,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-02T16:28:31.000Z",
+            "codigoAssociado": 1103478,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2022-10-22T00:00:00.000Z",
+            "codigoAssociado": 1128118,
+            "codigoEscotistaUltimaAlteracao": 56067
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2022-09-10T15:21:46.000Z",
+            "codigoAssociado": 1128118,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2022-08-06T00:00:00.000Z",
+            "codigoAssociado": 1137421,
+            "codigoEscotistaUltimaAlteracao": 56067
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2022-07-02T13:45:03.000Z",
+            "codigoAssociado": 1137421,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-02T15:01:33.000Z",
+            "codigoAssociado": 1137421,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "RASTREADOR",
+            "dataConquista": "2022-03-05T16:48:27.000Z",
+            "codigoAssociado": 1025980,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "CACADOR",
+            "dataConquista": "2022-04-02T22:55:34.000Z",
+            "codigoAssociado": 1025980,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "BOA_ACAO",
+            "dataConquista": "2022-06-05T19:08:00.000Z",
+            "codigoAssociado": 1025980,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "CAMPEOES_NATUREZA_LOBINHO",
+            "dataConquista": "2022-07-02T16:30:37.000Z",
+            "codigoAssociado": 1025980,
+            "codigoEscotistaUltimaAlteracao": 52167
+        },
+        {
+            "type": "CRUZEIRO_SUL",
+            "dataConquista": "2022-08-06T16:22:19.000Z",
+            "codigoAssociado": 1025980,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2021-10-02T17:15:13.000Z",
+            "codigoAssociado": 1103477,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2021-10-02T17:15:13.000Z",
+            "codigoAssociado": 1103477,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-05-16T23:15:33.000Z",
+            "codigoAssociado": 1103477,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "BOA_ACAO",
+            "dataConquista": "2022-09-24T17:13:25.000Z",
+            "codigoAssociado": 1103477,
+            "codigoEscotistaUltimaAlteracao": 50442
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2021-10-16T16:51:06.000Z",
+            "codigoAssociado": 1105848,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2021-10-16T16:51:06.000Z",
+            "codigoAssociado": 1105848,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-06-01T23:59:29.000Z",
+            "codigoAssociado": 1105848,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2021-10-04T19:17:28.000Z",
+            "codigoAssociado": 1107587,
+            "codigoEscotistaUltimaAlteracao": null
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2021-10-04T19:17:28.000Z",
+            "codigoAssociado": 1107587,
+            "codigoEscotistaUltimaAlteracao": null
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-06-01T22:20:12.000Z",
+            "codigoAssociado": 1107587,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "CACADOR",
+            "dataConquista": "2022-10-23T20:10:55.000Z",
+            "codigoAssociado": 1107587,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PROMESSA_ESCOTEIRA_LOBINHO",
+            "dataConquista": "2021-10-31T00:13:13.000Z",
+            "codigoAssociado": 1113127,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "PATA_TENRA",
+            "dataConquista": "2021-10-31T00:13:13.000Z",
+            "codigoAssociado": 1113127,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "SALTADOR",
+            "dataConquista": "2022-05-16T23:56:13.000Z",
+            "codigoAssociado": 1113127,
+            "codigoEscotistaUltimaAlteracao": 52164
+        },
+        {
+            "type": "DESPORTO",
+            "dataConquista": "2022-06-18T16:49:03.000Z",
+            "codigoAssociado": 1102051,
+            "codigoEscotistaUltimaAlteracao": 63092,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 260
+        },
+        {
+            "type": "DESPORTO",
+            "dataConquista": null,
+            "codigoAssociado": 1102051,
+            "codigoEscotistaUltimaAlteracao": 63092,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 87
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2021-10-23T16:48:35.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 50442,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 269
+        },
+        {
+            "type": "HABILIDADES_ESCOTEIRAS",
+            "dataConquista": "2022-03-05T18:08:49.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 113
+        },
+        {
+            "type": "CULTURA",
+            "dataConquista": "2022-06-11T11:56:40.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 50442,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 164
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2022-07-02T17:17:15.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 50442,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 156
+        },
+        {
+            "type": "DESPORTO",
+            "dataConquista": "2022-08-28T07:40:02.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 137
+        },
+        {
+            "type": "CIENCIA_TECNOLOGIA",
+            "dataConquista": "2022-08-28T07:46:18.000Z",
+            "codigoAssociado": 1047778,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 238
+        },
+        {
+            "type": "HABILIDADES_ESCOTEIRAS",
+            "dataConquista": "2022-03-05T18:09:07.000Z",
+            "codigoAssociado": 1104368,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 113
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2022-08-20T16:15:19.000Z",
+            "codigoAssociado": 1104368,
+            "codigoEscotistaUltimaAlteracao": 50442,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 20
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2022-08-20T16:02:23.000Z",
+            "codigoAssociado": 1104368,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 7
+        },
+        {
+            "type": "DESPORTO",
+            "dataConquista": "2021-08-28T18:12:08.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 87
+        },
+        {
+            "type": "DESPORTO",
+            "dataConquista": "2021-10-03T18:56:57.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 17
+        },
+        {
+            "type": "CIENCIA_TECNOLOGIA",
+            "dataConquista": "2021-10-09T16:06:43.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 166
+        },
+        {
+            "type": "DESPORTO",
+            "dataConquista": "2021-11-15T17:26:03.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 204
+        },
+        {
+            "type": "CULTURA",
+            "dataConquista": "2022-02-19T17:02:48.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 50442,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 71
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2022-03-26T17:15:01.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 156
+        },
+        {
+            "type": "DESPORTO",
+            "dataConquista": "2022-03-26T17:20:50.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 150
+        },
+        {
+            "type": "HABILIDADES_ESCOTEIRAS",
+            "dataConquista": "2022-06-26T21:08:39.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 183
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2022-09-10T17:08:45.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 20
+        },
+        {
+            "type": "CULTURA",
+            "dataConquista": "2022-09-10T17:00:07.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 53
+        },
+        {
+            "type": "CULTURA",
+            "dataConquista": "2022-09-10T17:06:25.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 28
+        },
+        {
+            "type": "CULTURA",
+            "dataConquista": "2022-09-10T17:02:38.000Z",
+            "codigoAssociado": 1101641,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 2,
+            "codigoEspecialidade": 53
+        },
+        {
+            "type": "CIENCIA_TECNOLOGIA",
+            "dataConquista": "2021-11-05T11:57:41.000Z",
+            "codigoAssociado": 1103478,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 166
+        },
+        {
+            "type": "DESPORTO",
+            "dataConquista": "2022-06-04T17:04:41.000Z",
+            "codigoAssociado": 1103478,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 17
+        },
+        {
+            "type": "DESPORTO",
+            "dataConquista": "2022-06-04T17:05:11.000Z",
+            "codigoAssociado": 1103478,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 2,
+            "codigoEspecialidade": 17
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2022-07-09T16:44:53.000Z",
+            "codigoAssociado": 1103478,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 156
+        },
+        {
+            "type": "CULTURA",
+            "dataConquista": "2022-09-17T13:57:32.000Z",
+            "codigoAssociado": 1103478,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 53
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2022-09-10T17:10:44.000Z",
+            "codigoAssociado": 1137421,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 20
+        },
+        {
+            "type": "HABILIDADES_ESCOTEIRAS",
+            "dataConquista": "2022-04-02T16:57:12.000Z",
+            "codigoAssociado": 1025980,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 113
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2022-07-09T13:52:56.000Z",
+            "codigoAssociado": 1025980,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 20
+        },
+        {
+            "type": "CIENCIA_TECNOLOGIA",
+            "dataConquista": "2022-08-06T16:22:19.000Z",
+            "codigoAssociado": 1025980,
+            "codigoEscotistaUltimaAlteracao": 52164,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 255
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2022-08-28T07:55:58.000Z",
+            "codigoAssociado": 1025980,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 7
+        },
+        {
+            "type": "CULTURA",
+            "dataConquista": "2022-11-12T17:04:56.000Z",
+            "codigoAssociado": 1105848,
+            "codigoEscotistaUltimaAlteracao": 52167,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 36
+        },
+        {
+            "type": "SERVICOS",
+            "dataConquista": "2022-08-20T13:56:40.000Z",
+            "codigoAssociado": 1107587,
+            "codigoEscotistaUltimaAlteracao": 50442,
+            "numeroNivel": 1,
+            "codigoEspecialidade": 20
+        }
+    ]
+}

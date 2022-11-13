@@ -17,9 +17,9 @@ func (svc *MappaService) GetMarcacoes(codigoSecao int, authorization string) (ma
 		objMarcacoes, err := svc.API.GetMarcacoes(codigoSecao, lastFetch, authorization)
 		if err == nil && objMarcacoes != nil && objMarcacoes.Values != nil && len(objMarcacoes.Values) > 0 {
 			marcacoes = objMarcacoes.Values
-			err = svc.updateMarcacoes(codigoSecao, marcacoes)
-
-			svc.Cache.SetLastEventTime(keyMarcacoes, time.Now())
+			if err = svc.updateMarcacoes(codigoSecao, marcacoes); err == nil {
+				svc.Cache.SetLastEventTime(keyMarcacoes, time.Now())
+			}
 		}
 
 		err = svc.updateMappaProgressoes(svc.Repository)

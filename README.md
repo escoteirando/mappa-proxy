@@ -6,6 +6,15 @@
 
 Access: https://mappa-proxy.fly.dev/
 
+## Build
+
+Dependencies:
+
+```bash
+go install github.com/swaggo/swag/cmd/swag@latest
+go install github.com/go-task/task/v3/cmd/task@latest
+```
+
 ## Links
 
 * https://medium.com/c%C3%B3digo-palavras/como-subir-sua-aplica%C3%A7%C3%A3o-golang-gratuitamente-para-a-internet-57321cfcbaa0

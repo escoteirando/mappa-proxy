@@ -59,7 +59,7 @@ func (dt *Time) MarshalJSON() ([]byte, error) {
 func (dt *Time) UnmarshalJSON(b []byte) (err error) {
 	s := strings.Trim(string(b), "\"")
 	if s == "null" || len(s) == 0 {
-		dt = &Time{}
+		dt.Time = time.Time{}
 		return
 	}
 	if len(s) > 33 {
@@ -73,6 +73,6 @@ func (dt *Time) UnmarshalJSON(b []byte) (err error) {
 			return nil
 		}
 	}
-	dt = &Time{}
+	dt.Time = time.Time{}
 	return nil
 }

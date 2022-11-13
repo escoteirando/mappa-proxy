@@ -12,9 +12,10 @@ import (
 type Configuration struct {
 	Host          string `envconfig:"MAPPA_PROXY_HOST" default:"0.0.0.0"`
 	Port          int    `envconfig:"MAPPA_PROXY_PORT" default:"5000"`
-	Repository    string `envconfig:"MAPPA_PROXY_REPOSITORY" default:"json:./mappa_login.json"`
+	Repository    string `envconfig:"MAPPA_PROXY_REPOSITORY" default:""`
 	LogFolder     string `envconfig:"MAPPA_LOG_FOLDER" default:"log"`
 	HttpCacheTime int    `envconfig:"HTTP_CACHE_TIME" default:"5"`
+	CachePath     string `envconfig:"CACHE_PATH" default:"cache"`
 }
 
 const (
@@ -25,8 +26,8 @@ const (
 
 var (
 	Config      *Configuration
-	StartupTime time.Time	
-	APP_VERSION = "0.3.0"
+	StartupTime time.Time
+	APP_VERSION = "0.4.0"
 )
 
 func getEnv(env string, defaultValue string, validate func(value interface{}) error) {
@@ -40,6 +41,7 @@ func getEnv(env string, defaultValue string, validate func(value interface{}) er
 }
 
 func Init() {
+	log.Printf("Starting %s v%s", APP_NAME, APP_VERSION)
 	Config = &Configuration{}
 	err := envconfig.Process("", Config)
 	if err != nil {

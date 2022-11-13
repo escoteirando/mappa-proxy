@@ -3,8 +3,7 @@ package responses
 import "encoding/json"
 
 type (
-	MappaEspecialidadeResponse struct {
-		// TODO: Implementar estrutura de dados Especialidade
+	MappaEspecialidadeResponse struct {		
 		Codigo           int                              `json:"codigo"`
 		Descricao        string                           `json:"descricao"`
 		RamoConhecimento string                           `json:"ramoConhecimento"`
@@ -12,7 +11,7 @@ type (
 		Itens            []MappaEspecialidadeItemResponse `json:"itens"`
 	}
 	MappaEspecialidadeItemResponse struct {
-		Id                  int    `json:"id"`
+		// Id                  int    `json:"id"`
 		CodigoEspecialidade int    `json:"codigoEspecialidade"`
 		Descricao           string `json:"descricao"`
 		Numero              int    `json:"numero"`

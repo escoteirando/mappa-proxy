@@ -1,2 +1,9 @@
+.git
 frontend/package-lock.json
 frontend/node_modules
+*.db
+mappa-proxy
+README.md
+Dockerfile
+docker-compose.yml
+cache

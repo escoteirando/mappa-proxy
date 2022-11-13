@@ -9,14 +9,24 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func init() {
+	Routes["/*"] = RouteData{
+		Name:      "Generic",		
+		Handler:   MappaGenericHandler,
+		CacheTime: 0,
+		Mappa:     true,
+	}
+}
+
 // MappaGeneric godoc
-// @Summary      Mappa Generic Handler
-// @Description  Send a request to Mappa API
-// @Tags         mappa-proxy
-// @Accept       json
-// @Produce      json
-// @Success      200 {object} interface{}
-// @Router       /mappa [get]
+// @Summary     Requisição genérica para a API do Mappa
+// @Description Adicione o caminho da requisição após /mappa/
+// @Tags        mappa-proxy
+// @Accept      json
+// @Produce     json
+// @Param       Authorization header   string false "Authorization"
+// @Success     200           {object} interface{}
+// @Router      /mappa [get]
 func MappaGenericHandler(c *fiber.Ctx) error {
 	original := c.OriginalURL()
 	log.Printf("original url: %s", original)

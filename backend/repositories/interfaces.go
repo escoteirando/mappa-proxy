@@ -58,4 +58,10 @@ type IRepository interface {
 
 	UpdateMappaMarcacoes(marcacoes []*entities.MappaMarcacao) error
 	GetMarcacoes(codigoSecao int) ([]*entities.MappaMarcacao, error)
+
+	UpdateMappaEspecialidades(especialidades []*entities.MappaEspecialidade) error
+	GetEspecialidades() ([]*entities.MappaEspecialidade, error)
+
+	UpdateMappaConquistas(conquistas []*entities.MappaConquista) error
+	GetConquistas(codigoSecao int) ([]*entities.MappaConquista, error)
 }
