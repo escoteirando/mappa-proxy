@@ -43,7 +43,7 @@ func (svc *MappaService) GetEscotistaDetalhes(userId int, authorization string) 
 	grupo := svc.GetGrupo(escotista.CodigoGrupo, escotista.CodigoRegiao, authorization)
 	response = &responses.MappaDetalhesResponse{
 		Associado: associado,
-		Grupos:    grupo,
+		Grupo:     grupo,
 		Escotista: escotista,
 	}
 
@@ -152,6 +152,13 @@ func (svc *MappaService) GetGrupo(codigoGrupo int, codigoRegiao string, authoriz
 			if err := svc.Repository.SetGrupo(grupo); err != nil {
 				log.Printf("Erro ao salvar grupo: %s", err.Error())
 			}
+		}
+	} else {
+		response = &responses.MappaGrupoResponse{
+			Codigo:           grupo.Codigo,
+			Nome:             grupo.Nome,
+			CodigoModalidade: grupo.CodigoModalidade,
+			CodigoRegiao:     grupo.CodigoRegiao,
 		}
 	}
 	return

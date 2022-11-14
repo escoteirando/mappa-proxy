@@ -10,7 +10,7 @@ import (
 )
 
 // @title          mappa-api
-// @version        0.5.0
+// @version        0.5.1
 // @description    This is a sample swagger for Fiber
 // @termsOfService http://swagger.io/terms/
 // @contact.name   Guionardo Furlan

@@ -124,7 +124,7 @@ definitions:
         $ref: '#/definitions/responses.MappaAssociadoResponse'
       escotista:
         $ref: '#/definitions/responses.MappaEscotistaResponse'
-      grupos:
+      grupo:
         $ref: '#/definitions/responses.MappaGrupoResponse'
     type: object
   responses.MappaEscotistaResponse:
@@ -290,7 +290,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
   title: mappa-api
-  version: 0.5.0
+  version: 0.5.1
 paths:
   /:
     get:

@@ -58,7 +58,7 @@ func TestDBRepository_DetalheEscotista(t *testing.T) {
 		if err := repository.SetDetalheEscotista(7777, responses.MappaDetalhesResponse{
 			Escotista: &escotista,
 			Associado: &associado,
-			Grupos:    &grupo,
+			Grupo:     &grupo,
 		}); err != nil {
 			t.Errorf("DBRepository.SetDetalheEscotista() error = %v", err)
 		}
