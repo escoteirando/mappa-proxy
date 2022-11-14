@@ -47,6 +47,12 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 		Level: compress.LevelBestSpeed,
 	}))
 
+	var cacheStorage fiber.Storage = fiberfilestorage.New(&fiberfilestorage.Config{
+		BasePath:   config.CachePath,
+		GCInterval: time.Duration(config.HttpCacheTime) * time.Minute,
+	})
+	RevalidateCacheAfterVersionChange(cacheStorage)
+
 	if config.HttpCacheTime > 0 {
 		app.Use(fiberCache.New(fiberCache.Config{
 			Next: func(c *fiber.Ctx) bool {
@@ -63,10 +69,7 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 			},
 			CacheControl:         true,
 			StoreResponseHeaders: true,
-			Storage: fiberfilestorage.New(&fiberfilestorage.Config{
-				BasePath:   config.CachePath,
-				GCInterval: time.Duration(config.HttpCacheTime) * time.Minute,
-			}),
+			Storage:              cacheStorage,
 		}))
 	}
 
@@ -111,4 +114,21 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 
 	scheduled.Run()
 	return app, nil
+}
+
+func RevalidateCacheAfterVersionChange(storage fiber.Storage) {
+	const versionKey = configuration.APP_NAME + "_version"
+	if storage == nil {
+		return
+	}
+	lastVersion, _ := storage.Get(versionKey)
+
+	if string(lastVersion) != configuration.APP_VERSION {
+		if err := storage.Reset(); err != nil {
+			log.Printf("Error cleaning cache: %v", err)
+		} else {
+			storage.Set(versionKey, []byte(configuration.APP_VERSION), 0)
+			log.Printf("Cache cleaned after version change: %v -> %v", string(lastVersion), configuration.APP_VERSION)
+		}
+	}
 }

@@ -10,3 +10,4 @@ data
 *.fiber.gz
 cache
 *.db
+mappa-proxy

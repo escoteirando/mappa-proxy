@@ -79,6 +79,7 @@ func (s *FiberFileStorage) Reset() error {
 			continue
 		}
 		err := os.Remove(path.Join(s.config.BasePath, entry.Name()))
+		s.logger.Printf("Removing %s", entry.Name())
 		if err != nil {
 			return err
 		}
