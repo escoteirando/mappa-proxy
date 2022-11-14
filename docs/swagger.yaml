@@ -44,6 +44,25 @@ definitions:
       username:
         type: string
     type: object
+  responses.FullConquistaResponse:
+    properties:
+      associado:
+        $ref: '#/definitions/responses.MappaAssociadoResponse'
+      codigoAssociado:
+        type: integer
+      codigoEscotistaUltimaAlteracao:
+        type: integer
+      codigoEspecialidade:
+        type: integer
+      dataConquista:
+        type: string
+      especialidade:
+        $ref: '#/definitions/responses.MappaEspecialidadeResponse'
+      numeroNivel:
+        type: integer
+      type:
+        type: string
+    type: object
   responses.HealthCheckResponse:
     properties:
       mappa_server:
@@ -271,7 +290,7 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
   title: mappa-api
-  version: 0.4.0
+  version: 0.5.0
 paths:
   /:
     get:
@@ -342,7 +361,9 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/responses.MappaMarcacaoResponse'
+            items:
+              $ref: '#/definitions/responses.FullConquistaResponse'
+            type: array
         "400":
           description: Bad Request
           schema:

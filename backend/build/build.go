@@ -1,5 +1,3 @@
 package build
 
-var (
-	Time string = "Development"	
-)
+var BuildTime string = "Development"

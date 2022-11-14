@@ -11,7 +11,7 @@ var RepositoryFactory *RepositoryFactoryStruct = &RepositoryFactoryStruct{
 }
 
 func (factory *RepositoryFactoryStruct) Register(repository IRepository) {
-	log.Printf("Repository registered: %s", repository.GetName())
+	// log.Printf("Repository registered: %s", repository.GetName())
 	factory.repositories = append(factory.repositories, repository)
 }
 func (factory *RepositoryFactoryStruct) GetRepository(connectionString string) IRepository {

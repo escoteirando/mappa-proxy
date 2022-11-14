@@ -28,7 +28,8 @@ tasks:
       CGO_ENABLED: 1
       GOOS: linux
     cmds:
-      - go build -o mappa_proxy  -ldflags="-X 'backend.build.Time={{.BUILD_TIME}}'" .
+      # - go build -ldflags="-X 'package_path.variable_name=new_value'"
+      - go build -ldflags="-X 'main.Build={{.BUILD_TIME}}'" -o mappa_proxy .
 
   build_run:
     deps: [build]

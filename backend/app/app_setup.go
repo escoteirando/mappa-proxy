@@ -28,7 +28,7 @@ import (
 
 func CreateServer(config configuration.Configuration, cache *cache.MappaCache, repository repositories.IRepository) (app *fiber.App, err error) {
 	app = fiber.New(fiber.Config{
-		AppName:     fmt.Sprintf("%s - v%s @ %v", configuration.APP_NAME, configuration.APP_VERSION, build.Time),
+		AppName:     fmt.Sprintf("%s - v%s @ %v", configuration.APP_NAME, configuration.APP_VERSION, build.BuildTime),
 		ColorScheme: fiber.DefaultColors,
 		// EnablePrintRoutes: true,
 	})
@@ -99,10 +99,6 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 
 		log.Printf("Route %s%s registered: %s %s (cache %s)", isMappa, route.Name, route.Method, routePath, cacheStr)
 	}
-
-	// for _, route := range app.GetRoutes() {
-	// 	log.Printf("Route [%s] %s %s", route.Method, route.Path, route.Name)
-	// }
 
 	app.Use("/web", filesystem.New(filesystem.Config{
 		Root:       http.FS(static.EmbedStaticWeb),

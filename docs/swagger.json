@@ -12,7 +12,7 @@
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "version": "0.4.0"
+        "version": "0.5.0"
     },
     "basePath": "/",
     "paths": {
@@ -122,7 +122,10 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.MappaMarcacaoResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/responses.FullConquistaResponse"
+                            }
                         }
                     },
                     "400": {
@@ -511,6 +514,35 @@
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "responses.FullConquistaResponse": {
+            "type": "object",
+            "properties": {
+                "associado": {
+                    "$ref": "#/definitions/responses.MappaAssociadoResponse"
+                },
+                "codigoAssociado": {
+                    "type": "integer"
+                },
+                "codigoEscotistaUltimaAlteracao": {
+                    "type": "integer"
+                },
+                "codigoEspecialidade": {
+                    "type": "integer"
+                },
+                "dataConquista": {
+                    "type": "string"
+                },
+                "especialidade": {
+                    "$ref": "#/definitions/responses.MappaEspecialidadeResponse"
+                },
+                "numeroNivel": {
+                    "type": "integer"
+                },
+                "type": {
                     "type": "string"
                 }
             }

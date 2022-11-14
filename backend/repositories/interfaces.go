@@ -61,6 +61,7 @@ type IRepository interface {
 
 	UpdateMappaEspecialidades(especialidades []*entities.MappaEspecialidade) error
 	GetEspecialidades() ([]*entities.MappaEspecialidade, error)
+	GetEspecialidade(codEspecialidade int) (*entities.MappaEspecialidade, error)
 
 	UpdateMappaConquistas(conquistas []*entities.MappaConquista) error
 	GetConquistas(codigoSecao int) ([]*entities.MappaConquista, error)

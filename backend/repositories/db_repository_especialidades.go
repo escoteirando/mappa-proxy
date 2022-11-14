@@ -29,3 +29,14 @@ func (r *DBRepository) GetEspecialidades() (especialidades []*entities.MappaEspe
 
 	return
 }
+
+func (r *DBRepository) GetEspecialidade(codEspecialidade int) (*entities.MappaEspecialidade, error) {
+	r.DBLock()
+	defer r.DBUnlock()
+	db := r.getDBFunc()
+	var especialidade entities.MappaEspecialidade
+	if err := db.First(&especialidade, codEspecialidade).Error; err != nil {
+		return nil, err
+	}
+	return &especialidade, nil
+}

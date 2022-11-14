@@ -30,7 +30,7 @@ func IndexHandler(c *fiber.Ctx) error {
 	return c.JSON(responses.IndexResponse{
 		App:       configuration.APP_NAME,
 		Version:   configuration.APP_VERSION,
-		BuildTime: build.Time,
+		BuildTime: build.BuildTime,
 		RunningBy: time.Since(configuration.StartupTime).String(),
 	})
 }

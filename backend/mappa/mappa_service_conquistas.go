@@ -42,3 +42,47 @@ func (svc *MappaService) updateConquistas(codigoSecao int, conquistas []*respons
 	}
 	return svc.Repository.UpdateMappaConquistas(eConquistas)
 }
+
+func (svc *MappaService) GetConquistasFull(codigoSecao int, authorization string) (conquistas []*responses.FullConquistaResponse, err error) {
+	c, err := svc.GetConquistas(codigoSecao, authorization)
+	if err != nil {
+		return nil, err
+	}
+	associados := make(map[int]*responses.MappaAssociadoResponse)
+	getAssoc := func(codAssociado int) *responses.MappaAssociadoResponse {
+		if a, ok := associados[codAssociado]; ok {
+			return a
+		}
+		a := svc.GetAssociado(codAssociado, authorization)
+		associados[codAssociado] = a
+		return a
+	}
+
+	especialidades := make(map[int]*responses.MappaEspecialidadeResponse)
+	getEspec := func(codEspecialidade int) *responses.MappaEspecialidadeResponse {
+		if e, ok := especialidades[codEspecialidade]; ok {
+			return e
+		}
+		var especialidade *responses.MappaEspecialidadeResponse
+		if esp, err := svc.Repository.GetEspecialidade(codEspecialidade); err == nil {
+			especialidade = dtos.MappaEspecialidadeToResponse(esp)
+		}
+		especialidades[codEspecialidade] = especialidade
+		return especialidade
+	}
+
+	conquistas = make([]*responses.FullConquistaResponse, len(c))
+	for i, conquista := range c {
+		conquistas[i] = &responses.FullConquistaResponse{
+			Type:             conquista.Type,
+			Data:             conquista.Data.Time,
+			CodAssociado:     conquista.CodAssociado,
+			CodEscotista:     conquista.CodEscotista,
+			NumeroNivel:      conquista.NumeroNivel,
+			CodEspecialidade: conquista.CodEspecialidade,
+			Associado:        getAssoc(conquista.CodAssociado),
+			Especialidade:    getEspec(conquista.CodEspecialidade),
+		}
+	}
+	return
+}

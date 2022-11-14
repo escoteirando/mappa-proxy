@@ -27,7 +27,7 @@ const (
 var (
 	Config      *Configuration
 	StartupTime time.Time
-	APP_VERSION = "0.4.0"
+	APP_VERSION = "0.5.0"
 )
 
 func getEnv(env string, defaultValue string, validate func(value interface{}) error) {
@@ -40,8 +40,7 @@ func getEnv(env string, defaultValue string, validate func(value interface{}) er
 	}
 }
 
-func Init() {
-	log.Printf("Starting %s v%s", APP_NAME, APP_VERSION)
+func Init() {	
 	Config = &Configuration{}
 	err := envconfig.Process("", Config)
 	if err != nil {

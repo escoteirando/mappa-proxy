@@ -130,7 +130,10 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.MappaMarcacaoResponse"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/responses.FullConquistaResponse"
+                            }
                         }
                     },
                     "400": {
@@ -523,6 +526,35 @@ const docTemplate = `{
                 }
             }
         },
+        "responses.FullConquistaResponse": {
+            "type": "object",
+            "properties": {
+                "associado": {
+                    "$ref": "#/definitions/responses.MappaAssociadoResponse"
+                },
+                "codigoAssociado": {
+                    "type": "integer"
+                },
+                "codigoEscotistaUltimaAlteracao": {
+                    "type": "integer"
+                },
+                "codigoEspecialidade": {
+                    "type": "integer"
+                },
+                "dataConquista": {
+                    "type": "string"
+                },
+                "especialidade": {
+                    "$ref": "#/definitions/responses.MappaEspecialidadeResponse"
+                },
+                "numeroNivel": {
+                    "type": "integer"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
         "responses.HealthCheckResponse": {
             "type": "object",
             "properties": {
@@ -860,7 +892,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "0.4.0",
+	Version:          "0.5.0",
 	Host:             "",
 	BasePath:         "/",
 	Schemes:          []string{},

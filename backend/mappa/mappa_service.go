@@ -223,7 +223,6 @@ func (svc *MappaService) GetEscotistaSecoes(userId int, authorization string) (s
 		}
 		svc.Cache.SetLastEventTime(eventKey, time.Now())
 	} else {
-		//TODO: Continuar a montagem das secoes do escotista a partir do banco de dados
 		assocSecoes, err := svc.Repository.GetAssociadoSecoes(escotista.CodigoAssociado)
 		if err != nil {
 			return nil, err
