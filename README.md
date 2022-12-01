@@ -3,6 +3,8 @@
 [![CodeQL](https://github.com/escoteirando/mappa-proxy/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/escoteirando/mappa-proxy/actions/workflows/codeql-analysis.yml)
 [![Go](https://github.com/escoteirando/mappa-proxy/actions/workflows/go.yml/badge.svg)](https://github.com/escoteirando/mappa-proxy/actions/workflows/go.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/escoteirando/mappa-proxy)](https://goreportcard.com/report/github.com/escoteirando/mappa-proxy)
+[![SonarCloud analysis](https://github.com/escoteirando/mappa-proxy/actions/workflows/sonar.yaml/badge.svg)](https://github.com/escoteirando/mappa-proxy/actions/workflows/sonar.yaml)
+
 
 Access: https://mappa-proxy.fly.dev/
 
