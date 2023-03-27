@@ -16,3 +16,21 @@ type (
 		Descricao           string `gorm:"column:descricao"`
 	}
 )
+
+const (
+	mappaEspecialidadeTable     = "mappa_especialidades"
+	mappaEspecialidadeItemTable = "mappa_especialidades_itens"
+)
+
+func init() {
+	RegisterEntity(Entity{EntityType: MappaEspecialidade{}, TableName: mappaEspecialidadeTable})
+	RegisterEntity(Entity{EntityType: MappaEspecialidadeItem{}, TableName: mappaEspecialidadeItemTable})
+}
+
+func (MappaEspecialidade) TableName() string {
+	return mappaEspecialidadeTable
+}
+
+func (MappaEspecialidadeItem) TableName() string {
+	return mappaEspecialidadeItemTable
+}

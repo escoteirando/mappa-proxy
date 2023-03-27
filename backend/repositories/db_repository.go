@@ -9,6 +9,7 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type (
@@ -36,10 +37,13 @@ func (repository *DBRepository) CreateRepository(connectionString string) (IRepo
 		connectionString: connectionString,
 	}
 	r.SetLocking(conn.Schema == "sqlite")
+	config := &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Info),
+	}
 	switch conn.Schema {
 	case "sqlite":
 		r.getDBFunc = func() *gorm.DB {
-			db, err := gorm.Open(sqlite.Open(conn.ConnectionData), &gorm.Config{})
+			db, err := gorm.Open(sqlite.Open(conn.ConnectionData), config)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -47,7 +51,7 @@ func (repository *DBRepository) CreateRepository(connectionString string) (IRepo
 		}
 	case "postgres":
 		r.getDBFunc = func() *gorm.DB {
-			db, err := gorm.Open(postgres.Open(conn.ConnectionData), &gorm.Config{})
+			db, err := gorm.Open(postgres.Open(conn.ConnectionData), config)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -64,22 +68,15 @@ func (repository *DBRepository) CreateRepository(connectionString string) (IRepo
 
 func (r *DBRepository) setup() error {
 	db := r.getDBFunc()
-	return db.AutoMigrate(
-		&entities.Login{},
-		&entities.Escotista{},
-		&entities.Associado{},
-		&entities.SubSecao{},
-		&entities.Grupo{},
-		&entities.Secao{},
-		&entities.DetalhesEscotista{},
-		&entities.MappaEspecialidadeItem{},		
-		&entities.MappaEspecialidade{},
-		&entities.MappaProgressao{},
-		&entities.MappaMarcacao{},
-		&entities.KeyValue{},
-		&entities.AssociadoSecao{},
-		&entities.MappaConquista{},
-	)
+	r.DBLock()
+	defer r.DBUnlock()
+	for tableName, entity := range entities.GetEntities() {
+		err := db.Table(tableName).AutoMigrate(entity.EntityType)
+		if err != nil {
+			return fmt.Errorf("Error migrating table %s: %s", tableName, err)
+		}
+	}
+	return nil
 }
 
 func (r *DBRepository) GetName() string {

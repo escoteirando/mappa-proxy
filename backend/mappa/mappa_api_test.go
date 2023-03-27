@@ -3,6 +3,9 @@ package mappa
 import (
 	"os"
 	"testing"
+
+	"github.com/escoteirando/mappa-proxy/backend/domain/requests"
+	"github.com/escoteirando/mappa-proxy/backend/infra"
 )
 
 type AuthData struct {
@@ -11,6 +14,8 @@ type AuthData struct {
 }
 
 var authData *AuthData
+
+const mappa = "http://mappa.escoteiros.org.br"
 
 // Authorization data for tests
 func getAuthData(t *testing.T) *AuthData {
@@ -35,7 +40,46 @@ func getAuthData(t *testing.T) *AuthData {
 func TestMappaAPI_Login(t *testing.T) {
 
 	t.Run("Login", func(t *testing.T) {
-		auth := getAuthData(t)
+		requester := infra.NewHttpRequestMock()
+
+		requester.Setup(infra.RequestMock{
+			Url:                mappa + "/api/escotistas/login",
+			Data:               requests.CreateMappaLoginRequest("test", "test"),
+			Method:             "POST",
+			ResponseStatusCode: 201,
+			ResponseBody:       []byte(`{"ID":"1234","ttl":1209600,"created":"2099-01-01T00:00:00.000Z","userId":1234}`),
+		}).Setup(infra.RequestMock{
+			Url:                mappa + "/api/escotistas/1234",
+			Method:             "GET",
+			ResponseStatusCode: 200,
+			ResponseBody:       []byte(`{"codigoAssociado":1234,"codigoGrupo":12,"codigoRegiao":"ts","codigo":1234}`),
+		}).Setup(infra.RequestMock{
+			Url:                mappa + "/api/associados/1234",
+			Method:             "GET",
+			ResponseStatusCode: 200,
+			ResponseBody:       []byte(`{}`),
+		}).Setup(infra.RequestMock{
+			Url:                mappa + "/api/grupos",
+			Method:             "GET",
+			ResponseStatusCode: 200,
+			ResponseBody:       []byte(`[{"codigo": 32,"codigoRegiao": "SC","nome": "LEÕES DE BLUMENAU","codigoModalidade": 1}]`),
+		}).Setup(infra.RequestMock{
+			Url:                mappa + "/api/escotistas/1234/secoes",
+			Method:             "GET",
+			ResponseStatusCode: 200,
+			ResponseBody:       []byte(`[{"codigo": 1,"nome": "Escoteiros","codigoModalidade": 1,"codigoGrupo": 32}]`),
+		}).Setup(infra.RequestMock{
+			Url:                mappa + "/api/escotistas/1234/secoes/1/equipes",
+			Method:             "GET",
+			ResponseStatusCode: 200,
+			ResponseBody:       []byte(`[{"codigo": 1,"nome": "Escoteiros","codigoModalidade": 1,"codigoGrupo": 32}]`),
+		})
+
+		infra.ResetHttpRequester(requester)
+		auth := &AuthData{
+			UserName: "test",
+			Password: "test",
+		}
 		api := NewMappaAPI()
 		loginResponse, err := api.Login(auth.UserName, auth.Password)
 		if err != nil || loginResponse == nil {
@@ -72,7 +116,16 @@ func TestMappaAPI_Login(t *testing.T) {
 func TestMappaAPI_MappaGetProgressoes(t *testing.T) {
 
 	t.Run("Progressoes", func(t *testing.T) {
+		requester := infra.NewHttpRequestMock()
 
+		requester.Setup(infra.RequestMock{
+			Url:                mappa + "/api/progressao-atividades",
+			Method:             "GET",
+			ResponseStatusCode: 200,
+			ResponseBody:       []byte(`[{"ID":"1234","ttl":1209600,"created":"2099-01-01T00:00:00.000Z","userId":1234}]`),
+			//TODO: Implementar resposta válida
+		})
+		infra.ResetHttpRequester(requester)
 		api := NewMappaAPI()
 		progressoes, err := api.GetProgressoes()
 		if err != nil {
@@ -88,7 +141,16 @@ func TestMappaAPI_MappaGetProgressoes(t *testing.T) {
 func TestMappaAPI_MappaGetEspecialidades(t *testing.T) {
 
 	t.Run("Especialidades", func(t *testing.T) {
+		requester := infra.NewHttpRequestMock()
 
+		requester.Setup(infra.RequestMock{
+			Url:                mappa + "/api/especialidades",
+			Method:             "GET",
+			ResponseStatusCode: 200,
+			ResponseBody:       []byte(`[{"ID":"1234","ttl":1209600,"created":"2099-01-01T00:00:00.000Z","userId":1234}]`),
+			//TODO: Implementar resposta válida
+		})
+		infra.ResetHttpRequester(requester)
 		api := NewMappaAPI()
 		especialidades, err := api.GetEspecialidades()
 		if err != nil {

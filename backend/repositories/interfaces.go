@@ -34,9 +34,6 @@ type IRepository interface {
 	SetGrupo(grupo *entities.Grupo) error
 	GetGrupo(codigoGrupo int) (grupo *entities.Grupo, err error)
 
-	SetDetalheEscotista(userId uint, detalheEscotista responses.MappaDetalhesResponse) error
-	GetDetalheEscotista(userId uint) (*responses.MappaDetalhesResponse, error)
-
 	SetSecao(secao *entities.Secao) error
 	GetSecao(codigoSecao int, codigoRegiao string) (secao *entities.Secao, err error)
 
@@ -64,5 +61,7 @@ type IRepository interface {
 	GetEspecialidade(codEspecialidade int) (*entities.MappaEspecialidade, error)
 
 	UpdateMappaConquistas(conquistas []*entities.MappaConquista) error
-	GetConquistas(codigoSecao int) ([]*entities.MappaConquista, error)
+	GetConquistas(codigoSecao int, since time.Time) ([]*entities.MappaConquista, error)
+
+	GetCounts() (map[string]int, error)
 }

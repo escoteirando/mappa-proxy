@@ -27,7 +27,7 @@ const (
 var (
 	Config      *Configuration
 	StartupTime time.Time
-	APP_VERSION = "0.5.2"
+	APP_VERSION = "0.5.3"
 )
 
 func getEnv(env string, defaultValue string, validate func(value interface{}) error) {

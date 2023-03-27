@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"time"
+
 	"github.com/escoteirando/mappa-proxy/backend/domain/entities"
 	"gorm.io/gorm/clause"
 )
@@ -13,10 +15,10 @@ func (r *DBRepository) UpdateMappaConquistas(conquistas []*entities.MappaConquis
 	return res.Error
 }
 
-func (r *DBRepository) GetConquistas(codigoSecao int) (conquistas []*entities.MappaConquista, err error) {
+func (r *DBRepository) GetConquistas(codigoSecao int, since time.Time) (conquistas []*entities.MappaConquista, err error) {
 	r.DBLock()
 	defer r.DBUnlock()
 	db := r.getDBFunc()
-	err = db.Find(&conquistas).Error
+	err = db.Where("data>=?", since).Find(&conquistas).Error
 	return
 }

@@ -22,7 +22,7 @@ func init() {
 // MappaLogin godoc
 // @Summary     Mappa Login handler
 // @Description User login
-// @Tags        mappa-proxy
+// @Tags        mappa
 // @Accept      json
 // @Param       request body requests.LoginRequest true "Login request"
 // @Produce     json

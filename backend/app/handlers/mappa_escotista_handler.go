@@ -19,7 +19,7 @@ func init() {
 // MappaLogin godoc
 // @Summary     Detalhes do escotista
 // @Description Informações do escotista, associado e grupo
-// @Tags        mappa-proxy
+// @Tags        mappa
 // @Accept      json
 // @Param       userId        path   int    true "User ID"
 // @Param       Authorization header string true "Authorization"

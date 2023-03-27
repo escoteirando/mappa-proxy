@@ -26,6 +26,10 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
+var (
+	cacheStorage fiber.Storage
+)
+
 func CreateServer(config configuration.Configuration, cache *cache.MappaCache, repository repositories.IRepository) (app *fiber.App, err error) {
 	app = fiber.New(fiber.Config{
 		AppName:     fmt.Sprintf("%s - v%s @ %v", configuration.APP_NAME, configuration.APP_VERSION, build.BuildTime),
@@ -47,7 +51,7 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 		Level: compress.LevelBestSpeed,
 	}))
 
-	var cacheStorage fiber.Storage = fiberfilestorage.New(&fiberfilestorage.Config{
+	cacheStorage = fiberfilestorage.New(&fiberfilestorage.Config{
 		BasePath:   config.CachePath,
 		GCInterval: time.Duration(config.HttpCacheTime) * time.Minute,
 	})
@@ -57,9 +61,12 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 		app.Use(fiberCache.New(fiberCache.Config{
 			Next: func(c *fiber.Ctx) bool {
 				cPath := c.Route().Path
-				return cPath == "/mappa/login" || strings.HasPrefix(cPath, "/swagger") || c.Response().StatusCode() > 299
+				return cPath == "/mappa/login" ||
+					strings.HasPrefix(cPath, "/swagger") ||
+					c.Response().StatusCode() > 299 ||
+					strings.HasPrefix(cPath, "/admin")
 			},
-			Expiration: time.Duration(config.HttpCacheTime) * time.Minute,
+			//			Expiration: time.Duration(config.HttpCacheTime) * time.Minute,
 			ExpirationGenerator: func(c *fiber.Ctx, cfg *fiberCache.Config) time.Duration {
 				if r, ok := handlers.Routes[c.Route().Path]; ok {
 					return r.CacheTime
@@ -102,6 +109,8 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 
 		log.Printf("Route %s%s registered: %s %s (cache %s)", isMappa, route.Name, route.Method, routePath, cacheStr)
 	}
+
+	handlers.AddAdminHandlers(app, cacheStorage)
 
 	app.Use("/web", filesystem.New(filesystem.Config{
 		Root:       http.FS(static.EmbedStaticWeb),

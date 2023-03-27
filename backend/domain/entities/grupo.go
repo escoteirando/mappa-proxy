@@ -7,3 +7,13 @@ type Grupo struct {
 	Nome             string `gorm:"field:nome"`
 	CodigoModalidade int    `gorm:"field:codigoModalidade"`
 }
+
+const grupoTable = "grupos"
+
+func init() {
+	RegisterEntity(Entity{EntityType: Grupo{}, TableName: grupoTable})
+}
+
+func (Grupo) TableName() string {
+	return grupoTable
+}

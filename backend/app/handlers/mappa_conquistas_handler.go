@@ -21,10 +21,11 @@ func init() {
 
 // MappaConquistas godoc
 // @Summary Lista de conquistas da secão
-// @Tags    mappa-proxy
+// @Tags    mappa
 // @Accept  json
-// @Param   cod_secao     path   int64  true "Código Seção"
-// @Param   Authorization header string true "Authorization"
+// @Param   cod_secao     path   int64  true  "Código Seção"
+// @Param   Authorization header string true  "Authorization"
+// @Param   desde         query  string false "Data de início do período (YYYY-MM-DD) padrão 1 ano atrás"
 // @Produce json
 // @Success 200 {object} []responses.FullConquistaResponse
 // @Failure 400 {object} handlers.ReplyMessage
@@ -34,12 +35,16 @@ func MappaConquistasHandler(c *fiber.Ctx) error {
 	if err != nil || codSecao <= 0 {
 		return reply_error(c, 400, "mAPPa request error", fmt.Errorf("Invalid codSecao"))
 	}
-
+	desdeQuery := c.Query("desde", time.Now().Add(-time.Hour*24*365).Format("2006-01-02"))
+	since, err := time.Parse("2006-01-02", desdeQuery)
+	if err != nil {
+		return reply_error(c, 400, "mAPPa request error", fmt.Errorf("Invalid desde"))
+	}
 	contextData := GetUserContext(c)
 	if err = contextData.NeedsAuth(c); err != nil {
 		return err
 	}
-	marcacoes, err := contextData.MappaService.GetConquistasFull(codSecao, contextData.Authorization)
+	marcacoes, err := contextData.MappaService.GetConquistasFull(codSecao, contextData.Authorization, since)
 	if err != nil {
 		return reply_error(c, 404, "Falha ao obter marcações", err)
 	}

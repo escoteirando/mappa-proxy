@@ -14,9 +14,11 @@ func (m *MappaAPI) get(url string, authorization string) (statusCode int, respon
 	defer func() {
 		log.Printf("%s: %d %v [%v - %dB]", reqMsg, statusCode, err, time.Since(startTime), len(responseBody))
 	}()
+	requester := infra.GetHttpRequester()
 	url = fmt.Sprintf("%s%s", m.mappaUrl, url)
 	headers := map[string]string{"Authorization": authorization}
-	statusCode, responseBody, err = infra.HttpGet(url, headers, reqMsg)
+
+	statusCode, responseBody, err = requester.HttpGet(url, headers, reqMsg)
 	statusCode, err = validateHttpResponse(reqMsg, statusCode, responseBody, err)
 
 	return
@@ -28,8 +30,10 @@ func (m *MappaAPI) post(url string, body interface{}) (statusCode int, responseB
 	defer func() {
 		log.Printf("%s: %d %v [%v - %dB]", reqMsg, statusCode, err, time.Since(startTime), len(responseBody))
 	}()
+	requester := infra.GetHttpRequester()
 	url = fmt.Sprintf("%s%s", m.mappaUrl, url)
-	statusCode, responseBody, err = infra.HttpPost(url, body, reqMsg)
+	headers := make(map[string]string, 0)
+	statusCode, responseBody, err = requester.HttpPost(url, headers, body, reqMsg)
 	statusCode, err = validateHttpResponse(reqMsg, statusCode, responseBody, err)
 	return
 }

@@ -9,3 +9,13 @@ type SubSecao struct {
 	CodigoViceLider uint        `gorm:"field:codigo_vice_lider"`
 	Associados      []Associado `gorm:"foreignKey:codigo_equipe;association_foreignKey:codigo"`
 }
+
+const subSecaoTable = "sub_secoes"
+
+func init() {
+	RegisterEntity(Entity{EntityType: SubSecao{}, TableName: subSecaoTable})
+}
+
+func (SubSecao) TableName() string {
+	return subSecaoTable
+}

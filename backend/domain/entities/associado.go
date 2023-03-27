@@ -23,3 +23,13 @@ type Associado struct {
 	DataAcompanhamento      time.Time `gorm:"column:data_acompanhamento"`
 	CodigoSecao             int       `gorm:"column:codigo_secao"`
 }
+
+const associadoTable = "associados"
+
+func init() {
+	RegisterEntity(Entity{EntityType: Associado{}, TableName: associadoTable})
+}
+
+func (Associado) TableName() string {
+	return associadoTable
+}

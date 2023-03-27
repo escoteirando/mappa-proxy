@@ -22,7 +22,7 @@ func init() {
 // MappaMarcacoes godoc
 // @Summary     MappaMarcacoes handler
 // @Description Lista de marcações da sessão
-// @Tags        mappa-proxy
+// @Tags        mappa
 // @Accept      json
 // @Param       cod_secao     path   int64  true "Código Seção"
 // @Param       Authorization header string true "Authorization"

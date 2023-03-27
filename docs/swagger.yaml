@@ -67,6 +67,8 @@ definitions:
     properties:
       mappa_server:
         $ref: '#/definitions/responses.MappaServerResponse'
+      memory:
+        $ref: '#/definitions/infra.MemoryStatus'
       status:
         type: string
     type: object
@@ -254,8 +256,6 @@ definitions:
     properties:
       mappa_server_url:
         type: string
-      memory:
-        $ref: '#/definitions/infra.MemoryStatus'
       status:
         type: string
       status_code:
@@ -278,19 +278,26 @@ definitions:
       nome:
         type: string
     type: object
+  responses.StatsResponse:
+    properties:
+      associados:
+        type: integer
+      escotistas:
+        type: integer
+      grupos:
+        type: integer
+      secoes:
+        type: integer
+    type: object
   types.Bool:
     type: object
 info:
   contact:
     email: guionardo@gmail.com
     name: Guionardo Furlan
-  description: This is a sample swagger for Fiber
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: mappa-api
-  version: 0.5.2
+  description: Proxy and data analysis for Mappa
+  title: mappa-proxy
+  version: 0.5.4
 paths:
   /:
     get:
@@ -307,6 +314,57 @@ paths:
       summary: Index handler
       tags:
       - mappa-proxy
+  /admin/cache/reset:
+    post:
+      description: Publica mensagem em chat do Telegram
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: Clear cache
+      tags:
+      - admin
+  /admin/routes:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: List registered routes
+      tags:
+      - admin
+  /admin/stats:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.StatsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: Data statistics
+      tags:
+      - admin
   /hc:
     get:
       description: Service healthcheck
@@ -318,26 +376,6 @@ paths:
           schema:
             $ref: '#/definitions/responses.HealthCheckResponse'
       summary: Healthcheck handler
-      tags:
-      - mappa-proxy
-  /mappa:
-    get:
-      consumes:
-      - application/json
-      description: Adicione o caminho da requisição após /mappa/
-      parameters:
-      - description: Authorization
-        in: header
-        name: Authorization
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: object
-      summary: Requisição genérica para a API do Mappa
       tags:
       - mappa-proxy
   /mappa/conquistas/{cod_secao}:
@@ -355,6 +393,10 @@ paths:
         name: Authorization
         required: true
         type: string
+      - description: Data de início do período (YYYY-MM-DD) padrão 1 ano atrás
+        in: query
+        name: desde
+        type: string
       produces:
       - application/json
       responses:
@@ -370,7 +412,7 @@ paths:
             $ref: '#/definitions/handlers.ReplyMessage'
       summary: Lista de conquistas da secão
       tags:
-      - mappa-proxy
+      - mappa
   /mappa/escotista/{userId}:
     get:
       consumes:
@@ -404,40 +446,7 @@ paths:
             $ref: '#/definitions/handlers.ReplyMessage'
       summary: Detalhes do escotista
       tags:
-      - mappa-proxy
-  /mappa/escotista/{userId}/secoes:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: User ID
-        in: path
-        name: userId
-        required: true
-        type: integer
-      - description: Authorization
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/responses.MappaSecaoResponse'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/handlers.ReplyMessage'
-        "403":
-          description: Forbidden
-          schema:
-            $ref: '#/definitions/handlers.ReplyMessage'
-      summary: Seções do escotista
-      tags:
-      - mappa-proxy
+      - mappa
   /mappa/especialidades:
     get:
       consumes:
@@ -491,7 +500,7 @@ paths:
             $ref: '#/definitions/handlers.ReplyMessage'
       summary: Mappa Login handler
       tags:
-      - mappa-proxy
+      - mappa
   /mappa/marcacoes/{cod_secao}:
     get:
       consumes:
@@ -521,7 +530,7 @@ paths:
             $ref: '#/definitions/handlers.ReplyMessage'
       summary: MappaMarcacoes handler
       tags:
-      - mappa-proxy
+      - mappa
   /mappa/progressoes/{ramo}:
     get:
       consumes:
@@ -553,6 +562,39 @@ paths:
       summary: Lista de progressões do ramo
       tags:
       - db
+  /mappa/secoes/{userId}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      - description: Authorization
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.MappaSecaoResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handlers.ReplyMessage'
+      summary: Seções do escotista
+      tags:
+      - mappa
   /tg/pub:
     post:
       consumes:

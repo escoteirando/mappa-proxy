@@ -11,3 +11,4 @@ data
 cache
 *.db
 mappa-proxy
+coverage.out

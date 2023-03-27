@@ -20,3 +20,13 @@ type MappaMarcacao struct {
 	Associado             Associado       `gorm:"foreignKey:codigo;association_foreignKey:cod_associado"`
 	Secao                 Secao           `gorm:"foreignKey:codigo;association_foreignKey:cod_secao"`
 }
+
+const mappaMarcacaoTable = "mappa_marcacoes"
+
+func init() {
+	RegisterEntity(Entity{EntityType: MappaMarcacao{}, TableName: mappaMarcacaoTable})
+}
+
+func (MappaMarcacao) TableName() string {
+	return mappaMarcacaoTable
+}

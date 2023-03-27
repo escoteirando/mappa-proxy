@@ -92,14 +92,6 @@ func (cache *MappaCache) GetUserCount() int {
 	return len(cache.logins)
 }
 
-func (cache *MappaCache) SetDetalheEscotista(userId int, detalheEscotista responses.MappaDetalhesResponse) error {
-	return cache.repository.SetDetalheEscotista(uint(userId), detalheEscotista)
-}
-
-func (cache *MappaCache) GetDetalheEscotista(userId int) (*responses.MappaDetalhesResponse, error) {
-	return cache.repository.GetDetalheEscotista(uint(userId))
-}
-
 func (cache *MappaCache) GetLastEventTime(eventName string) time.Time {
 	lastEventTime := cache.repository.GetKeyValue("event_"+eventName, "2000-01-01T00:00:00Z00:00")
 	lastTime, err := time.Parse(time.RFC3339, lastEventTime)

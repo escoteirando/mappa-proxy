@@ -39,6 +39,9 @@ func (svc *MappaService) Login(username string, password string) (response *resp
 
 func (svc *MappaService) GetEscotistaDetalhes(userId int, authorization string) (response *responses.MappaDetalhesResponse) {
 	escotista := svc.GetEscotista(userId, authorization)
+	if escotista == nil {
+		return nil
+	}
 	associado := svc.GetAssociado(escotista.CodigoAssociado, authorization)
 	grupo := svc.GetGrupo(escotista.CodigoGrupo, escotista.CodigoRegiao, authorization)
 	response = &responses.MappaDetalhesResponse{

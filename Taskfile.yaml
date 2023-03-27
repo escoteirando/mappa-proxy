@@ -20,6 +20,11 @@ tasks:
     cmds:
       - flyctl deploy
 
+  test:
+    cmds:
+      - go test -coverprofile=coverage.out -parallel 4 ./...
+      - go tool cover -html=coverage.out
+
   build:
     vars:
       BUILD_TIME:

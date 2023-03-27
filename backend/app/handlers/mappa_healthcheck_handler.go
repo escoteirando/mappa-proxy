@@ -11,7 +11,7 @@ import (
 
 func init() {
 	Routes["/hc"] = RouteData{
-		Name:      "Health Check",		
+		Name:      "Health Check",
 		Handler:   MappaHealthCheckHandler,
 		CacheTime: 10 * time.Second,
 		Mappa:     false,
@@ -38,8 +38,8 @@ func MappaHealthCheckHandler(c *fiber.Ctx) error {
 			MappaServerUrl: mappa.URL,
 			Status:         status,
 			StatusCode:     statusCode,
-			Memory:         *infra.GetMemoryStatus(),
 		},
+		Memory: *infra.GetMemoryStatus(),
 	}
 	c.JSON(response)
 	return nil

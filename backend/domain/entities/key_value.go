@@ -8,3 +8,13 @@ type KeyValue struct {
 	Value      string    `gorm:"column:value"`
 	ValidUntil time.Time `gorm:"column:valid_until"`
 }
+
+const keyValueTable = "key_values"
+
+func init() {
+	RegisterEntity(Entity{EntityType: KeyValue{}, TableName: keyValueTable})
+}
+
+func (KeyValue) TableName() string {
+	return keyValueTable
+}

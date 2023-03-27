@@ -10,7 +10,7 @@ import (
 	"github.com/escoteirando/mappa-proxy/backend/tools"
 )
 
-func (svc *MappaService) GetConquistas(codigoSecao int, authorization string) (conquistas []*responses.MappaConquistaResponse, err error) {
+func (svc *MappaService) GetConquistas(codigoSecao int, authorization string, since time.Time) (conquistas []*responses.MappaConquistaResponse, err error) {
 	keyConquistas := fmt.Sprintf("conquistas_%d", codigoSecao)
 	lastFetch := svc.Cache.GetLastEventTime(keyConquistas)
 	if lastFetch.Before(tools.DaysAgo(CONQUISTAS_UPDATE_INTERVAL)) {
@@ -23,7 +23,7 @@ func (svc *MappaService) GetConquistas(codigoSecao int, authorization string) (c
 		}
 
 	} else {
-		objConquistas, err := svc.Repository.GetConquistas(codigoSecao)
+		objConquistas, err := svc.Repository.GetConquistas(codigoSecao, since)
 		if err == nil && objConquistas != nil && len(objConquistas) > 0 {
 			conquistas = make([]*responses.MappaConquistaResponse, len(objConquistas))
 			for i, conquista := range objConquistas {
@@ -43,8 +43,8 @@ func (svc *MappaService) updateConquistas(codigoSecao int, conquistas []*respons
 	return svc.Repository.UpdateMappaConquistas(eConquistas)
 }
 
-func (svc *MappaService) GetConquistasFull(codigoSecao int, authorization string) (conquistas []*responses.FullConquistaResponse, err error) {
-	c, err := svc.GetConquistas(codigoSecao, authorization)
+func (svc *MappaService) GetConquistasFull(codigoSecao int, authorization string, since time.Time) (conquistas []*responses.FullConquistaResponse, err error) {
+	c, err := svc.GetConquistas(codigoSecao, authorization, since)
 	if err != nil {
 		return nil, err
 	}

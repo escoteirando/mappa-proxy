@@ -10,14 +10,9 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "http://swagger.io/terms/",
         "contact": {
             "name": "Guionardo Furlan",
             "email": "guionardo@gmail.com"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
         "version": "{{.Version}}"
     },
@@ -47,6 +42,85 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/cache/reset": {
+            "post": {
+                "description": "Publica mensagem em chat do Telegram",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Clear cache",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/routes": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "List registered routes",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    }
+                }
+            }
+        },
+        "/admin/stats": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "admin"
+                ],
+                "summary": "Data statistics",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.StatsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    }
+                }
+            }
+        },
         "/hc": {
             "get": {
                 "description": "Service healthcheck",
@@ -67,37 +141,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/mappa": {
-            "get": {
-                "description": "Adicione o caminho da requisição após /mappa/",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "mappa-proxy"
-                ],
-                "summary": "Requisição genérica para a API do Mappa",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object"
-                        }
-                    }
-                }
-            }
-        },
         "/mappa/conquistas/{cod_secao}": {
             "get": {
                 "consumes": [
@@ -107,7 +150,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "mappa-proxy"
+                    "mappa"
                 ],
                 "summary": "Lista de conquistas da secão",
                 "parameters": [
@@ -124,6 +167,12 @@ const docTemplate = `{
                         "name": "Authorization",
                         "in": "header",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Data de início do período (YYYY-MM-DD) padrão 1 ano atrás",
+                        "name": "desde",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -155,7 +204,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "mappa-proxy"
+                    "mappa"
                 ],
                 "summary": "Detalhes do escotista",
                 "parameters": [
@@ -179,56 +228,6 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/responses.MappaDetalhesResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ReplyMessage"
-                        }
-                    },
-                    "403": {
-                        "description": "Forbidden",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.ReplyMessage"
-                        }
-                    }
-                }
-            }
-        },
-        "/mappa/escotista/{userId}/secoes": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "mappa-proxy"
-                ],
-                "summary": "Seções do escotista",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "User ID",
-                        "name": "userId",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authorization",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/responses.MappaSecaoResponse"
                         }
                     },
                     "400": {
@@ -293,7 +292,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "mappa-proxy"
+                    "mappa"
                 ],
                 "summary": "Mappa Login handler",
                 "parameters": [
@@ -339,7 +338,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "mappa-proxy"
+                    "mappa"
                 ],
                 "summary": "MappaMarcacoes handler",
                 "parameters": [
@@ -413,6 +412,56 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    }
+                }
+            }
+        },
+        "/mappa/secoes/{userId}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "mappa"
+                ],
+                "summary": "Seções do escotista",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "userId",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authorization",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.MappaSecaoResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.ReplyMessage"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
                         "schema": {
                             "$ref": "#/definitions/handlers.ReplyMessage"
                         }
@@ -560,6 +609,9 @@ const docTemplate = `{
             "properties": {
                 "mappa_server": {
                     "$ref": "#/definitions/responses.MappaServerResponse"
+                },
+                "memory": {
+                    "$ref": "#/definitions/infra.MemoryStatus"
                 },
                 "status": {
                     "type": "string"
@@ -847,9 +899,6 @@ const docTemplate = `{
                 "mappa_server_url": {
                     "type": "string"
                 },
-                "memory": {
-                    "$ref": "#/definitions/infra.MemoryStatus"
-                },
                 "status": {
                     "type": "string"
                 },
@@ -884,6 +933,23 @@ const docTemplate = `{
                 }
             }
         },
+        "responses.StatsResponse": {
+            "type": "object",
+            "properties": {
+                "associados": {
+                    "type": "integer"
+                },
+                "escotistas": {
+                    "type": "integer"
+                },
+                "grupos": {
+                    "type": "integer"
+                },
+                "secoes": {
+                    "type": "integer"
+                }
+            }
+        },
         "types.Bool": {
             "type": "object"
         }
@@ -892,12 +958,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "0.5.2",
+	Version:          "0.5.4",
 	Host:             "",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "mappa-api",
-	Description:      "This is a sample swagger for Fiber",
+	Title:            "mappa-proxy",
+	Description:      "Proxy and data analysis for Mappa",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

@@ -19,3 +19,13 @@ type MappaConquista struct {
 	Especialidade    MappaEspecialidade `gorm:"foreignKey:codigo;association_foreignKey:cod_especialidade"`
 	Data             time.Time          `gorm:"column:data"`
 }
+
+const mappaConquistaTable = "mappa_conquistas"
+
+func init() {
+	RegisterEntity(Entity{EntityType: MappaConquista{}, TableName: mappaConquistaTable})
+}
+
+func (MappaConquista) TableName() string {
+	return mappaConquistaTable
+}

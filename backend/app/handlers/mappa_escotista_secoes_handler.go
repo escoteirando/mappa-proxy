@@ -8,8 +8,8 @@ import (
 )
 
 func init() {
-	Routes["/escotista/:userId/secoes"] = RouteData{
-		Name:      "Seções do Escotista",		
+	Routes["/secoes/:userId"] = RouteData{
+		Name:      "Seções do Escotista",
 		Handler:   MappaEscotistaSecoesHandler,
 		CacheTime: 24 * time.Hour,
 		Mappa:     true,
@@ -18,7 +18,7 @@ func init() {
 
 // MappaEscotistaSecoesHandler godoc
 // @Summary Seções do escotista
-// @Tags    mappa-proxy
+// @Tags    mappa
 // @Accept  json
 // @Param   userId        path   int    true "User ID"
 // @Param   Authorization header string true "Authorization"
@@ -26,7 +26,7 @@ func init() {
 // @Success 200 {object} responses.MappaSecaoResponse
 // @Failure 400 {object} handlers.ReplyMessage
 // @Failure 403 {object} handlers.ReplyMessage
-// @Router  /mappa/escotista/{userId}/secoes [get]
+// @Router  /mappa/secoes/{userId} [get]
 func MappaEscotistaSecoesHandler(c *fiber.Ctx) error {
 	userId, err := c.ParamsInt("userId", 0)
 	if err == nil && userId <= 0 {

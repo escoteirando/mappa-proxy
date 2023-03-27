@@ -16,3 +16,13 @@ type MappaProgressao struct {
 	Segmento              string               `gorm:"column:segmento"`
 	Ramo                  domain.MappaRamoEnum `gorm:"column:ramo"`
 }
+
+const mappaProgressaoTable = "mappa_progressoes"
+
+func init() {
+	RegisterEntity(Entity{EntityType: MappaProgressao{}, TableName: mappaProgressaoTable})
+}
+
+func (MappaProgressao) TableName() string {
+	return mappaProgressaoTable
+}
