@@ -9,7 +9,7 @@ import (
 func (r *DBRepository) setAssociadoSecao(codigoAssociado int, subSecao bool, codsSecao ...int) error {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 
 	// Remove
 	res := db.Delete(&entities.AssociadoSecao{}, "cod_associado = ? and subsecao = ?", codigoAssociado, subSecao)
@@ -33,7 +33,7 @@ func (r *DBRepository) setAssociadoSecao(codigoAssociado int, subSecao bool, cod
 func (r *DBRepository) getAssociadoSecoes(codigoAssociado int, subSecao bool) (secoesIds []int, err error) {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 
 	res := db.Model(&entities.AssociadoSecao{}).Select("cod_secao").Where("cod_associado = ? and subsecao = ?", codigoAssociado, subSecao).Find(&secoesIds)
 	err = res.Error
@@ -52,7 +52,7 @@ func (r *DBRepository) GetAssociadoSecoes(codigoAssociado int) (secoes []*entiti
 
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 
 	res := db.Where("codigo in ?", ids).Find(&secoes)
 	err = res.Error
@@ -71,7 +71,7 @@ func (r *DBRepository) GetAssociadoSubSecao(codigoAssociado int) (subsecao *enti
 
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 
 	res := db.Where("codigo = ?", ids[0]).First(&subsecao)
 	err = res.Error

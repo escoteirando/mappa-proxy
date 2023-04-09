@@ -10,7 +10,7 @@ import (
 )
 
 // @title         mappa-proxy
-// @version       0.5.4
+// @version       0.5.5
 // @description   Proxy and data analysis for Mappa
 // @contact.name  Guionardo Furlan
 // @contact.email guionardo@gmail.com

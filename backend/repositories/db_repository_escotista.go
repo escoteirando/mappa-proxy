@@ -8,7 +8,7 @@ import (
 func (r *DBRepository) SetEscotista(escotista *entities.Escotista) error {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(escotista)
 	return res.Error
 }
@@ -16,7 +16,7 @@ func (r *DBRepository) SetEscotista(escotista *entities.Escotista) error {
 func (r *DBRepository) GetEscotista(userId int) (escotista *entities.Escotista, err error) {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	res := db.First(&escotista, userId)
 	err = res.Error
 	return

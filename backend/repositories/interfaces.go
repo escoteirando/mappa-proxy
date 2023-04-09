@@ -6,10 +6,12 @@ import (
 	"github.com/escoteirando/mappa-proxy/backend/domain"
 	"github.com/escoteirando/mappa-proxy/backend/domain/entities"
 	"github.com/escoteirando/mappa-proxy/backend/domain/responses"
+	"gorm.io/gorm"
 )
 
 type IRepository interface {
 	IsValidConnectionString(connectionString string) bool
+	GetDBFunc() *gorm.DB
 	CreateRepository(connectionString string) (IRepository, error)
 	GetName() string
 

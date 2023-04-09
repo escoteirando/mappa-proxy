@@ -17,6 +17,7 @@ import (
 	"github.com/escoteirando/mappa-proxy/backend/infra/fiberfilestorage"
 	"github.com/escoteirando/mappa-proxy/backend/repositories"
 	"github.com/escoteirando/mappa-proxy/backend/static"
+	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 	fiberCache "github.com/gofiber/fiber/v2/middleware/cache"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -24,13 +25,14 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/favicon"
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (
 	cacheStorage fiber.Storage
 )
 
-func CreateServer(config configuration.Configuration, cache *cache.MappaCache, repository repositories.IRepository) (app *fiber.App, err error) {
+func CreateServer(config configuration.Configuration, cache *cache.MappaCache, repository repositories.IRepository) (app *fiber.App, err error) {	
 	app = fiber.New(fiber.Config{
 		AppName:     fmt.Sprintf("%s - v%s @ %v", configuration.APP_NAME, configuration.APP_VERSION, build.BuildTime),
 		ColorScheme: fiber.DefaultColors,
@@ -118,6 +120,8 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 		Browse:     true,
 		MaxAge:     60,
 	}))
+
+	app.Get("/metrics", adaptor.HTTPHandler(promhttp.Handler()))
 
 	SetupSwagger(app)
 

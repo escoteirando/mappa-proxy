@@ -14,7 +14,7 @@ import (
 func (r *DBRepository) GetLogins() (logins []*domain.LoginData, err error) {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	var entityLogins []entities.Login
 	res := db.Find(&entityLogins)
 	if res.Error != nil {
@@ -48,7 +48,7 @@ func (r *DBRepository) SetLogin(username string, password string, loginResponse 
 	r.DBLock()
 	defer r.DBUnlock()
 
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(&entities.Login{
 		UserName:        username,
 		PasswordHash:    infra.GetPasswordHash(password),
@@ -64,7 +64,7 @@ func (r *DBRepository) SetLogin(username string, password string, loginResponse 
 func (r *DBRepository) DeleteLogin(username string) error {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	deletedLogin := entities.Login{
 		UserName: username,
 	}

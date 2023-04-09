@@ -21,6 +21,7 @@ func (factory *RepositoryFactoryStruct) GetRepository(connectionString string) I
 			newRepo, err := repository.CreateRepository(connectionString)
 			if err == nil {
 				log.Printf("Repository created: %s - %s", newRepo.GetName(), connectionString)
+				SetupDatabaseMetrics(newRepo)
 				return newRepo
 			}
 			errors = append(errors, err)

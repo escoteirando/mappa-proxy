@@ -11,7 +11,7 @@ import (
 func (r *DBRepository) UpdateMappaProgressoes(progressoes []*responses.MappaProgressaoResponse) error {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	// Desabilitar todas as progressões atuais
 	db.Delete(&entities.MappaProgressao{}, "deleted_at IS NULL")
 	for _, progressao := range progressoes {
@@ -26,7 +26,7 @@ func (r *DBRepository) UpdateMappaProgressoes(progressoes []*responses.MappaProg
 func (r *DBRepository) GetProgressoes(ramo domain.MappaRamoEnum) ([]*responses.MappaProgressaoResponse, error) {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	var progressoes []*entities.MappaProgressao
 	res := db.Order("codigo_caminho ASC, ordenacao ASC").Where("codigo_caminho in (?) and numero_grupo = 0", ramo.Caminhos()).Find(&progressoes)
 	if res.Error != nil {

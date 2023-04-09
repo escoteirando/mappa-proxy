@@ -8,7 +8,7 @@ import (
 func (r *DBRepository) UpdateMappaEspecialidades(especialidades []*entities.MappaEspecialidade) error {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(especialidades)
 	return res.Error
 }
@@ -16,7 +16,7 @@ func (r *DBRepository) UpdateMappaEspecialidades(especialidades []*entities.Mapp
 func (r *DBRepository) GetEspecialidades() (especialidades []*entities.MappaEspecialidade, err error) {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	if err = db.Find(&especialidades).Error; err != nil {
 		return
 	}
@@ -33,7 +33,7 @@ func (r *DBRepository) GetEspecialidades() (especialidades []*entities.MappaEspe
 func (r *DBRepository) GetEspecialidade(codEspecialidade int) (*entities.MappaEspecialidade, error) {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	var especialidade entities.MappaEspecialidade
 	if err := db.First(&especialidade, codEspecialidade).Error; err != nil {
 		return nil, err

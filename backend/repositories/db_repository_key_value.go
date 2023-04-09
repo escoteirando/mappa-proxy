@@ -22,7 +22,7 @@ func (r *DBRepository) SetKeyValue(key, value string, timeToLive time.Duration) 
 		Value:      value,
 		ValidUntil: validUntil,
 	}
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(&keyValue)
 	return res.Error
 }
@@ -33,7 +33,7 @@ func (r *DBRepository) GetKeyValue(key, defaultValue string) string {
 	keyValue := entities.KeyValue{
 		Key: key,
 	}
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	res := db.First(&keyValue)
 	if res.Error != nil {
 		return defaultValue

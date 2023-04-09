@@ -8,7 +8,7 @@ import (
 func (r *DBRepository) SetAssociado(associado *entities.Associado) error {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(associado)
 	return res.Error
 }
@@ -16,7 +16,7 @@ func (r *DBRepository) SetAssociado(associado *entities.Associado) error {
 func (r *DBRepository) GetAssociado(codigoAssociado int) (associado *entities.Associado, err error) {
 	r.DBLock()
 	defer r.DBUnlock()
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	res := db.First(&associado, codigoAssociado)
 	err = res.Error
 	return

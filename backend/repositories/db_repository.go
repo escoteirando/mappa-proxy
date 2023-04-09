@@ -25,6 +25,10 @@ func init() {
 	RepositoryFactory.Register(&DBRepository{})
 }
 
+func (r *DBRepository) GetDBFunc() *gorm.DB {
+	return r.getDBFunc()
+}
+
 func (r *DBRepository) IsValidConnectionString(connectionString string) bool {
 	cs, err := infra.CreateConnectionString(connectionString)
 	return err == nil && (cs.Schema == "sqlite" || cs.Schema == "postgres")
@@ -67,7 +71,7 @@ func (repository *DBRepository) CreateRepository(connectionString string) (IRepo
 }
 
 func (r *DBRepository) setup() error {
-	db := r.getDBFunc()
+	db := r.GetDBFunc()
 	r.DBLock()
 	defer r.DBUnlock()
 	for tableName, entity := range entities.GetEntities() {
