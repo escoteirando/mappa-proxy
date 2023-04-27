@@ -104,3 +104,11 @@ func (cache *MappaCache) GetLastEventTime(eventName string) time.Time {
 func (cache *MappaCache) SetLastEventTime(eventName string, lastEventTime time.Time) {
 	cache.repository.SetKeyValue("event_"+eventName, lastEventTime.Format(time.RFC3339), time.Duration(0))
 }
+
+func (cache *MappaCache) ClearLastEventTime(eventName string) {
+	cache.repository.DeleteKey("event_" + eventName)
+}
+
+func (cache *MappaCache) ClearEvents(){
+	cache.repository.DeleteKeys("event_")
+}

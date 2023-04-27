@@ -9,7 +9,7 @@ processes = []
 strategy = "rolling"
 
 [env]
-MAPPA_PROXY_REPOSITORY = "sqlite:/data/mappa-proxy-repository.db"
+MAPPA_PROXY_REPOSITORY = "sqlite:/data/mappa-proxy-repository-new.db"
 CACHE_PATH = "/data/cache"
 
 [experimental]

@@ -30,7 +30,9 @@ func AddAdminHandlers(app *fiber.App, storage fiber.Storage) {
 func ClearCache(c *fiber.Ctx) error {
 	if err := cacheStorage.Reset(); err != nil {
 		return reply_error(c, fiber.StatusExpectationFailed, "Failed on reset cache", err)
-	}
+	}	
+	contextData := GetUserContext(c)
+	contextData.MappaService.Cache.ClearEvents()
 	return reply_status(c, fiber.StatusOK, "Cache reseted")
 }
 

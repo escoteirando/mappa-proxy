@@ -15,27 +15,28 @@ func (svc *MappaService) GetMarcacoes(codigoSecao int, authorization string) (ma
 	lastFetch := svc.Cache.GetLastEventTime(keyMarcacoes)
 	if lastFetch.Before(tools.DaysAgo(MARCACOES_UPDATE_INTERVAL)) {
 		objMarcacoes, err := svc.API.GetMarcacoes(codigoSecao, lastFetch, authorization)
-		if err == nil && objMarcacoes != nil && objMarcacoes.Values != nil && len(objMarcacoes.Values) > 0 {
-			marcacoes = objMarcacoes.Values
-			if err = svc.updateMarcacoes(codigoSecao, marcacoes); err == nil {
-				svc.Cache.SetLastEventTime(keyMarcacoes, time.Now())
+		if err == nil {
+			if objMarcacoes != nil && objMarcacoes.Values != nil && len(objMarcacoes.Values) > 0 {
+				marcacoes = objMarcacoes.Values
+				svc.updateMarcacoes(codigoSecao, marcacoes)
 			}
+
+			svc.Cache.SetLastEventTime(keyMarcacoes, time.Now())
 		}
 
-		err = svc.updateMappaProgressoes(svc.Repository)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		objMarcacoes, err := svc.Repository.GetMarcacoes(codigoSecao)
-		if err == nil && objMarcacoes != nil && len(objMarcacoes) > 0 {
-			marcacoes = make([]*responses.MappaMarcacaoResponse, len(objMarcacoes))
-			for i, marcacao := range objMarcacoes {
-				marcacoes[i] = dtos.MappaMarcacaoToResponse(marcacao)
-			}
-		}
-
+		// err = svc.updateMappaProgressoes(svc.Repository)
+		// if err != nil {
+		// 	return nil, err
+		// }
 	}
+	objMarcacoes, err := svc.Repository.GetMarcacoes(codigoSecao)
+	if err == nil && objMarcacoes != nil && len(objMarcacoes) > 0 {
+		marcacoes = make([]*responses.MappaMarcacaoResponse, len(objMarcacoes))
+		for i, marcacao := range objMarcacoes {
+			marcacoes[i] = dtos.MappaMarcacaoToResponse(marcacao)
+		}
+	}
+
 	return
 }
 

@@ -51,6 +51,8 @@ type IRepository interface {
 
 	SetKeyValue(key, value string, timeToLive time.Duration) error
 	GetKeyValue(key, defaultValue string) string
+	DeleteKey(key string) error
+	DeleteKeys(keyPrefix string) error
 
 	UpdateMappaProgressoes(progressoesResponse []*responses.MappaProgressaoResponse) error
 	GetProgressoes(domain.MappaRamoEnum) ([]*responses.MappaProgressaoResponse, error)

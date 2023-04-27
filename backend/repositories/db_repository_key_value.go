@@ -44,3 +44,33 @@ func (r *DBRepository) GetKeyValue(key, defaultValue string) string {
 	}
 	return keyValue.Value
 }
+
+func (r *DBRepository) DeleteKey(key string) error {
+	r.DBLock()
+	defer r.DBUnlock()
+	keyValue := entities.KeyValue{
+		Key: key,
+	}
+	db := r.GetDBFunc()
+	res := db.First(&keyValue)
+	if res.Error != nil {
+		return nil
+	}
+	return db.Delete(&keyValue).Error
+}
+
+func (r *DBRepository) DeleteKeys(keyPrefix string) error {
+	r.DBLock()
+	defer r.DBUnlock()
+	var keys []entities.KeyValue
+	db := r.GetDBFunc()
+	result := db.Where("key like ?", keyPrefix+"%").Find(&keys)
+	if result.Error != nil {
+		return result.Error
+	}
+	for _, key := range keys {
+		db.Delete(&key)
+	}
+
+	return nil
+}

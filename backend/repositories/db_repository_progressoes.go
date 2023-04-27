@@ -14,13 +14,20 @@ func (r *DBRepository) UpdateMappaProgressoes(progressoes []*responses.MappaProg
 	db := r.GetDBFunc()
 	// Desabilitar todas as progressões atuais
 	db.Delete(&entities.MappaProgressao{}, "deleted_at IS NULL")
-	for _, progressao := range progressoes {
-		res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(dtos.MappaProgressaoToEntity(progressao))
-		if res.Error != nil {
-			return res.Error
-		}
+	var progressaoDtos = make([]*entities.MappaProgressao, len(progressoes))
+	for i, progressao := range progressoes {
+		progressaoDtos[i] = dtos.MappaProgressaoToEntity(progressao)
 	}
-	return nil
+	res := db.Clauses(clause.OnConflict{UpdateAll: true}).CreateInBatches(progressaoDtos, 20)
+	return res.Error
+
+	// for _, progressao := range progressoes {
+	// 	res := db.Clauses(clause.OnConflict{UpdateAll: true}).Create(dtos.MappaProgressaoToEntity(progressao))
+	// 	if res.Error != nil {
+	// 		return res.Error
+	// 	}
+	// }
+	// return nil
 }
 
 func (r *DBRepository) GetProgressoes(ramo domain.MappaRamoEnum) ([]*responses.MappaProgressaoResponse, error) {
