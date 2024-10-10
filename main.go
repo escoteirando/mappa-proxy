@@ -9,12 +9,12 @@ import (
 	"github.com/escoteirando/mappa-proxy/backend/mappa"
 )
 
-// @title         mappa-proxy
-// @version       0.5.5
-// @description   Proxy and data analysis for Mappa
-// @contact.name  Guionardo Furlan
-// @contact.email guionardo@gmail.com
-// @BasePath      /
+//	@title			mappa-proxy
+//	@version		0.5.5
+//	@description	Proxy and data analysis for Mappa
+//	@contact.name	Guionardo Furlan
+//	@contact.email	guionardo@gmail.com
+//	@BasePath		/
 
 var Build = "development"
 

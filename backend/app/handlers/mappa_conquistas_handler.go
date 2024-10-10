@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"fmt"
+	"errors"
 	"strconv"
 	"strings"
 	"time"
@@ -20,25 +20,25 @@ func init() {
 }
 
 // MappaConquistas godoc
-// @Summary Lista de conquistas da secão
-// @Tags    mappa
-// @Accept  json
-// @Param   cod_secao     path   int64  true  "Código Seção"
-// @Param   Authorization header string true  "Authorization"
-// @Param   desde         query  string false "Data de início do período (YYYY-MM-DD) padrão 1 ano atrás"
-// @Produce json
-// @Success 200 {object} []responses.FullConquistaResponse
-// @Failure 400 {object} handlers.ReplyMessage
-// @Router  /mappa/conquistas/{cod_secao} [get]
+//	@Summary	Lista de conquistas da secão
+//	@Tags		mappa
+//	@Accept		json
+//	@Param		cod_secao		path	int64	true	"Código Seção"
+//	@Param		Authorization	header	string	true	"Authorization"
+//	@Param		desde			query	string	false	"Data de início do período (YYYY-MM-DD) padrão 1 ano atrás"
+//	@Produce	json
+//	@Success	200	{object}	[]responses.FullConquistaResponse
+//	@Failure	400	{object}	handlers.ReplyMessage
+//	@Router		/mappa/conquistas/{cod_secao} [get]
 func MappaConquistasHandler(c *fiber.Ctx) error {
 	codSecao, err := strconv.Atoi(strings.ReplaceAll(c.Params("cod_secao", "0"), "%22", ""))
 	if err != nil || codSecao <= 0 {
-		return reply_error(c, 400, "mAPPa request error", fmt.Errorf("Invalid codSecao"))
+		return reply_error(c, 400, "mAPPa request error", errors.New("invalid codSecao"))
 	}
 	desdeQuery := c.Query("desde", time.Now().Add(-time.Hour*24*365).Format("2006-01-02"))
 	since, err := time.Parse("2006-01-02", desdeQuery)
 	if err != nil {
-		return reply_error(c, 400, "mAPPa request error", fmt.Errorf("Invalid desde"))
+		return reply_error(c, 400, "mAPPa request error", errors.New("invalid desde"))
 	}
 	contextData := GetUserContext(c)
 	if err = contextData.NeedsAuth(c); err != nil {

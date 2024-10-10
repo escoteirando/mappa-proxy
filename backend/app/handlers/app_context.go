@@ -11,6 +11,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+
 const userContextKey = "uc_key"
 
 type MappaUserContextData struct {
@@ -61,5 +62,5 @@ func (cd *MappaUserContextData) NeedsAuth(c *fiber.Ctx) error {
 	if len(cd.Authorization) > 0 {
 		return nil
 	}
-	return reply_error(c, 403, "UNAUTHORIZED", fmt.Errorf("Authorization header not found"))
+	return reply_error(c, 403, "UNAUTHORIZED", fmt.Errorf("authorization header not found"))
 }

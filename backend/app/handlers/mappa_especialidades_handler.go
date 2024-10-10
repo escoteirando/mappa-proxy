@@ -16,14 +16,14 @@ func init() {
 }
 
 // MappaEspecialidades godoc
-// @Summary Lista de especialidades e items
-// @Tags    db
-// @Accept  json
-// @Produce json
-// @Param   Authorization header   string true "Authorization"
-// @Success 200           {object} responses.MappaEspecialidadeResponse
-// @Failure 400           {object} handlers.ReplyMessage
-// @Router  /mappa/especialidades [get]
+//	@Summary	Lista de especialidades e items
+//	@Tags		db
+//	@Accept		json
+//	@Produce	json
+//	@Param		Authorization	header		string	true	"Authorization"
+//	@Success	200				{object}	responses.MappaEspecialidadeResponse
+//	@Failure	400				{object}	handlers.ReplyMessage
+//	@Router		/mappa/especialidades [get]
 func MappaEspecialidadesHandler(c *fiber.Ctx) error {
 	contextData := GetUserContext(c)
 	especialidades, err := contextData.MappaService.GetEspecialidades()

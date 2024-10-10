@@ -1,4 +1,4 @@
-FROM golang:1.20-alpine as backend-dev
+FROM golang:1.23-alpine as backend-dev
 
 WORKDIR /app
 RUN apk add build-base

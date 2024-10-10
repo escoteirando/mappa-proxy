@@ -19,12 +19,12 @@ func init() {
 }
 
 // Healthcheck godoc
-// @Summary     Healthcheck handler
-// @Description Service healthcheck
-// @Tags        mappa-proxy
-// @Produce     json
-// @Success     200 {object} responses.HealthCheckResponse
-// @Router      /hc [get]
+//	@Summary		Healthcheck handler
+//	@Description	Service healthcheck
+//	@Tags			mappa-proxy
+//	@Produce		json
+//	@Success		200	{object}	responses.HealthCheckResponse
+//	@Router			/hc [get]
 func MappaHealthCheckHandler(c *fiber.Ctx) error {
 
 	statusCode, status, err := infra.Ping(mappa.URL)

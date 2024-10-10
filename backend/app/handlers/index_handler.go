@@ -19,13 +19,13 @@ func init() {
 }
 
 // Index godoc
-// @Summary     Index handler
-// @Description route: /
-// @Tags        mappa-proxy
-// @Accept      json
-// @Produce     json
-// @Success     200 {object} responses.IndexResponse
-// @Router      / [get]
+//	@Summary		Index handler
+//	@Description	route: /
+//	@Tags			mappa-proxy
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	responses.IndexResponse
+//	@Router			/ [get]
 func IndexHandler(c *fiber.Ctx) error {
 	return c.JSON(responses.IndexResponse{
 		App:       configuration.APP_NAME,

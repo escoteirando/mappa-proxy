@@ -213,6 +213,7 @@ func (svc *MappaService) GetEscotistaSecoes(userId int, authorization string) (s
 			for _, eSubSec := range eSecao.Subsecoes {
 				subsec := dtos.MappaSubSecaoToEntity(eSubSec)
 				svc.Repository.SetSubSecao(&subsec)
+				svc.Repository.UnlinkSubSecaoAssociados(&subsec)
 
 				// Gravar associados
 				for _, eAssociado := range eSubSec.Associados {

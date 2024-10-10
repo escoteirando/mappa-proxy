@@ -13,6 +13,8 @@ func (r *DBRepository) SetAssociado(associado *entities.Associado) error {
 	return res.Error
 }
 
+
+
 func (r *DBRepository) GetAssociado(codigoAssociado int) (associado *entities.Associado, err error) {
 	r.DBLock()
 	defer r.DBUnlock()

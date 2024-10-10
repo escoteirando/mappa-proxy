@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
+	"errors"
 
 	"github.com/escoteirando/mappa-proxy/backend/domain/requests"
 
@@ -20,16 +20,16 @@ func init() {
 }
 
 // MappaLogin godoc
-// @Summary     Mappa Login handler
-// @Description User login
-// @Tags        mappa
-// @Accept      json
-// @Param       request body requests.LoginRequest true "Login request"
-// @Produce     json
-// @Success     200 {object} responses.MappaLoginResponse
-// @Failure     400 {object} handlers.ReplyMessage
-// @Failure     403 {object} handlers.ReplyMessage
-// @Router      /mappa/login [post]
+//	@Summary		Mappa Login handler
+//	@Description	User login
+//	@Tags			mappa
+//	@Accept			json
+//	@Param			request	body	requests.LoginRequest	true	"Login request"
+//	@Produce		json
+//	@Success		200	{object}	responses.MappaLoginResponse
+//	@Failure		400	{object}	handlers.ReplyMessage
+//	@Failure		403	{object}	handlers.ReplyMessage
+//	@Router			/mappa/login [post]
 func MappaLoginHandler(c *fiber.Ctx) error {
 	requestBody := c.Body()
 	var loginRequest requests.LoginRequest
@@ -41,7 +41,7 @@ func MappaLoginHandler(c *fiber.Ctx) error {
 	loginData := contextData.Cache.GetLogin(loginRequest.UserName)
 	if loginData != nil {
 		if !loginData.IsValidPassword(loginRequest.Password) {
-			return reply_error(c, 403, "UNAUTHORIZED", fmt.Errorf("Invalid user or password"))
+			return reply_error(c, 403, "UNAUTHORIZED", errors.New("invalid user or password"))
 		}
 
 		return c.JSON(loginData.GetLoginResponse())

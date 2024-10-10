@@ -43,6 +43,7 @@ type IRepository interface {
 	GetSubSecao(codigoSubSecao int) (subsecao *entities.SubSecao, err error)
 	GetSubSecoes(codigoSecao int) (subsecoes []*entities.SubSecao, err error)
 	GetSubSecaoAssociados(codigoSubSecao int) (associados []entities.Associado, err error)
+	UnlinkSubSecaoAssociados(subSecao *entities.SubSecao) error
 
 	SetAssociadoSecao(codigoAssociado int, codigosSubSecao ...int) error
 	GetAssociadoSecoes(codigoAssociado int) (secoes []*entities.Secao, err error)

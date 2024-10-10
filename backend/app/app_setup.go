@@ -47,7 +47,7 @@ func CreateServer(config configuration.Configuration, cache *cache.MappaCache, r
 		AllowMethods:     "POST,GET",
 		AllowHeaders:     "Origin,Authorization,Content-Type,User-Agent",
 		ExposeHeaders:    "Content-Length",
-		AllowCredentials: true,
+		AllowCredentials: false,
 	}))
 	app.Use(compress.New(compress.Config{
 		Level: compress.LevelBestSpeed,

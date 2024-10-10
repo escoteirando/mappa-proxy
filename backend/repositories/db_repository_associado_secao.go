@@ -77,3 +77,12 @@ func (r *DBRepository) GetAssociadoSubSecao(codigoAssociado int) (subsecao *enti
 	err = res.Error
 	return
 }
+
+func (r *DBRepository) UnlinkSubSecaoAssociados(subSecao *entities.SubSecao) error {
+	r.DBLock()
+	defer r.DBUnlock()
+	db := r.getDBFunc()
+
+	res := db.Model(entities.Associado{}).Where("codigo_equipe = ?", subSecao.Codigo).Updates(entities.Associado{CodigoEquipe: -int(subSecao.Codigo)})
+	return res.Error
+}
