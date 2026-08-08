@@ -16,7 +16,7 @@ COPY docs ./docs/
 RUN CGO_ENABLED=1 GOOS=linux go build -o mappa_proxy  -ldflags="-X 'main.Build=$(date +%Y-%m-%dT%H:%M:%S%z)'" .
 
 
-FROM alpine:latest as final-build
+FROM alpine:3.20.3 as final-build
 # FROM cgr.dev/chainguard/static:latest as final-build
 # Ensure updated CA certificates
 RUN apk --no-cache add ca-certificates
